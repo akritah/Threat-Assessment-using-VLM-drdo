@@ -1,0 +1,18 @@
+# Adapter loading configuration (optional — defaults preserve Ollama inference).
+#
+# Environment variables override these values when set.
+
+base_model_id: google/gemma-3-4b-it
+base_model_path: models/gemma_base
+adapters_dir: adapters
+
+# Set to one of: threat_assessment, surveillance, activity_understanding
+# Leave null to use the base model only.
+active_adapter: null
+
+# Inference backend: ollama (default) or hf
+inference_backend: ollama
+
+# Ollama settings (used when inference_backend is ollama)
+ollama_model: gemma3:4b
+ollama_url: http://localhost:11434

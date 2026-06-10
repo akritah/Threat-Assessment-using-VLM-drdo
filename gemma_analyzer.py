@@ -7,6 +7,8 @@ from typing import Any
 
 import requests
 
+from prompts import FRAME_ANALYSIS_PROMPT, build_summary_prompt
+
 
 class GemmaAnalyzer:
     def __init__(self, model: str = "gemma4", base_url: str = "http://localhost:11434", timeout: int = 180) -> None:
@@ -15,27 +17,14 @@ class GemmaAnalyzer:
         self.timeout = timeout
 
     def analyze_frame(self, image_path: Path, frame_number: int) -> dict[str, Any]:
-        prompt = (
-            "Analyze only what is visible in this CCTV/video frame. "
-            "Return JSON with these keys: objects_present, people_present, actions_occurring, "
-            "environment_description, description. "
-            "Mention suspicious activity only if it is visible. Do not describe documents or forms unless they are visible."
-        )
-        result = self._generate(prompt=prompt, images=[image_path])
+        result = self._generate(prompt=FRAME_ANALYSIS_PROMPT, images=[image_path])
         parsed = self._as_json(result)
         parsed["frame"] = frame_number
         parsed["image"] = str(image_path)
         return parsed
 
     def summarize(self, frame_results: list[dict[str, Any]]) -> dict[str, Any]:
-        prompt = (
-            "Create a JSON summary from these chronological CCTV frame observations. "
-            "Return one JSON object only. Do not return an empty object. "
-            "Use exactly these keys: timeline_of_events, overall_activity_summary, key_observations, final_activity_description. "
-            "timeline_of_events and key_observations must be arrays of short strings. "
-            "overall_activity_summary and final_activity_description must be short natural strings.\n\n"
-            f"{json.dumps(frame_results, indent=2)}"
-        )
+        prompt = build_summary_prompt(json.dumps(frame_results, indent=2))
         result = self._generate(prompt=prompt)
         return self._as_json(result)
 

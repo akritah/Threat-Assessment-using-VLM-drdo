@@ -1,0 +1,48 @@
+# QLoRA fine-tuning configuration for Gemma 3 4B domain adaptation.
+
+base_model_id: google/gemma-3-4b-it
+output_dir: adapters/threat_assessment
+
+# Dataset: JSONL with {"messages": [...]} or {"image": "path", "prompt": "...", "response": "..."}
+train_dataset: training/data/train.jsonl
+eval_dataset: training/data/eval.jsonl
+
+# QLoRA / quantization
+load_in_4bit: true
+bnb_4bit_quant_type: nf4
+bnb_4bit_use_double_quant: true
+bnb_4bit_compute_dtype: bfloat16
+
+# LoRA
+lora_r: 16
+lora_alpha: 32
+lora_dropout: 0.05
+lora_target_modules:
+  - q_proj
+  - k_proj
+  - v_proj
+  - o_proj
+  - gate_proj
+  - up_proj
+  - down_proj
+
+# Training
+num_train_epochs: 3
+per_device_train_batch_size: 1
+per_device_eval_batch_size: 1
+gradient_accumulation_steps: 4
+learning_rate: 2.0e-4
+warmup_ratio: 0.03
+max_seq_length: 2048
+logging_steps: 10
+eval_steps: 50
+save_steps: 100
+save_total_limit: 3
+
+# Performance
+gradient_checkpointing: true
+bf16: true
+fp16: false
+
+# Resume from latest checkpoint in output_dir (set via --resume flag)
+resume_from_checkpoint: null

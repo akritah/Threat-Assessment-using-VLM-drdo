@@ -1,14 +1,85 @@
+# Cache & Python files
 __pycache__/
 *.py[cod]
+*$py.class
+.pytest_cache/
+.ipynb_checkpoints/
+.cache/
 
+# Virtual Environments
 .venv/
 venv/
 env/
+ENV/
+lib/
+lib64/
 
+# IDE & Editor settings
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# Environment variables & secrets
+.env
+.env.*
+.env.local
+*secret*
+*credential*
+*key*
+*.pem
+*.key
+*.pub
+*.pkcs12
+*.pfx
+*.p12
+*.auth
+
+# Model Weights & Fine-tuning checkpoints
+models/*/
+**/checkpoint-*/
+*.bin
+*.pt
+*.pth
+*.safetensors
+*.gguf
+!models/__init__.py
+!models/model_loader.py
+!models/gemma_base/.gitkeep
+
+# LoRA Adapters
+adapters/*/
+!adapters/**/.gitkeep
+
+# Local Datasets & Data
+training/data/*
+!training/data/.gitkeep
+*.jsonl
+*.csv
+*.tsv
+*.parquet
+
+# Logs
+*.log
+logs/
+**/logs/
+
+# Outputs
 outputs/
+
+# Local Video & Audio Files
 *.mp4
 *.avi
 *.mov
+*.mkv
+*.webm
+*.flv
+*.wav
+*.mp3
 
-.env
+# OS metadata
 .DS_Store
+Thumbs.db

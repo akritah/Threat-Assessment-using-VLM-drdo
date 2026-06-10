@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+import env_loader
+env_loader.load_env()
+
 import argparse
 import json
 import logging
@@ -7,8 +10,8 @@ from pathlib import Path
 
 from tqdm import tqdm
 
+from analyzer_factory import create_analyzer
 from frame_extractor import extract_frames
-from gemma_analyzer import GemmaAnalyzer
 from summarizer import build_text_report, summarize_video
 
 
@@ -19,6 +22,17 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--model", default="gemma4", help="Ollama model name")
     parser.add_argument("--ollama-url", default="http://localhost:11434", help="Ollama server URL")
     parser.add_argument("--output-dir", default="outputs", help="Directory for frames and reports")
+    parser.add_argument(
+        "--backend",
+        choices=["ollama", "hf"],
+        default=None,
+        help="Inference backend (default: ollama — existing behavior)",
+    )
+    parser.add_argument(
+        "--adapter",
+        default=None,
+        help="LoRA adapter name when using HF backend (e.g. threat_assessment)",
+    )
     return parser.parse_args()
 
 
@@ -34,7 +48,12 @@ def main() -> int:
 
     try:
         frame_paths = extract_frames(video_path, frames_dir, args.frames)
-        analyzer = GemmaAnalyzer(model=args.model, base_url=args.ollama_url)
+        analyzer = create_analyzer(
+            model=args.model,
+            base_url=args.ollama_url,
+            backend=args.backend,
+            adapter=args.adapter,
+        )
 
         frame_results = []
         for index, frame_path in enumerate(tqdm(frame_paths, desc="Analyzing frames"), start=1):
