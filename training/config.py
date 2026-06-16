@@ -19,6 +19,8 @@ class TrainingConfig:
     output_dir: str = "adapters/threat_assessment"
     train_dataset: str = "training/data/train.jsonl"
     eval_dataset: str | None = "training/data/eval.jsonl"
+    checkpoint_dir: str | None = None
+    logging_dir: str | None = None
 
     load_in_4bit: bool = True
     bnb_4bit_quant_type: str = "nf4"
@@ -87,3 +89,15 @@ class TrainingConfig:
         if not self.eval_dataset:
             return None
         return self.resolve_path(self.eval_dataset)
+
+    @property
+    def checkpoint_path(self) -> Path:
+        if self.checkpoint_dir:
+            return self.resolve_path(self.checkpoint_dir)
+        return self.output_path / "checkpoints"
+
+    @property
+    def logging_path(self) -> Path:
+        if self.logging_dir:
+            return self.resolve_path(self.logging_dir)
+        return self.output_path / "logs"

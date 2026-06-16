@@ -40,6 +40,8 @@ lib64/
 
 # Model Weights & Fine-tuning checkpoints
 models/*/
+checkpoints/
+checkpoints/*/
 **/checkpoint-*/
 *.bin
 *.pt

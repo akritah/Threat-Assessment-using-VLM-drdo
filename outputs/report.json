@@ -1,0 +1,165 @@
+{
+  "video": "C:\\Drdo threat detection\\sample.mp4",
+  "model": "gemma3:4b",
+  "frames": [
+    {
+      "objects_present": [
+        "security camera",
+        "display case",
+        "shopping cart",
+        "floor tiles",
+        "clothing (hoodie, sweatshirt)",
+        "ladder"
+      ],
+      "people_present": [
+        "two individuals (suspects)",
+        "one individual (store employee)"
+      ],
+      "actions_occurring": [
+        "suspects are attempting to steal merchandise from the display case",
+        "suspects are using a ladder to reach higher shelves",
+        "store employee is observing the suspects with a phone"
+      ],
+      "environment_description": "Interior of a retail store, likely a convenience store or small shop. The floor is tiled and there's a display case along one wall. There appears to be merchandise on shelves behind the display case.",
+      "description": "Two individuals are attempting to steal items from a display case using a ladder. A store employee is observing them with a phone, likely recording the incident. The scene appears to be in an interior retail environment.",
+      "frame": 1,
+      "image": "C:\\Drdo threat detection\\outputs\\frames\\frame_01.jpg"
+    },
+    {
+      "objects_present": [
+        "shopping mall",
+        "floor tiles",
+        "chair",
+        "door",
+        "window",
+        "shelf",
+        "display case"
+      ],
+      "people_present": [
+        "man",
+        "customer"
+      ],
+      "actions_occurring": [
+        "walking",
+        "running",
+        "moving objects"
+      ],
+      "environment_description": "The scene appears to be an interior shot of a shopping mall. The floor is tiled, and there are various retail displays present. There's a customer running through the center of the frame.",
+      "description": "A man is running through a shopping mall, carrying what appears to be a black bag or object. This could be considered suspicious activity due to the sudden movement.",
+      "frame": 2,
+      "image": "C:\\Drdo threat detection\\outputs\\frames\\frame_02.jpg"
+    },
+    {
+      "objects_present": [
+        "CCTV camera",
+        "Metal railing",
+        "Jewellery shop sign",
+        "White bench",
+        "Jewellery display (strings of beads)",
+        "Floor tiles"
+      ],
+      "people_present": [
+        "Person wearing a black hoodie and dark pants walking away from the camera",
+        "Person in grey jacket walking towards the camera"
+      ],
+      "actions_occurring": [
+        "Walking",
+        "Movement of people"
+      ],
+      "environment_description": "Interior of a shopping mall or retail space. The floor is tiled, and there are displays for jewellery. There's a metal railing separating the area.",
+      "description": "A person in a black hoodie walks away from the camera while another person wearing a grey jacket approaches. The scene appears to be within a retail establishment, possibly a jewellery shop.",
+      "frame": 3,
+      "image": "C:\\Drdo threat detection\\outputs\\frames\\frame_03.jpg"
+    },
+    {
+      "objects_present": [
+        "tile floor",
+        "shopping cart",
+        "metal handrail",
+        "store shelves",
+        "security camera",
+        "door"
+      ],
+      "people_present": [
+        "person 1 (gray hoodie)",
+        "person 2 (black hoodie)",
+        "person 3 (dark clothing)"
+      ],
+      "actions_occurring": [
+        "walking",
+        "running",
+        "attempting to open door"
+      ],
+      "environment_description": "Interior of a retail store, likely a shopping mall or similar environment. The floor is tiled and there are shelves with products visible. There's a security camera in the upper right corner.",
+      "description": "Three individuals are present in the frame. Two people wearing hoodies are walking/running while one person in dark clothing appears to be attempting to open a door. This could potentially be considered suspicious activity due to the unusual behavior and multiple individuals.",
+      "frame": 4,
+      "image": "C:\\Drdo threat detection\\outputs\\frames\\frame_04.jpg"
+    },
+    {
+      "objects_present": [
+        "tile floor",
+        "door",
+        "chair",
+        "sign",
+        "window",
+        "wall",
+        "shelf",
+        "shopping cart"
+      ],
+      "people_present": [
+        "man (black clothing)",
+        "man (dark coat)"
+      ],
+      "actions_occurring": [
+        "walking",
+        "pushing shopping cart"
+      ],
+      "environment_description": "Interior of a retail store or shopping center. The floor is tiled, and there are displays and shelving visible. There's a doorway leading to another area.",
+      "description": "A man in black clothing is pushing a shopping cart down a tile-floored hallway within a retail space. Another man wearing a dark coat is walking behind him. The scene appears to be captured by CCTV.",
+      "frame": 5,
+      "image": "C:\\Drdo threat detection\\outputs\\frames\\frame_05.jpg"
+    },
+    {
+      "objects_present": [
+        "shopping mall floor",
+        "bench",
+        "window",
+        "jewelry work shop sign",
+        "metal gate",
+        "fence",
+        "display case",
+        "shelves",
+        "door"
+      ],
+      "people_present": [
+        "two people wearing dark clothing and hoodies",
+        "person in the background (possibly a security guard)"
+      ],
+      "actions_occurring": [
+        "two people walking away from the jewelry shop",
+        "one person appears to be looking at the jewelry shop"
+      ],
+      "environment_description": "The scene is an interior of a shopping mall. The floor is polished and reflective. There are several retail shops, including a jewelry work shop. A metal gate separates the area from another part of the mall.",
+      "description": "Two individuals wearing dark clothing are walking away from a jewelry workshop in a shopping mall. One person appears to be observing the shop. The scene suggests a possible robbery or suspicious activity.",
+      "frame": 6,
+      "image": "C:\\Drdo threat detection\\outputs\\frames\\frame_06.jpg"
+    }
+  ],
+  "summary": {
+    "timeline_of_events": [
+      "Suspects attempt to steal merchandise using a ladder.",
+      "Customer runs through a shopping mall with a bag.",
+      "People walk and move within a retail space.",
+      "Individuals attempt to open a door and run.",
+      "Man pushes a shopping cart, another walks behind him.",
+      "Two people leave a jewelry shop, one observes."
+    ],
+    "overall_activity_summary": "Suspicious activity involving individuals moving through a retail environment, potentially related to theft or observation of merchandise.",
+    "key_observations": [
+      "Multiple instances of individuals exhibiting unusual movement patterns.",
+      "Suspects using a ladder and attempting to open doors.",
+      "Presence of multiple people in close proximity within a retail setting."
+    ],
+    "final_activity_description": "Individuals are observed leaving a jewelry shop, suggesting a potential departure after observing the merchandise or possibly related to an earlier incident."
+  }
+}

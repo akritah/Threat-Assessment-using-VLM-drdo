@@ -105,6 +105,12 @@ def load_base_model(
 
     Returns (model, processor). Base model weights are never modified.
     """
+    import torch
+    if not torch.cuda.is_available():
+        logger.warning("CUDA is not available. Disabling 4-bit quantization and mapping device to CPU.")
+        use_4bit = False
+        device_map = {"": "cpu"}
+
     config = _load_adapter_config(config_path)
     resolved_id = model_id or _resolve_base_model_id(config)
     local_path = _resolve_base_model_path(config)

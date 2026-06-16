@@ -2,11 +2,14 @@
 
 from __future__ import annotations
 
+import copy
 import json
 from pathlib import Path
 from typing import Any
 
 from datasets import Dataset
+from PIL import Image
+import torch
 
 
 def load_jsonl(path: Path) -> list[dict[str, Any]]:
@@ -25,15 +28,23 @@ def load_jsonl(path: Path) -> list[dict[str, Any]]:
 
 def _record_to_messages(record: dict[str, Any], project_root: Path) -> list[dict[str, Any]]:
     if "messages" in record:
-        return record["messages"]
+        # Standardize existing messages content types to prevent PyArrow conflicts
+        messages = record["messages"]
+        for msg in messages:
+            content = msg.get("content")
+            if isinstance(content, str):
+                msg["content"] = [{"type": "text", "text": content}]
+        return messages
 
-    prompt = record.get("prompt", "")
+    # Support both "prompt" and "instruction" keys
+    prompt = record.get("prompt", record.get("instruction", ""))
     response = record.get("response", "")
     image = record.get("image")
 
-    user_content: list[dict[str, Any]] | str
+    user_content: list[dict[str, Any]]
     if image:
-        image_path = Path(image)
+        image_str = image.replace("\\", "/")
+        image_path = Path(image_str)
         if not image_path.is_absolute():
             image_path = project_root / image_path
         user_content = [
@@ -41,23 +52,27 @@ def _record_to_messages(record: dict[str, Any], project_root: Path) -> list[dict
             {"type": "text", "text": prompt},
         ]
     else:
-        user_content = prompt
+        user_content = [
+            {"type": "text", "text": prompt}
+        ]
+
+    # Standardize assistant content as a list of dicts to prevent PyArrow type conflicts
+    assistant_content = [
+        {"type": "text", "text": response}
+    ]
 
     return [
         {"role": "user", "content": user_content},
-        {"role": "assistant", "content": response},
+        {"role": "assistant", "content": assistant_content},
     ]
 
 
 def format_dataset(records: list[dict[str, Any]], processor: Any, project_root: Path) -> Dataset:
-    """Convert raw records into a HuggingFace Dataset with a 'text' column for SFTTrainer."""
-
-    def _format_example(record: dict[str, Any]) -> dict[str, str]:
+    """Convert raw records into a HuggingFace Dataset with a 'messages' column."""
+    formatted = []
+    for record in records:
         messages = _record_to_messages(record, project_root)
-        text = processor.apply_chat_template(messages, tokenize=False, add_generation_prompt=False)
-        return {"text": text}
-
-    formatted = [_format_example(record) for record in records]
+        formatted.append({"messages": messages})
     return Dataset.from_list(formatted)
 
 
@@ -82,6 +97,66 @@ def load_training_datasets(
     return train_dataset, eval_dataset
 
 
+class Gemma3VLMDataCollator:
+    """Collate multimodal examples for Gemma 3 Vision fine-tuning.
+
+    Lazily loads PIL images from file paths inside raw messages and batches inputs
+    using the model's processor, returning tokenized inputs and labels.
+    """
+
+    def __init__(self, processor: Any, project_root: Path) -> None:
+        self.processor = processor
+        self.project_root = project_root
+
+    def __call__(self, features: list[dict[str, Any]]) -> dict[str, Any]:
+        processed_examples: list[list[dict[str, Any]]] = []
+        for feat in features:
+            messages = copy.deepcopy(feat["messages"])
+            for msg in messages:
+                content = msg.get("content")
+                if isinstance(content, list):
+                    for item in content:
+                        if item.get("type") == "image" and isinstance(item.get("image"), str):
+                            img_str = item["image"].replace("\\", "/")
+                            img_path = Path(img_str)
+                            if not img_path.is_absolute():
+                                img_path = self.project_root / img_path
+                            item["image"] = Image.open(img_path).convert("RGB")
+            processed_examples.append(messages)
+
+        # Batch process using processor's apply_chat_template
+        batch = self.processor.apply_chat_template(
+            processed_examples,
+            tokenize=True,
+            return_dict=True,
+            padding=True,
+            return_tensors="pt",
+        )
+
+        labels = batch["input_ids"].clone()
+
+        # Mask user query/instruction tokens in labels
+        for i, messages in enumerate(processed_examples):
+            prompt_messages = messages[:-1]
+            prompt_inputs = self.processor.apply_chat_template(
+                prompt_messages,
+                tokenize=True,
+                add_generation_prompt=True,
+                return_dict=True,
+                return_tensors="pt",
+            )
+            prompt_len = prompt_inputs["input_ids"].shape[1]
+            # Since padding is 'right', user prompt is at the start of input_ids
+            labels[i, :prompt_len] = -100
+
+        # Mask padding tokens in labels
+        if self.processor.tokenizer.pad_token_id is not None:
+            labels[labels == self.processor.tokenizer.pad_token_id] = -100
+
+        batch["labels"] = labels
+        return batch
+
+
 def create_sample_dataset(output_dir: Path) -> None:
     """Write example JSONL files demonstrating the expected training format."""
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -89,31 +164,13 @@ def create_sample_dataset(output_dir: Path) -> None:
     train_samples = [
         {
             "image": "outputs/frames/frame_001.jpg",
-            "prompt": (
-                "Analyze only what is visible in this CCTV/video frame. "
-                "Return JSON with these keys: objects_present, people_present, actions_occurring, "
-                "environment_description, description."
-            ),
-            "response": json.dumps(
-                {
-                    "objects_present": ["desk", "monitor"],
-                    "people_present": ["one person seated"],
-                    "actions_occurring": ["working at desk"],
-                    "environment_description": "indoor office",
-                    "description": "A person is seated at a desk using a computer.",
-                }
-            ),
+            "instruction": "Describe what is happening in this scene.",
+            "response": "A person is seated at a desk using a computer.",
         },
         {
-            "prompt": "Summarize these frame observations as JSON.",
-            "response": json.dumps(
-                {
-                    "timeline_of_events": ["Frame 1: person seated at desk"],
-                    "overall_activity_summary": "Routine office activity.",
-                    "key_observations": ["One person present", "Indoor office setting"],
-                    "final_activity_description": "Person working at desk throughout.",
-                }
-            ),
+            "image": "outputs/frames/frame_001.jpg",
+            "instruction": "Describe what is happening in this scene.",
+            "response": "The room is an indoor office containing a desk and a monitor.",
         },
     ]
 
