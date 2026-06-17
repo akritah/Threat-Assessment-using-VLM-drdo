@@ -111,9 +111,11 @@ def train(config: TrainingConfig, resume: bool = False) -> Path:
     logger.info("Loading base model: %s", config.base_model_id)
     bnb_config = _build_bnb_config(config)
 
+    token = os.getenv("HF_TOKEN")
     load_kwargs: dict[str, Any] = {
         "device_map": "auto" if torch.cuda.is_available() else {"": "cpu"},
         "trust_remote_code": True,
+        "token": token,
     }
     if bnb_config:
         load_kwargs["quantization_config"] = bnb_config
@@ -122,7 +124,7 @@ def train(config: TrainingConfig, resume: bool = False) -> Path:
         config.base_model_id,
         **load_kwargs,
     )
-    processor = AutoProcessor.from_pretrained(config.base_model_id, trust_remote_code=True)
+    processor = AutoProcessor.from_pretrained(config.base_model_id, trust_remote_code=True, token=token)
 
     # Set padding token if not set
     if processor.tokenizer.pad_token is None:
