@@ -89,7 +89,7 @@ def _get_model_class():
 def _get_processor(model_id: str, local_path: Path | None = None):
     from transformers import AutoProcessor
 
-    if local_path and local_path.exists() and any(local_path.iterdir()):
+    if local_path and local_path.exists() and (local_path / "config.json").exists():
         return AutoProcessor.from_pretrained(str(local_path), trust_remote_code=True)
     return AutoProcessor.from_pretrained(model_id, trust_remote_code=True)
 
@@ -125,7 +125,7 @@ def load_base_model(
     if use_4bit:
         load_kwargs["quantization_config"] = _get_bnb_config()
 
-    if local_path.exists() and any(local_path.iterdir()):
+    if local_path.exists() and (local_path / "config.json").exists():
         logger.info("Loading base model from local path: %s", local_path)
         model = model_cls.from_pretrained(str(local_path), **load_kwargs)
     else:
