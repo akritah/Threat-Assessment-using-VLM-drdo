@@ -88,10 +88,12 @@ def _get_model_class():
 
 def _get_processor(model_id: str, local_path: Path | None = None):
     from transformers import AutoProcessor
+    import os
 
     if local_path and local_path.exists() and (local_path / "config.json").exists():
         return AutoProcessor.from_pretrained(str(local_path), trust_remote_code=True)
-    return AutoProcessor.from_pretrained(model_id, trust_remote_code=True)
+    token = os.getenv("HF_TOKEN")
+    return AutoProcessor.from_pretrained(model_id, trust_remote_code=True, token=token)
 
 
 def load_base_model(
@@ -130,6 +132,7 @@ def load_base_model(
         model = model_cls.from_pretrained(str(local_path), **load_kwargs)
     else:
         logger.info("Loading base model from HuggingFace Hub: %s", resolved_id)
+        load_kwargs["token"] = os.getenv("HF_TOKEN")
         model = model_cls.from_pretrained(resolved_id, **load_kwargs)
 
     return model, processor
