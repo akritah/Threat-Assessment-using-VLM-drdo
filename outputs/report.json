@@ -1,165 +1,54 @@
 {
-  "video": "C:\\Drdo threat detection\\sample.mp4",
+  "video": "C:\\Drdo threat detection\\sample2.mp4",
   "model": "gemma3:4b",
   "frames": [
     {
-      "objects_present": [
-        "security camera",
-        "display case",
-        "shopping cart",
-        "floor tiles",
-        "clothing (hoodie, sweatshirt)",
-        "ladder"
-      ],
-      "people_present": [
-        "two individuals (suspects)",
-        "one individual (store employee)"
-      ],
-      "actions_occurring": [
-        "suspects are attempting to steal merchandise from the display case",
-        "suspects are using a ladder to reach higher shelves",
-        "store employee is observing the suspects with a phone"
-      ],
-      "environment_description": "Interior of a retail store, likely a convenience store or small shop. The floor is tiled and there's a display case along one wall. There appears to be merchandise on shelves behind the display case.",
-      "description": "Two individuals are attempting to steal items from a display case using a ladder. A store employee is observing them with a phone, likely recording the incident. The scene appears to be in an interior retail environment.",
+      "description": "Here's a JSON analysis of the CCTV/video frame, based solely on what's visible:\n\n```json\n{\n  \"objects_present\": [\n    \"Van (white)\",\n    \"Fence\",\n    \"House (white)\",\n    \"Garage door (wooden)\",\n    \"Trees\",\n    \"Street\",\n    \"Street light\",\n    \"Camera\"\n  ],\n  \"people_present\": [\n    \"Man (wearing a red shirt and dark pants, carrying a tool)\",\n    \"Man (wearing a dark shirt and pants)\"\n  ],\n  \"actions_occurring\": [\n    \"Man is standing\",\n    \"Man is holding a tool\",\n    \"Vehicle is parked\"\n  ],\n  \"environment_description\": \"A narrow, paved street in a residential area at night. There are houses on either side, a garage, and trees. The lighting is dim, primarily from a street light and the camera.\",\n  \"description\": \"A man is standing on the street, holding a tool, near a parked van. Another man is standing nearby. The scene appears to be a residential street at night.  There is a potential for suspicious activity due to the presence of an individual holding a tool in a residential area, but this cannot be confirmed from the image alone.\"\n}\n```\n\n**Important Note:**  The assessment of \"suspicious activity\" is based solely on the visual information in the image.  It's a preliminary observation and requires further context to determine if it's truly concerning.",
       "frame": 1,
-      "image": "C:\\Drdo threat detection\\outputs\\frames\\frame_01.jpg"
+      "image": "outputs\\frames\\frame_01.jpg"
     },
     {
-      "objects_present": [
-        "shopping mall",
-        "floor tiles",
-        "chair",
-        "door",
-        "window",
-        "shelf",
-        "display case"
-      ],
-      "people_present": [
-        "man",
-        "customer"
-      ],
-      "actions_occurring": [
-        "walking",
-        "running",
-        "moving objects"
-      ],
-      "environment_description": "The scene appears to be an interior shot of a shopping mall. The floor is tiled, and there are various retail displays present. There's a customer running through the center of the frame.",
-      "description": "A man is running through a shopping mall, carrying what appears to be a black bag or object. This could be considered suspicious activity due to the sudden movement.",
+      "description": "Here's a JSON analysis of the CCTV/video frame, based solely on what's visible:\n\n```json\n{\n  \"objects_present\": [\n    \"Vehicle (white van)\",\n    \"Gate\",\n    \"Fence\",\n    \"Trees\",\n    \"Building (with windows)\",\n    \"Shadow\",\n    \"CCTV camera\"\n  ],\n  \"people_present\": [\n    \"Person (wearing a blue shirt and red pants)\",\n    \"Person (wearing a dark jacket and a hat)\"\n  ],\n  \"actions_occurring\": [\n    \"Walking\",\n    \"Shadow cast by a person\",\n    \"Vehicle parked\"\n  ],\n  \"environment_description\": \"A narrow, paved street in a residential area at night. There are buildings on either side, a gate, and some vegetation. The lighting is dim, with a noticeable orange tint.\",\n  \"description\": \"A person is walking down a street, with a vehicle parked nearby. The scene appears to be a residential area at night.  The person is walking in a way that could be considered slightly hurried or evasive, but this is difficult to determine with certainty from the image alone.  The presence of a vehicle parked near the gate could be considered slightly suspicious, but more context is needed.\"\n}\n```\n\n**Important Note:**  My analysis is limited to the visual information in the image.  I've flagged the potential for \"suspicious activity\" based on the context of the scene, but without further information, it's impossible to confirm anything definitively.",
       "frame": 2,
-      "image": "C:\\Drdo threat detection\\outputs\\frames\\frame_02.jpg"
+      "image": "outputs\\frames\\frame_02.jpg"
     },
     {
-      "objects_present": [
-        "CCTV camera",
-        "Metal railing",
-        "Jewellery shop sign",
-        "White bench",
-        "Jewellery display (strings of beads)",
-        "Floor tiles"
-      ],
-      "people_present": [
-        "Person wearing a black hoodie and dark pants walking away from the camera",
-        "Person in grey jacket walking towards the camera"
-      ],
-      "actions_occurring": [
-        "Walking",
-        "Movement of people"
-      ],
-      "environment_description": "Interior of a shopping mall or retail space. The floor is tiled, and there are displays for jewellery. There's a metal railing separating the area.",
-      "description": "A person in a black hoodie walks away from the camera while another person wearing a grey jacket approaches. The scene appears to be within a retail establishment, possibly a jewellery shop.",
+      "description": "Here's a JSON analysis of the CCTV/video frame, based solely on what's visible:\n\n```json\n{\n  \"objects_present\": [\n    \"Vehicle (SUV)\",\n    \"Tree\",\n    \"Fence\",\n    \"Gate\",\n    \"House\",\n    \"Street\",\n    \"Shadows\",\n    \"Sign\"\n  ],\n  \"people_present\": [\n    \"Person 1 (wearing a blue shirt and red pants)\",\n    \"Person 2 (wearing a green shirt and dark pants)\",\n    \"Person 3 (wearing a green shirt and dark pants)\"\n  ],\n  \"actions_occurring\": [\n    \"Walking\",\n    \"Standing\",\n    \"Shadows cast by people\"\n  ],\n  \"environment_description\": \"A narrow, paved street in a residential area. There are houses on either side, with a gate leading to a yard. The lighting is dim, creating strong shadows. A vehicle is parked on the side of the street.\",\n  \"description\": \"Three people are walking down a street.  Person 1 and Person 2 are walking together, while Person 3 is walking behind them. The scene appears to be at dusk or in low light. There is a vehicle parked nearby. No immediately suspicious activity is visible in this frame.\"\n}\n```\n\n**Important Note:** This analysis is limited to the visual information in the image.  It does not consider context or any audio information that might be present.",
       "frame": 3,
-      "image": "C:\\Drdo threat detection\\outputs\\frames\\frame_03.jpg"
+      "image": "outputs\\frames\\frame_03.jpg"
     },
     {
-      "objects_present": [
-        "tile floor",
-        "shopping cart",
-        "metal handrail",
-        "store shelves",
-        "security camera",
-        "door"
-      ],
-      "people_present": [
-        "person 1 (gray hoodie)",
-        "person 2 (black hoodie)",
-        "person 3 (dark clothing)"
-      ],
-      "actions_occurring": [
-        "walking",
-        "running",
-        "attempting to open door"
-      ],
-      "environment_description": "Interior of a retail store, likely a shopping mall or similar environment. The floor is tiled and there are shelves with products visible. There's a security camera in the upper right corner.",
-      "description": "Three individuals are present in the frame. Two people wearing hoodies are walking/running while one person in dark clothing appears to be attempting to open a door. This could potentially be considered suspicious activity due to the unusual behavior and multiple individuals.",
+      "description": "Here's a JSON analysis of the CCTV/video frame, based solely on what's visible:\n\n```json\n{\n  \"objects_present\": [\n    \"Vehicle (SUV)\",\n    \"Gate\",\n    \"Fence\",\n    \"Trees\",\n    \"Building\",\n    \"Roof\",\n    \"Street\",\n    \"Street light\"\n  ],\n  \"people_present\": [\n    \"Person 1 (wearing a dark shirt and pants)\",\n    \"Person 2 (wearing a red shirt and pants)\",\n    \"Person 3 (wearing a dark shirt and pants)\"\n  ],\n  \"actions_occurring\": [\n    \"People walking\",\n    \"Vehicle parked\"\n  ],\n  \"environment_description\": \"The scene appears to be a residential street at night. There is a paved road, a gate leading to a building, and some vegetation along the sides. The lighting is dim, likely from streetlights and building lights.\",\n  \"description\": \"Three people are walking down a street. A vehicle is parked nearby. The scene is dimly lit, and the overall environment appears quiet.\"\n}\n```\n\n**Note:** I have focused solely on the visible elements and avoided speculation or interpretation beyond what is directly observable in the image.",
       "frame": 4,
-      "image": "C:\\Drdo threat detection\\outputs\\frames\\frame_04.jpg"
+      "image": "outputs\\frames\\frame_04.jpg"
     },
     {
-      "objects_present": [
-        "tile floor",
-        "door",
-        "chair",
-        "sign",
-        "window",
-        "wall",
-        "shelf",
-        "shopping cart"
-      ],
-      "people_present": [
-        "man (black clothing)",
-        "man (dark coat)"
-      ],
-      "actions_occurring": [
-        "walking",
-        "pushing shopping cart"
-      ],
-      "environment_description": "Interior of a retail store or shopping center. The floor is tiled, and there are displays and shelving visible. There's a doorway leading to another area.",
-      "description": "A man in black clothing is pushing a shopping cart down a tile-floored hallway within a retail space. Another man wearing a dark coat is walking behind him. The scene appears to be captured by CCTV.",
+      "description": "Here's a JSON analysis of the CCTV/video frame:\n\n```json\n{\n  \"objects_present\": [\n    \"Vehicle (SUV)\",\n    \"Fence\",\n    \"Gate\",\n    \"Street\",\n    \"Vegetation (trees and bushes)\",\n    \"Security camera (orange border)\"\n  ],\n  \"people_present\": [\n    \"Person (wearing a hat and shirt)\",\n    \"Person (wearing a shirt and pants)\"\n  ],\n  \"actions_occurring\": [\n    \"Walking\",\n    \"Vehicle parked\",\n    \"Person walking towards the gate\"\n  ],\n  \"environment_description\": \"A narrow, paved street in a residential area. There is a gate leading to a property on the right. The street is flanked by fences and houses. The lighting is dim, suggesting it is nighttime.\",\n  \"description\": \"A person is walking down a street towards a gate. An SUV is parked on the side of the street. The scene appears quiet and unremarkable.\"\n}\n```\n\n**Note:** I have not identified any suspicious activity based solely on the visual information in this frame.",
       "frame": 5,
-      "image": "C:\\Drdo threat detection\\outputs\\frames\\frame_05.jpg"
+      "image": "outputs\\frames\\frame_05.jpg"
     },
     {
-      "objects_present": [
-        "shopping mall floor",
-        "bench",
-        "window",
-        "jewelry work shop sign",
-        "metal gate",
-        "fence",
-        "display case",
-        "shelves",
-        "door"
-      ],
-      "people_present": [
-        "two people wearing dark clothing and hoodies",
-        "person in the background (possibly a security guard)"
-      ],
-      "actions_occurring": [
-        "two people walking away from the jewelry shop",
-        "one person appears to be looking at the jewelry shop"
-      ],
-      "environment_description": "The scene is an interior of a shopping mall. The floor is polished and reflective. There are several retail shops, including a jewelry work shop. A metal gate separates the area from another part of the mall.",
-      "description": "Two individuals wearing dark clothing are walking away from a jewelry workshop in a shopping mall. One person appears to be observing the shop. The scene suggests a possible robbery or suspicious activity.",
+      "description": "Here's a JSON analysis of the CCTV/video frame:\n\n```json\n{\n  \"objects_present\": [\n    \"Moon\",\n    \"Darkness\"\n  ],\n  \"people_present\": [\n    \"Silhouette of a person\"\n  ],\n  \"actions_occurring\": [\n    \"Person is standing/moving\"\n  ],\n  \"environment_description\": \"Dark outdoor environment, likely at night. A large moon is visible in the sky.\",\n  \"description\": \"A silhouette of a person is visible in a dark outdoor setting, illuminated by the light of a full moon. The scene appears to be at night.\"\n}\n```\n\n**Note:**  The analysis is limited to what is visible in the provided image.  The silhouette makes it difficult to determine the person's actions with certainty.",
       "frame": 6,
-      "image": "C:\\Drdo threat detection\\outputs\\frames\\frame_06.jpg"
+      "image": "outputs\\frames\\frame_06.jpg"
     }
   ],
   "summary": {
     "timeline_of_events": [
-      "Suspects attempt to steal merchandise using a ladder.",
-      "Customer runs through a shopping mall with a bag.",
-      "People walk and move within a retail space.",
-      "Individuals attempt to open a door and run.",
-      "Man pushes a shopping cart, another walks behind him.",
-      "Two people leave a jewelry shop, one observes."
+      "Man holding a tool observed near a parked van.",
+      "Person walking with a vehicle parked nearby.",
+      "Three people walking down a street, with a vehicle parked.",
+      "Three people walking down a street.",
+      "Person walking towards a gate, SUV parked.",
+      "Silhouette of a person in a dark outdoor setting."
     ],
-    "overall_activity_summary": "Suspicious activity involving individuals moving through a retail environment, potentially related to theft or observation of merchandise.",
+    "overall_activity_summary": "Foot traffic observed on a residential street at night, with occasional vehicle presence.",
     "key_observations": [
-      "Multiple instances of individuals exhibiting unusual movement patterns.",
-      "Suspects using a ladder and attempting to open doors.",
-      "Presence of multiple people in close proximity within a retail setting."
+      "Presence of an individual holding a tool in the initial frame.",
+      "Multiple people walking in the same direction.",
+      "Vehicles parked along the street.",
+      "Dim lighting conditions throughout the observation period."
     ],
-    "final_activity_description": "Individuals are observed leaving a jewelry shop, suggesting a potential departure after observing the merchandise or possibly related to an earlier incident."
+    "final_activity_description": "Ongoing pedestrian activity on a residential street at night, with vehicles parked intermittently."
   }
 }

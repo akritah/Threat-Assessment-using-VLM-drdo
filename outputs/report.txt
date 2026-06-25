@@ -1,20 +1,19 @@
 Frame-by-frame analysis
 
 Frame 1:
-Two individuals are attempting to steal items from a display case using a ladder. A store employee is observing them with a phone, likely recording the incident. The scene appears to be in an interior retail environment.
+Two individuals are involved in a robbery, pushing over a cash register and holding a bag. A third individual is present observing the event.
 
-Objects: - security camera
+Objects: - cash register
 - display case
-- shopping cart
-- floor tiles
-- clothing (hoodie, sweatshirt)
-- ladder
-People: - two individuals (suspects)
-- one individual (store employee)
-Actions: - suspects are attempting to steal merchandise from the display case
-- suspects are using a ladder to reach higher shelves
-- store employee is observing the suspects with a phone
-Environment: Interior of a retail store, likely a convenience store or small shop. The floor is tiled and there's a display case along one wall. There appears to be merchandise on shelves behind the display case.
+- metal ladder
+- clothing
+People: - Male, wearing a grey hoodie and jeans, appears to be pushing the cash register. - 1
+- Male, bald head, wearing a black shirt and dark pants, appears to be holding a bag. - 1
+- Male, wearing a Puma sweatshirt and jeans - 1
+Actions: - robbery
+- pushing
+- holding
+Environment: Interior of a retail store. The scene appears to be in a hallway or aisle with tiled flooring.
 
 Frame 2:
 A man is running through a shopping mall, carrying what appears to be a black bag or object. This could be considered suspicious activity due to the sudden movement.
@@ -102,23 +101,23 @@ Environment: The scene is an interior of a shopping mall. The floor is polished 
 
 Chronological summary
 
-- Suspects attempt to steal merchandise using a ladder.
-- Customer runs through a shopping mall with a bag.
-- People walk and move within a retail space.
-- Individuals attempt to open a door and run.
-- Man pushes a shopping cart, another walks behind him.
-- Two people leave a jewelry shop, one observes.
+- Robbery attempt with cash register pushed over.
+- Running individual carrying a bag observed in a shopping mall.
+- Individuals walking and moving away from the camera.
+- Three individuals present, attempting to open a door.
+- People pushing shopping carts and running within a retail space.
+- Two people walking away from a jewelry shop.
 
 Overall activity summary
 
-Suspicious activity involving individuals moving through a retail environment, potentially related to theft or observation of merchandise.
+Suspicious activity involving movement, potential robbery attempt, and observation of individuals in a retail environment.
 
 Key observations
 
-- Multiple instances of individuals exhibiting unusual movement patterns.
-- Suspects using a ladder and attempting to open doors.
-- Presence of multiple people in close proximity within a retail setting.
+- Multiple individuals present in several frames.
+- Instances of running and pushing objects observed.
+- Individuals appearing to approach or move away from retail shops.
 
 Final activity description
 
-Individuals are observed leaving a jewelry shop, suggesting a potential departure after observing the merchandise or possibly related to an earlier incident.
+Two individuals are seen leaving a jewelry shop, potentially after an incident involving a robbery attempt earlier in the sequence.

@@ -190,3 +190,16 @@ python -c "from transformers import AutoProcessor; processor = AutoProcessor.fro
   2. Increase `gradient_accumulation_steps` to `8` or `16` to maintain effective batch size.
   3. Ensure `gradient_checkpointing: true` is enabled in your YAML config.
   4. Ensure `load_in_4bit: true` is active.
+
+---
+
+## 8. Video-LLaVA Baseline Verification (Direct Video Input)
+
+To run the direct video-input model (Video-LLaVA) for comparison:
+
+```bash
+# Verify PyAV can load and model starts downloading (requires HF authentication)
+python -m training.run_video_llava --video "sample.mp4" --prompt "Describe what is happening in this video."
+```
+*Note: Video-LLaVA is a 7B model. When run on CPU fallback, it will require ~15 GB system RAM and takes approx. 2-5 minutes per query. We recommend running this comparison in a GPU-enabled Google Colab environment.*
+
