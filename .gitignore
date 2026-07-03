@@ -85,3 +85,12 @@ outputs/
 # OS metadata
 .DS_Store
 Thumbs.db
+
+# Archives
+*.zip
+
+# Evaluation outputs
+evaluation/extracted_frames/
+evaluation/selected_videos/
+evaluation/outputs/
+
