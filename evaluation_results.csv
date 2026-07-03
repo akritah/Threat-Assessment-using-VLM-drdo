@@ -1,0 +1,269 @@
+Video ID,Ground Truth Category,Frame Used,Base Gemma Output,Fine-Tuned Gemma Output,Video-LLaVA Output,Predicted Activity,Threat Assessment,Threat Level,Inference Time,Notes
+CarAccident_v=0qtIjyt-7wg___00-04-00_00-05-15_label_B6-0-0,xd_violence_subset,/content/project/evaluation/extracted_frames/CarAccident_v=0qtIjyt-7wg___00-04-00_00-05-15_label_B6-0-0/frame_01.jpg,"Okay, let's analyze this surveillance scene.
+
+**What is happening?**
+
+The image depicts a staged promotional poster or advertisement for a fictional event or game. It appears to be advertising a combination of mixed martial arts (MMA) fights and car accidents. The text ""MORE FIGHTS"" and ""CAR ACCIDENTS"" are prominently displayed, suggesting a spectacle involving both violence and destruction.
+
+**Which activities are visible?**
+
+*   **Two MMA Fighters:** Two men are shown in a boxing stance, wearing MMA gloves and looking intensely at each other. This indicates a fight is about to occur.
+*   **A Woman with a Car:** A woman is posing in front of a severely damaged, rusted-out car. She is wearing a black top and gloves, and is leaning against the vehicle, giving a provocative pose.
+*   **Text Overlay:** The text ""MORE FIGHTS"" and ""CAR ACCIDENTS"" are overlaid on the images, reinforcing the theme of the advertisement.
+
+**Is there any suspicious behavior?**
+
+The scene itself is highly unusual and potentially suspicious due to the combination of violence and the suggestive pose of the woman with the car. It's not typical for a promotional advertisement to depict car accidents in such",A person is performing car accidents.,N/A - Skip (Not installed/configured on local CPU),Unknown,A person is performing car accidents.,Low,Base: 36.76s | FT: 5.56s,Executed on CUDA
+Abuse_Taken.2.UNRATED.EXTENDED.2012___00-13-42_00-14-16_label_B5-0-0,xd_violence_subset,/content/project/evaluation/extracted_frames/Abuse_Taken.2.UNRATED.EXTENDED.2012___00-13-42_00-14-16_label_B5-0-0/frame_01.jpg,"Okay, let's analyze this surveillance scene.
+
+**What is happening?**
+
+The image depicts a violent confrontation. One individual is forcefully holding the other's face, likely applying pressure to the throat. The person being held is clearly distressed, with their eyes closed and a look of panic on their face. There is visible blood on their face, suggesting a struggle and potential injury.
+
+**Which activities are visible?**
+
+*   **Physical Assault:** The primary activity is a physical assault – someone is being restrained and potentially suffocated.
+*   **Hand-to-Hand Combat:**  The individuals are engaged in a close-quarters struggle.
+*   **Presence of Clothing:** Both individuals are wearing business attire (white shirts and ties), suggesting a potentially professional or formal setting.
+*   **Lighting:** The scene is dimly lit, adding to the tension and obscuring details.
+
+**Is there any suspicious behavior?**
+
+*   **Aggressive Posture:** The person holding the other is exhibiting an aggressive posture – a firm grip and forceful restraint.
+*   **Lack of Verbal Communication:**  There is no apparent verbal exchange, which is unusual in a potentially confrontational situation.
+*   **Physical Contact:** The direct physical",A person is performing hand-to-hand combat.,N/A - Skip (Not installed/configured on local CPU),Unknown,A person is performing hand-to-hand combat.,Low,Base: 35.39s | FT: 6.61s,Executed on CUDA
+CarAccident_The.Bourne.Identity.2002___0-54-45_0-56-25_label_B6-0-0,xd_violence_subset,/content/project/evaluation/extracted_frames/CarAccident_The.Bourne.Identity.2002___0-54-45_0-56-25_label_B6-0-0/frame_01.jpg,"Okay, let's analyze this surveillance scene.
+
+**What is happening?**
+
+The scene depicts a street scene in what appears to be a European city, likely during a somewhat overcast or rainy day. Several vehicles are moving along a street, and a scooter is visible. There are pedestrians present, though they are somewhat blurred and distant.
+
+**Which activities are visible?**
+
+*   **Vehicle Movement:** Cars and a scooter are traveling along the street.
+*   **Pedestrian Presence:**  People are walking, though they are not in sharp focus.
+*   **Street Infrastructure:**  We see street signs, a crosswalk, and a concrete barrier along the side of the road.
+
+**Is there any suspicious behavior?**
+
+*   **Scooter Rider:** The scooter rider is wearing a helmet, which is a good sign of safety and potentially compliance with local regulations. However, their posture and the way they are positioned on the scooter are not particularly noteworthy.
+*   **Pedestrians:** The pedestrians are simply walking, and there's nothing immediately suspicious about their behavior.
+*   **Cars:** The cars are driving normally, and there's no obvious erratic driving.
+
+**Are there any threat indicators?**",A person is performing riding a scooter.,N/A - Skip (Not installed/configured on local CPU),Unknown,A person is performing riding a scooter.,Low,Base: 34.72s | FT: 5.87s,Executed on CUDA
+CarAccident_v=0qtIjyt-7wg___00-01-00_00-02-45_label_B6-0-0,xd_violence_subset,/content/project/evaluation/extracted_frames/CarAccident_v=0qtIjyt-7wg___00-01-00_00-02-45_label_B6-0-0/frame_01.jpg,"Okay, let's analyze this surveillance scene.
+
+**What is happening?**
+
+The scene depicts a view from a vehicle's perspective, likely a car or truck, driving down a multi-lane highway or major road. It appears to be a sunny day with a clear blue sky. The camera is focused on the road ahead, showing traffic and the surrounding urban environment.
+
+**Which activities are visible?**
+
+*   **Vehicles:** Several cars and trucks are visible traveling in the same direction as the camera.
+*   **Pedestrian:** A single person is walking on the sidewalk on the right side of the road.
+*   **Buildings:** A large, multi-story building with a brick facade is visible on the right. It appears to be a hotel or apartment building.
+*   **Billboard:** A billboard is visible in the distance, likely advertising a product or service.
+*   **Trees:** Trees line the road on both sides, providing some greenery.
+
+**Is there any suspicious behavior?**
+
+At first glance, there's nothing immediately suspicious. However, a closer look reveals a few details that warrant attention:
+
+*   **The person on the sidewalk:** The individual is walking, but their posture and direction",A person is performing driving a car.,N/A - Skip (Not installed/configured on local CPU),Unknown,A person is performing driving a car.,Low,Base: 34.61s | FT: 6.09s,Executed on CUDA
+Abuse_Operation.Red.Sea.2018___01-20-58_01-22-00_label_B5-0-0,xd_violence_subset,/content/project/evaluation/extracted_frames/Abuse_Operation.Red.Sea.2018___01-20-58_01-22-00_label_B5-0-0/frame_01.jpg,"Okay, let's analyze this surveillance scene.
+
+**What is happening?**
+
+The scene depicts a clandestine operation, likely involving the preparation or handling of a body. It appears to be taking place in a dimly lit, somewhat makeshift room – possibly a basement or storage area. Several individuals are present, seemingly engaged in a secretive and potentially illegal activity.
+
+**Visible Activities:**
+
+* **Body Preparation:** A person is lying on a table, and another individual is actively working on them. This is the most prominent activity, suggesting a deliberate and controlled process.
+* **Equipment:** There's a large sewing machine visible, which is unusual in this context. It suggests a focus on meticulous, possibly detailed, work – perhaps related to disguises, prosthetics, or altering clothing.
+* **Communication:**  Individuals are talking, gesturing, and seemingly coordinating.
+* **Observation:**  Several people are observing the scene, likely to ensure the operation proceeds smoothly.
+
+**Suspicious Behavior:**
+
+* **Secrecy:** The low lighting, the enclosed space, and the focused activity all point to an attempt to conceal the operation from outside observation.
+* **Unusual Equipment:** The presence of a sewing machine is highly unusual for a situation like this",A person is performing preparing shawarma.,N/A - Skip (Not installed/configured on local CPU),Unknown,A person is performing preparing shawarma.,Low,Base: 35.68s | FT: 5.90s,Executed on CUDA
+CarAccident_The.Fast.and.the.Furious.2001___01-37-40_01-38-30_label_B6-0-0,xd_violence_subset,/content/project/evaluation/extracted_frames/CarAccident_The.Fast.and.the.Furious.2001___01-37-40_01-38-30_label_B6-0-0/frame_01.jpg,"Okay, let's analyze this surveillance scene.
+
+**What is happening?**
+
+The scene depicts a car crash. A red car is colliding with a dark-colored vehicle (likely a truck or van) that is partially obscured by debris and dust. The impact is clearly visible, with visible damage to both vehicles.  The scene is immediately chaotic and destructive.
+
+**Which activities are visible?**
+
+* **Vehicle Collision:** The primary activity is the car crash itself.
+* **Debris:**  There's a significant amount of debris scattered across the road – likely from the vehicles and possibly from the impact.
+* **Dust/Smoke:**  The scene is filled with dust and smoke, suggesting a forceful impact and potentially some fire.
+* **Traffic (Limited):**  There are a few other vehicles visible in the background, suggesting a road environment.
+* **Infrastructure:**  Overhead structures (likely elevated highways or railways) are visible, indicating a potentially busy urban area.
+
+
+**Is there any suspicious behavior?**
+
+At first glance, there's no immediately obvious suspicious behavior.  The crash appears to be an accident. However, it's important to note that accidents can sometimes be staged.
+
+**Are there any",A person is performing drifting a car.,N/A - Skip (Not installed/configured on local CPU),Unknown,A person is performing drifting a car.,Low,Base: 35.46s | FT: 5.88s,Executed on CUDA
+CarAccident_v=0qtIjyt-7wg___00-00-00_00-00-51_label_B6-0-0,xd_violence_subset,/content/project/evaluation/extracted_frames/CarAccident_v=0qtIjyt-7wg___00-00-00_00-00-51_label_B6-0-0/frame_01.jpg,"Okay, let's analyze this surveillance scene.
+
+**What is happening?**
+
+The video shows a large, white truck driving down a highway.  A significant portion of the truck's trailer is missing, revealing a large gap.  The truck appears to be moving at a moderate speed.  There are signs of debris and dust being kicked up behind the truck, suggesting a loss of cargo.
+
+**Which activities are visible?**
+
+*   **Truck Driving:** The primary activity is a large truck traveling on a highway.
+*   **Cargo Loss:**  The most prominent activity is the apparent loss of a significant portion of the truck's cargo.
+*   **Dust and Debris:**  The truck is creating a cloud of dust and debris behind it.
+*   **Roadway:**  The highway itself is visible, with lane markings and a shoulder.
+*   **Background:**  There are distant trees, buildings, and a general rural landscape.
+
+**Is there any suspicious behavior?**
+
+Yes, there is a significant element of potential suspicious behavior. The loss of a large portion of the trailer's contents is unusual and warrants attention.
+
+**Are there any threat indicators?**
+
+*   **Cargo Loss:**",A person is performing driving a car.,N/A - Skip (Not installed/configured on local CPU),Unknown,A person is performing driving a car.,Low,Base: 35.59s | FT: 5.81s,Executed on CUDA
+Abuse_Election.2005___00-47-57_00-50-54_label_B5-0-0,xd_violence_subset,/content/project/evaluation/extracted_frames/Abuse_Election.2005___00-47-57_00-50-54_label_B5-0-0/frame_01.jpg,"Okay, let's analyze this surveillance scene.
+
+**What is happening?**
+
+Based on the image, we see a man in a red polo shirt standing outdoors, seemingly looking around with a concerned or startled expression. He's positioned near a tree and what appears to be a grassy area. It looks like a somewhat natural outdoor setting.
+
+**Which activities are visible?**
+
+*   **Standing:** The primary activity is the man standing still.
+*   **Looking around:** He is actively looking around, suggesting he's observing something or someone.
+*   **Clothing:** He is wearing a red polo shirt, a necklace, and what appears to be a belt.
+
+**Is there any suspicious behavior?**
+
+*   **Concerned expression:** His facial expression – a look of surprise or alarm – is the most notable element. It suggests he may have witnessed something unexpected or potentially threatening.
+*   **Looking around:** While not inherently suspicious, it could indicate he's reacting to something he saw or heard.
+
+**Are there any threat indicators?**
+
+*   **Lack of immediate threat:** There's nothing overtly threatening in the image itself.
+*   **Possible reaction to an event:** The man's expression",A person is performing doing karate.,N/A - Skip (Not installed/configured on local CPU),Unknown,A person is performing doing karate.,Low,Base: 35.19s | FT: 5.53s,Executed on CUDA
+Abuse_City.of.God.2002___00-37-20_00-38-02_label_B5-0-0,xd_violence_subset,/content/project/evaluation/extracted_frames/Abuse_City.of.God.2002___00-37-20_00-38-02_label_B5-0-0/frame_01.jpg,"Okay, let's analyze this surveillance scene.
+
+**What is happening?**
+
+The scene depicts a domestic interior, likely a kitchen or dining area within a home.  There are two individuals present, appearing to be a woman and a man. They are engaged in what seems to be a tense or potentially confrontational interaction. The lighting is dim and somewhat unsettling, contributing to a feeling of unease.
+
+**Which activities are visible?**
+
+* **Conversation:** The two individuals are clearly talking, with the woman gesturing emphatically.
+* **Table Setting:** There's a table with dishes and what appears to be food, suggesting a meal or a gathering.
+* **Objects:**  We see various household items – a stove, cabinets, plates, cutlery, and decorative objects (a clock, a decorative plate).
+* **Window:** A window is visible in the background, offering a glimpse of the outside.
+
+
+**Is there any suspicious behaviour?**
+
+* **Body Language:** The woman's gesture – raising her hand and pointing – is a key element. It suggests she's expressing disagreement, anger, or perhaps trying to emphasize a point. The man's posture seems somewhat defensive, with his arms crossed.
+* **Intensity",A person is performing preparing food.,N/A - Skip (Not installed/configured on local CPU),Unknown,A person is performing preparing food.,Low,Base: 34.79s | FT: 5.51s,Executed on CUDA
+Abuse_Yellow.Sea.2010___01-58-30_01-59-27_label_B5-0-0,xd_violence_subset,/content/project/evaluation/extracted_frames/Abuse_Yellow.Sea.2010___01-58-30_01-59-27_label_B5-0-0/frame_01.jpg,"Okay, let's analyze this surveillance scene.
+
+**What is happening?**
+
+Based on the image, we see a man, likely a middle-aged Asian male, appearing distressed and possibly injured. He's hunched over, with his head bowed, suggesting he's in a state of emotional distress or pain.
+
+**Which activities are visible?**
+
+*   **The man:** He is the primary subject of the scene. He is looking down, seemingly lost in thought or experiencing something unpleasant.
+*   **Clothing:** He is wearing a striped shirt, which is a common casual garment.
+*   **Background:** The background is dark and indistinct, suggesting a dimly lit indoor space – possibly a room, hallway, or shelter.
+
+**Is there any suspicious behavior?**
+
+*   **Posture:** His hunched posture and downward gaze immediately raise a flag. It suggests vulnerability, sadness, or perhaps fear.
+*   **Scars/Marks:** There are visible cuts or scrapes on his face, particularly around his nose and cheek. This is a significant detail.
+*   **Lack of Interaction:** He's not interacting with anyone or anything. This isolation is noteworthy.
+
+**Are there any threat indicators?**",A person is performing shaving legs.,N/A - Skip (Not installed/configured on local CPU),Unknown,A person is performing shaving legs.,Low,Base: 34.61s | FT: 5.39s,Executed on CUDA
+Abuse_Sin.City.2005___0-22-04_0-22-18_label_B5-0-0,xd_violence_subset,/content/project/evaluation/extracted_frames/Abuse_Sin.City.2005___0-22-04_0-22-18_label_B5-0-0/frame_01.jpg,"Okay, let's analyze this surveillance scene.
+
+**What is happening?**
+
+The image shows a man, likely a middle-aged individual, leaning over and appearing to be examining something on the ground near a vehicle. He seems to be focused intently on a small object. The lighting is dramatic, with a strong light source highlighting his face and the area he's looking at, creating a stark contrast with the darker background.
+
+**Which activities are visible?**
+
+* **Examination of the ground:** The primary activity is the man's focused inspection of something on the ground.
+* **Leaning over:** He is leaning over, suggesting he's looking closely at the object.
+* **Vehicle presence:** A vehicle is visible in the background, likely parked nearby.
+* **Shadows:** The image has strong shadows, indicating a potentially low-light environment.
+
+
+**Is there any suspicious behavior?**
+
+Yes, there are several elements that raise suspicion:
+
+* **Focused and secretive behavior:** The man's intense focus and the way he's positioned suggest he's trying to be discreet. He's not interacting with anyone, and his actions seem deliberate.
+* **Proximity to a vehicle:**  This is",A person is performing car washing.,N/A - Skip (Not installed/configured on local CPU),Unknown,A person is performing car washing.,Low,Base: 35.37s | FT: 5.90s,Executed on CUDA
+CarAccident_Casino.Royale.2006___01-46-40_01-47-14_label_B6-0-0,xd_violence_subset,/content/project/evaluation/extracted_frames/CarAccident_Casino.Royale.2006___01-46-40_01-47-14_label_B6-0-0/frame_01.jpg,"Okay, let's analyze this surveillance scene.
+
+**What is happening?**
+
+The scene depicts a vehicle – a dark-colored SUV – that has clearly crashed and overturned. It's resting on a grassy embankment, likely after hitting a barrier or a ditch. There's smoke and steam emanating from the vehicle, suggesting a possible mechanical issue or perhaps a small fire.
+
+**Which activities are visible?**
+
+* **Vehicle Crash:** The primary activity is the vehicle's crash and subsequent rollover.
+* **Smoke/Steam:**  Visible release of smoke and steam from the vehicle.
+* **Roadway:** A road is visible in the background, suggesting this occurred near a roadway.
+* **Embankment:** The vehicle is resting on a grassy embankment.
+
+
+**Is there any suspicious behavior?**
+
+At first glance, the crash itself is suspicious. However, without additional context, it's difficult to determine if there was pre-planned behavior. The way the vehicle is positioned suggests a sudden, uncontrolled event.
+
+**Are there any threat indicators?**
+
+* **Vehicle Position:** The overturned vehicle is a significant indicator of a potentially dangerous situation.
+* **Smoke/Steam:**  The smoke and steam could indicate a mechanical",A person is performing drifting a car.,N/A - Skip (Not installed/configured on local CPU),Unknown,A person is performing drifting a car.,Low,Base: 34.68s | FT: 5.49s,Executed on CUDA
+CarAccident_Fast.Five.2011___00-01-41_00-01-57_label_B6-0-0,xd_violence_subset,/content/project/evaluation/extracted_frames/CarAccident_Fast.Five.2011___00-01-41_00-01-57_label_B6-0-0/frame_01.jpg,"Okay, let's analyze this surveillance scene.
+
+**What is happening?**
+
+The scene depicts a large vehicle, likely a truck or armored personnel carrier, exploding in a field. There's a significant amount of dust and debris being kicked up, indicating a powerful explosion. The vehicle is clearly destroyed, with significant damage to its structure.
+
+**Which activities are visible?**
+
+* **Explosion:** The primary activity is the explosion itself.
+* **Vehicle Destruction:** The vehicle is completely wrecked and destroyed.
+* **Dust and Debris:**  A massive cloud of dust and debris is being dispersed by the blast.
+* **Birds:**  Birds are flying away from the explosion, suggesting a sudden, intense event.
+* **Landscape:** A dry, grassy field with some scattered rocks and vegetation.  Mountains are visible in the background.
+
+
+**Is there any suspicious behavior?**
+
+At first glance, there isn't any *obvious* suspicious behavior *before* the explosion. However, the sudden and dramatic nature of the event raises questions.  It's highly unusual for a vehicle to simply explode in a remote field.
+
+**Are there any threat indicators?**
+
+* **Sudden, Unexplained Event:** The",A person is performing car bombing.,N/A - Skip (Not installed/configured on local CPU),Unknown,A person is performing car bombing.,Low,Base: 35.13s | FT: 5.61s,Executed on CUDA
+Abuse_Death.Proof.2007___00-45-05_00-47-36_label_B5-0-0,xd_violence_subset,/content/project/evaluation/extracted_frames/Abuse_Death.Proof.2007___00-45-05_00-47-36_label_B5-0-0/frame_01.jpg,"Okay, let's analyze this surveillance scene.
+
+**What is happening?**
+
+The scene depicts a tense, potentially clandestine encounter. A young woman (presumably the subject of surveillance) is looking intently at a figure in the background. The figure appears to be a large, possibly robotic or mechanical being (likely a droid, given the context of *Star Wars*).  It seems like the woman is observing this figure, possibly with a mixture of curiosity, apprehension, and perhaps even concern.
+
+**Which activities are visible?**
+
+* **Observation:** The primary activity is the woman's focused observation of the figure in the background.
+* **Physical Presence:** We see the figure itself, which is a significant element.
+* **Darkness/Shadows:** The scene is heavily shaded, creating a sense of secrecy and potentially hiding other details.
+* **Implied Movement:**  The figure in the background is moving, though we don't see the specifics of its movement.
+
+**Is there any suspicious behavior?**
+
+* **The woman's intense focus:** Her unwavering gaze suggests she's paying close attention to the figure, which could be a sign of interest, concern, or even a deliberate attempt to gather information.
+*",A person is performing playing drums.,N/A - Skip (Not installed/configured on local CPU),Unknown,A person is performing playing drums.,Low,Base: 34.77s | FT: 5.36s,Executed on CUDA
