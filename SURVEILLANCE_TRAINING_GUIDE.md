@@ -9,50 +9,59 @@ This guide outlines the step-by-step process of preparing a large-scale training
 Because the full XD-Violence dataset is **137 GB zipped (270 GB extracted)**, downloading it to your laptop is slow and resource-heavy. 
 To build a production-grade model, we use the **Kaggle API** directly inside **Google Colab** to download a balanced subset of **500 training videos** (consuming ~5 GB instead of 137 GB) and **100 test videos** (consuming ~1 GB).
 
-### 1. Set Up Kaggle Credentials in Google Colab
-Run this in a Colab cell to mount your Kaggle API key:
+#### 1. Set Up Kaggle OAuth Token in Google Colab
+Run this in a Colab cell to save your OAuth token to the correct location for the Kaggle client:
 ```python
-from google.colab import files
-import os
-
-# Upload your kaggle.json file (downloaded from Kaggle > Account > Create New API Token)
-files.upload()
-
+# Create .kaggle directory and write the OAuth Token
 !mkdir -p ~/.kaggle
-!cp kaggle.json ~/.kaggle/
-!chmod 600 ~/.kaggle/kaggle.json
+!echo "KGAT_b4ba49c3345124301cb7ed0b004b536e" > ~/.kaggle/access_token
+!chmod 600 ~/.kaggle/access_token
 ```
 
-### 2. Run the Balanced 500-Video Downloader
-Run this Python script inside a Colab cell to list the dataset and download a balanced set of **500 videos for training** and **100 videos for testing**:
+### 2. Run the CLI-Based 500-Video Downloader
+Run this Python script inside a Colab cell. It queries the Kaggle CLI, parses the file list, selects a balanced subset of **500 training videos** and **100 test videos**, and downloads them using shell commands:
 
 ```python
 import os
 import random
-import kaggle
+import subprocess
+import csv
+from io import StringIO
 from pathlib import Path
 
-# Initialize Kaggle API
-kaggle.api.authenticate()
 dataset = "akritah/xdviolence"
-
-# List files
 logger = print
-logger("Fetching dataset file list from Kaggle...")
-files_list = kaggle.api.dataset_list_files(dataset).files
 
-# Filter for mp4 clips
-mp4_files = [f for f in files_list if f.name.endswith(".mp4")]
+# 1. Fetch files list using Kaggle CLI --csv output
+logger("Fetching dataset file list from Kaggle via CLI...")
+cmd = f"kaggle datasets files {dataset} --csv"
+res = subprocess.run(cmd, shell=True, capture_output=True, text=True)
 
-# Group by categories (folders)
+if res.returncode != 0:
+    logger(f"❌ Kaggle CLI Error: {res.stderr}")
+    logger("Make sure you ran Step 1 to write your access_token.")
+    raise RuntimeError("Authentication failed.")
+
+# 2. Parse CSV output
+f = StringIO(res.stdout)
+reader = csv.DictReader(f)
+mp4_files = []
+for row in reader:
+    name = row.get("name")
+    if name and name.endswith(".mp4"):
+        mp4_files.append(name)
+
+logger(f"Successfully connected! Found {len(mp4_files)} video clips.")
+
+# 3. Group by category folders
 categories = {}
-for f in mp4_files:
-    folder = Path(f.name).parent.name
+for file_path in mp4_files:
+    folder = Path(file_path).parent.name
     if folder not in categories:
         categories[folder] = []
-    categories[folder].append(f)
+    categories[folder].append(file_path)
 
-# Select a balanced subset of 500 videos for training and 100 for evaluation
+# 4. Select balanced subsets
 train_subset = []
 eval_subset = []
 
@@ -61,34 +70,36 @@ for cat, items in categories.items():
     random.seed(42)
     random.shuffle(items)
     
-    # 500 train videos total (~70-80 per anomaly class)
+    # 500 train videos total (~75 per category)
     cat_train_count = min(len(items), 75) 
-    # 100 eval videos total (~15 per anomaly class)
+    # 100 eval videos total (~15 per category)
     cat_eval_count = min(len(items) - cat_train_count, 15)
     
     train_subset.extend(items[:cat_train_count])
     eval_subset.extend(items[cat_train_count:cat_train_count + cat_eval_count])
     logger(f" * {cat}: Selected {cat_train_count} for training, {cat_eval_count} for evaluation")
 
-# Download training videos
+# 5. Download training videos (500 Clips)
 logger(f"\nDownloading {len(train_subset)} training videos...")
 train_dir = Path("/content/project/datasets/train")
-train_dir.mkdir(parents=True, exist_ok=True)
-for idx, f in enumerate(train_subset, 1):
-    dest = train_dir / Path(f.name).parent.name
+for idx, file_path in enumerate(train_subset, 1):
+    dest = train_dir / Path(file_path).parent.name
     dest.mkdir(parents=True, exist_ok=True)
-    kaggle.api.dataset_download_file(dataset, f.name, path=str(dest), force_download=False, quiet=True)
+    # Download file using Kaggle CLI
+    cmd = f'kaggle datasets download-file {dataset} "{file_path}" -p "{dest}" --unzip'
+    subprocess.run(cmd, shell=True, capture_output=True)
     if idx % 50 == 0:
         logger(f"Downloaded {idx}/{len(train_subset)} training clips...")
 
-# Download evaluation videos (100 Clips)
+# 6. Download evaluation videos (100 Clips)
 logger(f"\nDownloading {len(eval_subset)} evaluation videos...")
 eval_dir = Path("/content/project/datasets/eval")
-eval_dir.mkdir(parents=True, exist_ok=True)
-for idx, f in enumerate(eval_subset, 1):
-    dest = eval_dir / Path(f.name).parent.name
+for idx, file_path in enumerate(eval_subset, 1):
+    dest = eval_dir / Path(file_path).parent.name
     dest.mkdir(parents=True, exist_ok=True)
-    kaggle.api.dataset_download_file(dataset, f.name, path=str(dest), force_download=False, quiet=True)
+    # Download file using Kaggle CLI
+    cmd = f'kaggle datasets download-file {dataset} "{file_path}" -p "{dest}" --unzip'
+    subprocess.run(cmd, shell=True, capture_output=True)
     if idx % 20 == 0:
         logger(f"Downloaded {idx}/{len(eval_subset)} evaluation clips...")
 
