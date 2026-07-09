@@ -323,10 +323,83 @@ def main():
         cat_distribution[r["Ground Truth Category"]] = cat_distribution.get(r["Ground Truth Category"], 0) + 1
     dist_lines = [f"*   **{cat}**: {count} videos" for cat, count in cat_distribution.items()]
 
+    # Calculate Binary Classification Metrics
+    base_tp = base_fp = base_tn = base_fn = 0
+    ft_tp = ft_fp = ft_tn = ft_fn = 0
+    
+    for r in records:
+        gt_category = r["Ground Truth Category"]
+        is_gt_anomaly = (gt_category != "Normal")
+        
+        # Base Model Prediction Parsing
+        base_out = r["Base Gemma Output"].lower()
+        base_threat = "Low"
+        for line in base_out.split("\n"):
+            if "threat level" in line:
+                if "high" in line:
+                    base_threat = "High"
+                elif "medium" in line:
+                    base_threat = "Medium"
+                break
+        is_base_threat = (base_threat in ["High", "Medium"])
+        
+        if is_gt_anomaly and is_base_threat:
+            base_tp += 1
+        elif not is_gt_anomaly and is_base_threat:
+            base_fp += 1
+        elif not is_gt_anomaly and not is_base_threat:
+            base_tn += 1
+        elif is_gt_anomaly and not is_base_threat:
+            base_fn += 1
+            
+        # Fine-Tuned Model Prediction Parsing
+        is_ft_threat = (r["Threat Level"] in ["High", "Medium"])
+        
+        if is_gt_anomaly and is_ft_threat:
+            ft_tp += 1
+        elif not is_gt_anomaly and is_ft_threat:
+            ft_fp += 1
+        elif not is_gt_anomaly and not is_ft_threat:
+            ft_tn += 1
+        elif is_gt_anomaly and not is_ft_threat:
+            ft_fn += 1
+
+    def calc_metrics(tp, fp, tn, fn):
+        acc = (tp + tn) / (tp + fp + tn + fn) if (tp + fp + tn + fn) > 0 else 0.0
+        prec = tp / (tp + fp) if (tp + fp) > 0 else 0.0
+        rec = tp / (tp + fn) if (tp + fn) > 0 else 0.0
+        f1 = 2 * prec * rec / (prec + rec) if (prec + rec) > 0 else 0.0
+        return acc * 100, prec * 100, rec * 100, f1 * 100
+
+    base_acc, base_prec, base_rec, base_f1 = calc_metrics(base_tp, base_fp, base_tn, base_fn)
+    ft_acc, ft_prec, ft_rec, ft_f1 = calc_metrics(ft_tp, ft_fp, ft_tn, ft_fn)
+
     report_content = report_template.replace("{len_records}", str(len(records)))
     report_content = report_content.replace("{dist_lines}", "\n".join(dist_lines))
     report_content = report_content.replace("{base_avg_time}", f"{sum(b[1] for b in base_results.values())/len(base_results):.2f}")
     report_content = report_content.replace("{ft_avg_time}", f"{sum(f[1] for f in ft_results.values())/len(ft_results):.2f}")
+    
+    # Classification metrics replacements
+    report_content = report_content.replace("{base_acc}", f"{base_acc:.1f}")
+    report_content = report_content.replace("{base_prec}", f"{base_prec:.1f}")
+    report_content = report_content.replace("{base_rec}", f"{base_rec:.1f}")
+    report_content = report_content.replace("{base_f1}", f"{base_f1:.1f}")
+    
+    report_content = report_content.replace("{ft_acc}", f"{ft_acc:.1f}")
+    report_content = report_content.replace("{ft_prec}", f"{ft_prec:.1f}")
+    report_content = report_content.replace("{ft_rec}", f"{ft_rec:.1f}")
+    report_content = report_content.replace("{ft_f1}", f"{ft_f1:.1f}")
+    
+    # Confusion matrix replacements
+    report_content = report_content.replace("{base_tp}", str(base_tp))
+    report_content = report_content.replace("{base_fp}", str(base_fp))
+    report_content = report_content.replace("{base_tn}", str(base_tn))
+    report_content = report_content.replace("{base_fn}", str(base_fn))
+    
+    report_content = report_content.replace("{ft_tp}", str(ft_tp))
+    report_content = report_content.replace("{ft_fp}", str(ft_fp))
+    report_content = report_content.replace("{ft_tn}", str(ft_tn))
+    report_content = report_content.replace("{ft_fn}", str(ft_fn))
 
     report_out_path = PROJECT_ROOT / "evaluation_report.md"
     if not report_out_path.parent.exists():

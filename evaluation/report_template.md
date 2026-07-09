@@ -1,4 +1,4 @@
-# Qualitative Comparative Evaluation Report: Gemma 3 Base vs. Fine-Tuned (ActivityNet Adapter) on XD-Violence Dataset
+# Qualitative & Quantitative Comparative Evaluation Report: Gemma 3 Base vs. Fine-Tuned (ActivityNet Adapter) on XD-Violence Dataset
 
 **Prepared by:** Graduate Research Assistant  
 **Target Reviewer:** DRDO Research Project Guide  
@@ -39,7 +39,28 @@ To solve the **instruction collapse** of the fine-tuned model (where SFT style-s
 
 ---
 
-## 5. Observations & Qualitative Trends
+## 5. Quantitative Classification Metrics (Production-Grade)
+
+To evaluate the models at a production level, we run a binary classification evaluation mapping **Normal** videos to **Non-Threat** (Low Threat) and any **Anomaly** category (Abuse, CarAccident, etc.) to **Threat** (Medium or High Threat).
+
+| Metric | Base Gemma 3 (Baseline) | Fine-Tuned Guided (Two-Stage) |
+| :--- | :---: | :---: |
+| **Accuracy** | {base_acc}% | {ft_acc}% |
+| **Precision** | {base_prec}% | {ft_prec}% |
+| **Recall** | {base_rec}% | {ft_rec}% |
+| **F1-Score** | {base_f1}% | {ft_f1}% |
+
+### Confusion Matrix Breakdown
+*   **Base Gemma 3**:
+    *   True Positives (TP): {base_tp} | False Positives (FP): {base_fp}
+    *   True Negatives (TN): {base_tn} | False Negatives (FN): {base_fn}
+*   **Fine-Tuned Guided (Two-Stage)**:
+    *   True Positives (TP): {ft_tp} | False Positives (FP): {ft_fp}
+    *   True Negatives (TN): {ft_tn} | False Negatives (FN): {ft_fn}
+
+---
+
+## 6. Observations & Qualitative Trends
 When evaluating the generated natural-language outputs, several key qualitative patterns emerged:
 1.  **Semantic Grounding**: The Fine-Tuned model provides highly focused action verbs (e.g., *physical combat*, *drifting*, *car accident*) which ground the subsequent Base model reasoning, keeping it focused on the main anomalous event.
 2.  **Mitigation of Instruction Collapse**: The Two-Stage Hybrid approach successfully bypassed SFT instruction collapse. The Base model generated structured sections while utilizing the Fine-Tuned model's specific activity classifier.
@@ -47,7 +68,7 @@ When evaluating the generated natural-language outputs, several key qualitative 
 
 ---
 
-## 6. Representative Success Cases
+## 7. Representative Success Cases
 
 ### Case 1: Physical Assault Identification
 *   **Video ID**: `Abuse_Taken.2.UNRATED.EXTENDED.2012___00-13-42_00-14-16_label_B5-0-0`
@@ -69,7 +90,7 @@ When evaluating the generated natural-language outputs, several key qualitative 
 
 ---
 
-## 7. Representative Failure Cases
+## 8. Representative Failure Cases
 
 ### Case 3: Domestic Abuse Misclassification (Domain Gap)
 *   **Video ID**: `Abuse_City.of.God.2002___00-37-20_00-38-02_label_B5-0-0`
@@ -82,7 +103,7 @@ When evaluating the generated natural-language outputs, several key qualitative 
 
 ---
 
-## 8. Comparison: Base Gemma vs. Fine-Tuned Gemma
+## 9. Comparison: Base Gemma vs. Fine-Tuned Gemma
 The evaluation highlights a distinct trade-off between the two models:
 *   **Descriptive Completeness**: **Base Gemma** is superior for detailed, multi-perspective scene descriptions.
 *   **Action Classification**: **Fine-Tuned Gemma** excels at outputting precise action verbs (e.g. *drifting*, *karate*, *car bombing*).
@@ -90,26 +111,26 @@ The evaluation highlights a distinct trade-off between the two models:
 
 ---
 
-## 9. Video-LLaVA Comparison
+## 10. Video-LLaVA Comparison
 *   **Status**: Video-LLaVA-7B was skipped during this evaluation.
 *   **Reason**: Video-LLaVA-7B requires 14+ GB of VRAM. Running a 7B parameter VLM on a CPU-only environment or on a standard T4 GPU in a single session alongside Gemma 3 exceeds the available local memory and local system limits.
 
 ---
 
-## 10. Overall Findings
+## 11. Overall Findings
 1.  **Domain Transfer Success**: Fine-tuning Gemma on ActivityNet successfully transferred the action-captioning style to the VLM, allowing it to output direct action verbs suitable for metadata logging.
 2.  **Instruction Collapse Mitigation**: The Two-Stage Hybrid pipeline successfully bypassed the style collapse, providing structured threat reports.
 3.  **Domain Gap**: The ActivityNet captions training occasionally leads to domestic action guesses (e.g., misclassifying kitchen fights as *"preparing food"*), demonstrating the need for surveillance-specific fine-tuning.
 
 ---
 
-## 11. Current Limitations
+## 12. Current Limitations
 *   **Error Cascades**: If Stage 1 makes a misclassification, Stage 2's reasoning is guided by false data and generates incorrect threat reports.
 *   **Visual Grounding**: Single-camera angles can obscure actions, leading to visual hallucinations.
 
 ---
 
-## 12. Future Work
+## 13. Future Work
 1.  **Surveillance-Specific SFT**: Fine-tune directly on security datasets (like UCF-Crime or XD-Violence) using the generated SFT dataset script to resolve the domain gap.
 2.  **Multi-Frame Evaluation**: Expose the VLM directly to the 8-16 temporal frames to leverage multi-frame attention.
 3.  **Quantized GGUF Export**: Export the fine-tuned adapter weights and merge them into a GGUF model for low-resource, CPU-efficient execution via Ollama.
