@@ -18,9 +18,13 @@ Run this in a Colab cell to configure the Kaggle CLI:
 ```
 
 ### 2. Download and Unzip the Dataset (Takes ~2 minutes)
-Run this command in a Colab cell to download the entire pre-extracted PNG dataset directly to your workspace:
+Run this command in a Colab cell to upgrade the client and download the entire pre-extracted PNG dataset directly to your workspace:
 ```bash
-!python -m kaggle datasets download -d odins0n/ucf-crime-dataset -p /content/project/datasets/ --unzip
+# Upgrade the global Kaggle CLI to version 2.2.2+
+!pip install --upgrade kaggle
+
+# Download and unzip
+!kaggle datasets download -d odins0n/ucf-crime-dataset -p /content/project/datasets/ --unzip
 ```
 
 ---
