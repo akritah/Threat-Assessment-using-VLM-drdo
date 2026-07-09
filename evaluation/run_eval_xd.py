@@ -10,34 +10,25 @@ from typing import Any
 import matplotlib.pyplot as plt
 from PIL import Image
 import torch
+import random
 
-# 1. Automatically find and mount frame_extractor.py's directory
+# Automatically find directories
 PROJECT_ROOT = Path("/content/project")
-frame_extractor_dir = None
-for p in PROJECT_ROOT.glob("**/frame_extractor.py"):
-    frame_extractor_dir = p.parent
-    break
-
-if frame_extractor_dir:
-    sys.path.insert(0, str(frame_extractor_dir))
-else:
-    sys.path.insert(0, str(PROJECT_ROOT))
-
-# Also search locally for fallback
 local_root = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(local_root))
 
-from frame_extractor import extract_frames
+sys.path.insert(0, str(PROJECT_ROOT))
+sys.path.insert(0, str(local_root))
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
 def parse_args():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--dataset-dir", default="/content/xd_violence_subset")
-    parser.add_argument("--adapter-path", default="/content/project/adapters/activitynet_v1")
-    parser.add_argument("--output-dir", default="/content/project/evaluation")
-    parser.add_argument("--device", default="cuda")
+    parser = argparse.ArgumentParser(description="UCF-Crime VLM Evaluation Suite")
+    parser.add_argument("--dataset-dir", default="datasets", help="Path containing Test/ and Train/ splits")
+    parser.add_argument("--adapter-path", default="adapters/activitynet_v1", help="Path to LoRA weights")
+    parser.add_argument("--output-dir", default="evaluation", help="Output path for deliverables")
+    parser.add_argument("--device", default="cuda", help="cuda or cpu")
+    parser.add_argument("--max-eval-videos", type=int, default=100, help="Number of videos to evaluate")
     return parser.parse_args()
 
 def load_gemma_model(model_id, adapter_path=None, device="cpu"):
@@ -53,11 +44,9 @@ def load_gemma_model(model_id, adapter_path=None, device="cpu"):
     # Resolve adapter path if nested
     actual_adapter_path = adapter_path
     if adapter_path and not Path(adapter_path).exists():
-        # Search in project folder
         for p in PROJECT_ROOT.glob("**/adapter_model.safetensors"):
             actual_adapter_path = str(p.parent)
             break
-        # Fallback to local search
         if not actual_adapter_path or not Path(actual_adapter_path).exists():
             for p in local_root.glob("**/adapter_model.safetensors"):
                 actual_adapter_path = str(p.parent)
@@ -100,9 +89,17 @@ def run_inference(model, processor, image_paths, prompt, device):
 
 def main():
     args = parse_args()
-    dataset_dir = Path(args.dataset_dir)
+    dataset_root = Path(args.dataset_dir)
+    if not dataset_root.is_absolute():
+        dataset_root = PROJECT_ROOT / dataset_root
+        
     adapter_path = Path(args.adapter_path)
+    if not adapter_path.is_absolute():
+        adapter_path = PROJECT_ROOT / adapter_path
+        
     output_dir = Path(args.output_dir)
+    if not output_dir.is_absolute():
+        output_dir = PROJECT_ROOT / output_dir
 
     selected_videos_dir = output_dir / "selected_videos"
     extracted_frames_dir = output_dir / "extracted_frames"
@@ -114,39 +111,78 @@ def main():
     for d in [selected_videos_dir, extracted_frames_dir, outputs_dir, reports_dir, csv_dir, plots_dir]:
         d.mkdir(parents=True, exist_ok=True)
 
-    all_videos = list(dataset_dir.glob("**/*.mp4"))
-    selected_list = []
-    for v in all_videos:
-        video_id = v.name.replace(".mp4", "")
-        category = v.parent.name
-        selected_list.append((video_id, category, str(v)))
+    # 1. Scan the Test split folder to sample evaluation segments
+    test_root = dataset_root / "Test"
+    if not test_root.exists():
+        # Fallback search locally
+        test_root = local_root / "datasets" / "Test"
+        
+    if not test_root.exists():
+        logger.warning(f"Test split folder not found at {test_root}. Generating conceptual mock list for syntax validation.")
+        mock_entries = []
+        for cat in ["Abuse", "Fighting", "Normal", "Robbery", "Shooting"]:
+            mock_entries.append((f"{cat}001_x264", cat, [local_root / "datasets" / "Test" / cat / f"{cat}001_x264_0.png"] * 8))
+        selected_groups = mock_entries
+    else:
+        # Group PNG files in Test split by video prefix
+        video_groups_dict = {}
+        png_files = list(test_root.glob("**/*.png"))
+        logger.info(f"Scanned {len(png_files)} PNG frames under Test split.")
+        
+        for f in png_files:
+            category = f.parent.name
+            name_parts = f.stem.split("_")
+            if len(name_parts) > 1:
+                video_prefix = "_".join(name_parts[:-1])
+            else:
+                video_prefix = f.stem
+                
+            group_key = (video_prefix, category)
+            if group_key not in video_groups_dict:
+                video_groups_dict[group_key] = []
+            video_groups_dict[group_key].append(f)
+            
+        video_groups = []
+        for (prefix, category), frames in video_groups_dict.items():
+            video_groups.append((prefix, category, frames))
+            
+        # Select 100 unique video segments for evaluation
+        random.seed(42)
+        random.shuffle(video_groups)
+        selected_groups = video_groups[:args.max_eval_videos]
 
+    selected_list = []
+    extracted_data = []
+    
+    for prefix, category, frames in selected_groups:
+        frames.sort()
+        # Extract exactly 8 evenly-spaced frames from the PNG list representing the video sequence
+        num_frames = len(frames)
+        indices = [int(i * (num_frames - 1) / 7) for i in range(8)] if num_frames >= 8 else [i % num_frames for i in range(8)]
+        selected_frames = [frames[i] for i in indices]
+        
+        try:
+            rel_path_str = str(selected_frames[0].relative_to(PROJECT_ROOT)).replace("\\", "/")
+        except ValueError:
+            rel_path_str = str(selected_frames[0].relative_to(local_root)).replace("\\", "/")
+            
+        selected_list.append((prefix, category, rel_path_str))
+        extracted_data.append({
+            "video_id": prefix,
+            "category": category,
+            "frame_paths": selected_frames
+        })
+
+    # Write selected videos CSV index
     selected_csv_path = PROJECT_ROOT / "selected_videos.csv"
     if not selected_csv_path.parent.exists():
         selected_csv_path = local_root / "selected_videos.csv"
 
     with selected_csv_path.open("w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
-        writer.writerow(["Video ID", "Category", "Path"])
+        writer.writerow(["Video ID", "Category", "First Frame Path"])
         for row in selected_list:
             writer.writerow(row)
-
-    # Extract 8 frames per video to enable temporal windowing
-    extracted_data = []
-    for video_id, category, path in selected_list:
-        v_path = Path(path)
-        v_frame_dir = extracted_frames_dir / video_id
-        try:
-            frames = extract_frames(v_path, v_frame_dir, frame_count=8)
-            if frames:
-                extracted_data.append({
-                    "video_id": video_id,
-                    "category": category,
-                    "video_path": v_path,
-                    "frame_paths": frames
-                })
-        except Exception as e:
-            logger.warning("Failed to extract frames for %s: %s", video_id, e)
 
     base_model_id = "google/gemma-3-4b-it"
 
@@ -323,7 +359,7 @@ def main():
         cat_distribution[r["Ground Truth Category"]] = cat_distribution.get(r["Ground Truth Category"], 0) + 1
     dist_lines = [f"*   **{cat}**: {count} videos" for cat, count in cat_distribution.items()]
 
-    # Calculate Binary Classification Metrics
+    # Calculate Binary Classification Metrics (Normal = Low Threat, Anomaly = Medium/High Threat)
     base_tp = base_fp = base_tn = base_fn = 0
     ft_tp = ft_fp = ft_tn = ft_fn = 0
     
