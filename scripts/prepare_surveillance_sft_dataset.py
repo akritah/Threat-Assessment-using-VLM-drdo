@@ -185,7 +185,7 @@ def main():
                             
                         # Stop scanning this folder once we have 80 unique video segments
                         if len(video_prefixes_found) >= 80 and video_prefix not in video_prefixes_found:
-                            continue
+                            break
                             
                         video_prefixes_found.add(video_prefix)
                         group_key = (video_prefix, category)
