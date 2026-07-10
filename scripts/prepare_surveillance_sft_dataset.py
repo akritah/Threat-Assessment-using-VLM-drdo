@@ -161,25 +161,38 @@ def main():
             mock_entries.append(("Abuse028_x264", cat, [local_root / "datasets" / "Train" / cat / "Abuse028_x264_0.png"]))
         video_groups = mock_entries
     else:
-        # Group PNG files by video ID prefix (e.g. Abuse028_x264)
+        # Group PNG files by video ID prefix lazily using os.scandir
+        import os
         video_groups_dict = {}
-        png_files = list(train_root.glob("**/*.png"))
-        logger.info(f"Scanned {len(png_files)} PNG frames under Train split.")
+        logger.info("Scanning Train split directories lazily...")
         
-        for f in png_files:
-            category = f.parent.name
-            # Find the video prefix by splitting at the last underscore (e.g. Abuse028_x264_100.png -> Abuse028_x264)
-            name_parts = f.stem.split("_")
-            if len(name_parts) > 1:
-                video_prefix = "_".join(name_parts[:-1])
-            else:
-                video_prefix = f.stem
-                
-            group_key = (video_prefix, category)
-            if group_key not in video_groups_dict:
-                video_groups_dict[group_key] = []
-            video_groups_dict[group_key].append(f)
+        for category_dir in train_root.iterdir():
+            if not category_dir.is_dir():
+                continue
+            category = category_dir.name
+            logger.info(f"Scanning Train category: {category}...")
             
+            video_prefixes_found = set()
+            with os.scandir(category_dir) as it:
+                for entry in it:
+                    if entry.is_file() and entry.name.endswith(".png"):
+                        f = Path(entry.path)
+                        name_parts = f.stem.split("_")
+                        if len(name_parts) > 1:
+                            video_prefix = "_".join(name_parts[:-1])
+                        else:
+                            video_prefix = f.stem
+                            
+                        # Stop scanning this folder once we have 80 unique video segments
+                        if len(video_prefixes_found) >= 80 and video_prefix not in video_prefixes_found:
+                            continue
+                            
+                        video_prefixes_found.add(video_prefix)
+                        group_key = (video_prefix, category)
+                        if group_key not in video_groups_dict:
+                            video_groups_dict[group_key] = []
+                        video_groups_dict[group_key].append(f)
+                        
         video_groups = []
         for (prefix, category), frames in video_groups_dict.items():
             video_groups.append((prefix, category, frames))
