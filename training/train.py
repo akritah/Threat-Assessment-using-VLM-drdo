@@ -188,6 +188,7 @@ def train(config: TrainingConfig, resume: bool = False) -> Path:
         remove_unused_columns=False,
         max_length=config.max_seq_length,
         dataset_kwargs={"skip_prepare_dataset": True},
+        loss_type="nll",
     )
 
     collator = Gemma3VLMDataCollator(processor, _PROJECT_ROOT)
