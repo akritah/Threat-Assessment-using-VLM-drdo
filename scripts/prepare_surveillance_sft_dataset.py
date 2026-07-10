@@ -202,10 +202,7 @@ def main():
         frames.sort()
         midpoint_frame = frames[len(frames) // 2]
         
-        try:
-            frame_path_str = str(midpoint_frame.relative_to(PROJECT_ROOT)).replace("\\", "/")
-        except ValueError:
-            frame_path_str = str(midpoint_frame.relative_to(local_root)).replace("\\", "/")
+        frame_path_str = str(midpoint_frame).replace("\\", "/")
             
         # Task A: Action Captioning
         sft_dataset.append({

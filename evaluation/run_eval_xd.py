@@ -161,10 +161,7 @@ def main():
         indices = [int(i * (num_frames - 1) / 7) for i in range(8)] if num_frames >= 8 else [i % num_frames for i in range(8)]
         selected_frames = [frames[i] for i in indices]
         
-        try:
-            rel_path_str = str(selected_frames[0].relative_to(PROJECT_ROOT)).replace("\\", "/")
-        except ValueError:
-            rel_path_str = str(selected_frames[0].relative_to(local_root)).replace("\\", "/")
+        rel_path_str = str(selected_frames[0]).replace("\\", "/")
             
         selected_list.append((prefix, category, rel_path_str))
         extracted_data.append({
