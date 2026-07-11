@@ -11,7 +11,7 @@ eval_dataset: training/data/surveillance_val.jsonl
 load_in_4bit: true
 bnb_4bit_quant_type: nf4
 bnb_4bit_use_double_quant: true
-bnb_4bit_compute_dtype: bfloat16
+bnb_4bit_compute_dtype: float16
 
 # LoRA
 lora_r: 16
@@ -41,8 +41,8 @@ save_total_limit: 3
 
 # Performance
 gradient_checkpointing: true
-bf16: true
-fp16: false
+bf16: false
+fp16: true
 
 # Resume from latest checkpoint in output_dir
 resume_from_checkpoint: null
