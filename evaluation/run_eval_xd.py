@@ -12,6 +12,52 @@ from PIL import Image
 import torch
 import random
 
+# Preload NVIDIA CUDA libraries dynamically to fix bitsandbytes loading errors on Linux/Colab/Kaggle
+def _preload_cuda_libs():
+    import platform
+    if platform.system() != "Linux":
+        return
+    import ctypes
+    import site
+
+    # Collect all site-packages paths
+    paths = list(site.getsitepackages())
+    try:
+        user_site = site.getusersitepackages()
+        paths.append(user_site)
+    except Exception:
+        pass
+
+    for sdir in paths:
+        nv_path = Path(sdir) / "nvidia"
+        if nv_path.exists():
+            # Preload nvjitlink first since other libraries depend on it
+            for sub in nv_path.iterdir():
+                if sub.name == "nvjitlink":
+                    lib_dir = sub / "lib"
+                    if lib_dir.exists():
+                        for so_file in lib_dir.glob("libnvJitLink.so*"):
+                            try:
+                                ctypes.CDLL(str(so_file), mode=ctypes.RTLD_GLOBAL)
+                            except Exception:
+                                pass
+
+            # Preload other CUDA runtime libraries (cublas, cudart, etc.)
+            for sub in nv_path.iterdir():
+                if sub.name != "nvjitlink":
+                    lib_dir = sub / "lib"
+                    if lib_dir.exists():
+                        for so_file in lib_dir.glob("*.so*"):
+                            try:
+                                ctypes.CDLL(str(so_file), mode=ctypes.RTLD_GLOBAL)
+                            except Exception:
+                                pass
+
+try:
+    _preload_cuda_libs()
+except Exception:
+    pass
+
 # Automatically find directories
 PROJECT_ROOT = Path("/content/project")
 local_root = Path(__file__).resolve().parent.parent
