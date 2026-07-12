@@ -213,7 +213,7 @@ def train(config: TrainingConfig, resume: bool = False) -> Path:
     # Save adapter weights only — never overwrite the base model.
     output_path = config.output_path
     output_path.mkdir(parents=True, exist_ok=True)
-    trainer.model.save_pretrained(str(output_path))
+    trainer.save_model(str(output_path))
     processor.save_pretrained(str(output_path))
     logger.info("Adapter saved to: %s", output_path)
 
