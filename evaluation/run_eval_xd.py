@@ -179,31 +179,58 @@ def main():
             mock_entries.append((f"{cat}001_x264", cat, mock_frames))
         selected_groups = mock_entries
     else:
-        # Group video files in Test split lazily using os.scandir
+        # Determine mode by inspecting the first category directory
         import os
-        video_files = []
-        logger.info("Scanning Test split directories lazily...")
-        
+        mode = "png"
         for category_dir in test_root.iterdir():
-            if not category_dir.is_dir():
-                continue
-            category = category_dir.name
-            logger.info(f"Scanning Test category: {category}...")
-            
-            count = 0
-            with os.scandir(category_dir) as it:
-                for entry in it:
-                    if entry.is_file() and entry.name.lower().endswith(('.mp4', '.avi', '.mkv', '.webm')):
-                        # Stop scanning this folder once we have 25 unique video segments
-                        if count >= 25:
+            if category_dir.is_dir():
+                with os.scandir(category_dir) as it:
+                    for entry in it:
+                        if entry.is_dir():
+                            mode = "png"
                             break
-                        video_files.append((Path(entry.path), category))
-                        count += 1
-                        
+                        elif entry.is_file() and entry.name.lower().endswith(('.mp4', '.avi', '.mkv', '.webm')):
+                            mode = "video"
+                            break
+                break
+        
+        logger.info(f"Detected evaluation loading mode: {mode.upper()}")
+        
         video_groups = []
-        for path, category in video_files:
-            video_groups.append((path.stem, category, path))
-            
+        if mode == "video":
+            # Video mode: scan and store video files
+            for category_dir in test_root.iterdir():
+                if not category_dir.is_dir():
+                    continue
+                category = category_dir.name
+                logger.info(f"Scanning Test category: {category}...")
+                count = 0
+                with os.scandir(category_dir) as it:
+                    for entry in it:
+                        if entry.is_file() and entry.name.lower().endswith(('.mp4', '.avi', '.mkv', '.webm')):
+                            if count >= 25:
+                                break
+                            video_groups.append((entry.name.split(".")[0], category, Path(entry.path)))
+                            count += 1
+        else:
+            # PNG mode: scan subdirectories containing pre-extracted PNG/JPG files
+            for category_dir in test_root.iterdir():
+                if not category_dir.is_dir():
+                    continue
+                category = category_dir.name
+                logger.info(f"Scanning Test category: {category}...")
+                count = 0
+                with os.scandir(category_dir) as it:
+                    for entry in it:
+                        if entry.is_dir():
+                            if count >= 25:
+                                break
+                            video_dir = Path(entry.path)
+                            png_files = sorted(list(video_dir.glob("*.png")) + list(video_dir.glob("*.jpg")) + list(video_dir.glob("*.jpeg")))
+                            if png_files:
+                                video_groups.append((entry.name, category, png_files))
+                                count += 1
+                                
         # Select 100 unique video segments for evaluation
         random.seed(42)
         random.shuffle(video_groups)
@@ -242,10 +269,13 @@ def main():
     
     for prefix, category, video_ref in selected_groups:
         if isinstance(video_ref, list):
-            # Fallback mock check
-            selected_frames = video_ref
+            # Already extracted frame path list (UCF-Crime mode)
+            # Extract exactly 8 evenly-spaced frames from the PNG list
+            num_frames = len(video_ref)
+            indices = [int(i * (num_frames - 1) / 7) for i in range(8)] if num_frames >= 8 else [i % num_frames for i in range(8)]
+            selected_frames = [video_ref[i] for i in indices]
         else:
-            # Extract 8 keyframes using OpenCV
+            # Extract 8 keyframes using OpenCV (XD-Violence mode)
             selected_frames = extract_video_frames(video_ref, extracted_frames_dir / prefix, num_frames=8)
             if not selected_frames:
                 logger.warning(f"Failed to extract frames for {prefix}, skipping evaluation segment.")
