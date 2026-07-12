@@ -170,9 +170,9 @@ def main():
             mock_entries.append((f"{cat}001_x264", cat, [local_root / "datasets" / "Test" / cat / f"{cat}001_x264_0.png"] * 8))
         selected_groups = mock_entries
     else:
-        # Group PNG files in Test split lazily using os.scandir
+        # Group video files in Test split lazily using os.scandir
         import os
-        video_groups_dict = {}
+        video_files = []
         logger.info("Scanning Test split directories lazily...")
         
         for category_dir in test_root.iterdir():
@@ -181,46 +181,67 @@ def main():
             category = category_dir.name
             logger.info(f"Scanning Test category: {category}...")
             
-            video_prefixes_found = set()
+            count = 0
             with os.scandir(category_dir) as it:
                 for entry in it:
-                    if entry.is_file() and entry.name.endswith(".png"):
-                        f = Path(entry.path)
-                        name_parts = f.stem.split("_")
-                        if len(name_parts) > 1:
-                            video_prefix = "_".join(name_parts[:-1])
-                        else:
-                            video_prefix = f.stem
-                            
+                    if entry.is_file() and entry.name.lower().endswith(('.mp4', '.avi', '.mkv', '.webm')):
                         # Stop scanning this folder once we have 25 unique video segments
-                        if len(video_prefixes_found) >= 25 and video_prefix not in video_prefixes_found:
+                        if count >= 25:
                             break
-                            
-                        video_prefixes_found.add(video_prefix)
-                        group_key = (video_prefix, category)
-                        if group_key not in video_groups_dict:
-                            video_groups_dict[group_key] = []
-                        video_groups_dict[group_key].append(f)
+                        video_files.append((Path(entry.path), category))
+                        count += 1
                         
         video_groups = []
-        for (prefix, category), frames in video_groups_dict.items():
-            video_groups.append((prefix, category, frames))
+        for path, category in video_files:
+            video_groups.append((path.stem, category, path))
             
         # Select 100 unique video segments for evaluation
         random.seed(42)
         random.shuffle(video_groups)
         selected_groups = video_groups[:args.max_eval_videos]
 
+    def extract_video_frames(video_path: Path, output_dir: Path, num_frames: int = 8) -> list[Path]:
+        """Extract exactly N evenly-spaced frames from a video clip using OpenCV."""
+        extracted_paths = []
+        try:
+            import cv2
+            cap = cv2.VideoCapture(str(video_path))
+            if not cap.isOpened():
+                return []
+            total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+            if total_frames <= 0:
+                cap.release()
+                return []
+                
+            output_dir.mkdir(parents=True, exist_ok=True)
+            indices = [int(i * (total_frames - 1) / (num_frames - 1)) for i in range(num_frames)]
+            
+            for i, idx in enumerate(indices):
+                cap.set(cv2.CAP_PROP_POS_FRAMES, idx)
+                ret, frame = cap.read()
+                if ret:
+                    frame_path = output_dir / f"frame_{i}.jpg"
+                    cv2.imwrite(str(frame_path), frame)
+                    extracted_paths.append(frame_path)
+            cap.release()
+        except Exception as e:
+            logger.warning(f"Error extracting frames from {video_path}: {e}")
+        return extracted_paths
+
     selected_list = []
     extracted_data = []
     
-    for prefix, category, frames in selected_groups:
-        frames.sort()
-        # Extract exactly 8 evenly-spaced frames from the PNG list representing the video sequence
-        num_frames = len(frames)
-        indices = [int(i * (num_frames - 1) / 7) for i in range(8)] if num_frames >= 8 else [i % num_frames for i in range(8)]
-        selected_frames = [frames[i] for i in indices]
-        
+    for prefix, category, video_ref in selected_groups:
+        if isinstance(video_ref, list):
+            # Fallback mock check
+            selected_frames = video_ref
+        else:
+            # Extract 8 keyframes using OpenCV
+            selected_frames = extract_video_frames(video_ref, extracted_frames_dir / prefix, num_frames=8)
+            if not selected_frames:
+                logger.warning(f"Failed to extract frames for {prefix}, skipping evaluation segment.")
+                continue
+                
         rel_path_str = str(selected_frames[0]).replace("\\", "/")
             
         selected_list.append((prefix, category, rel_path_str))

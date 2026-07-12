@@ -10,134 +10,111 @@ local_root = PROJECT_ROOT
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
-# Ground-truth action mappings for UCF-Crime domain alignment
+# Ground-truth action mappings for XD-Violence domain alignment
 ACTION_MAPPINGS = {
     "Abuse": "A person is performing physical abuse and assault on an individual.",
-    "Arson": "An arsonist is starting a fire inside or outside a building.",
-    "Assault": "A physical assault is occurring between individuals.",
-    "Burglary": "A burglar is breaking into a property or building.",
+    "CarAccident": "A car accident or vehicle collision is taking place, causing damage.",
     "Explosion": "An explosion is occurring, destroying property and throwing debris.",
     "Fighting": "Multiple individuals are physically fighting, punching, and wrestling.",
-    "Robbery": "An armed robbery is happening, threatening victims with a weapon.",
-    "Shooting": "An active shooter is firing a weapon.",
-    "Shoplifting": "A shoplifter is stealing merchandise from a store retail shelf.",
-    "Stealing": "A person is stealing property, a vehicle, or an item.",
-    "Vandalism": "An individual is committing vandalism or destroying public property.",
-    "Arrest": "Police officers are making an arrest and detaining a suspect.",
-    "Normal": "A normal surveillance scene showing regular street and pedestrian activity."
+    "Normal": "A normal surveillance scene showing regular street and pedestrian activity.",
+    "Riot": "A riot or violent public demonstration is occurring, with individuals throwing objects.",
+    "Shooting": "An active shooter is firing a weapon."
 }
 
 THREAT_REASONING = {
     "Abuse": (
-        "**What is happening?**\nAn act of physical violence and assault is occurring between individuals.\n\n"
+        "**What is happening?**\nAn act of physical violence and abuse is occurring between individuals.\n\n"
         "**Threat Level**\nHigh\n\n"
-        "**Reasoning**\nActive physical assault causes severe bodily harm and requires immediate security/police intervention."
+        "**Reasoning**\nActive physical abuse causes direct physical harm and requires security intervention."
     ),
-    "Arson": (
-        "**What is happening?**\nAn individual is intentionally starting a fire on or near a building.\n\n"
-        "**Threat Level**\nHigh\n\n"
-        "**Reasoning**\nArson threatens lives and properties with catastrophic fire damage, requiring fire department dispatch."
-    ),
-    "Assault": (
-        "**What is happening?**\nA violent physical confrontation or assault is taking place.\n\n"
-        "**Threat Level**\nHigh\n\n"
-        "**Reasoning**\nViolence poses an immediate threat to life, requiring police intervention."
-    ),
-    "Burglary": (
-        "**What is happening?**\nAn unauthorized entry into a locked building or property is visible.\n\n"
+    "CarAccident": (
+        "**What is happening?**\nA vehicle collision or car accident is visible, showing damaged vehicles.\n\n"
         "**Threat Level**\nMedium\n\n"
-        "**Reasoning**\nProperty crime is in progress. Law enforcement should be dispatched to apprehend suspects."
+        "**Reasoning**\nAccidents threaten public safety and require police and emergency medical dispatch."
     ),
     "Explosion": (
         "**What is happening?**\nA severe explosion is visible, generating smoke, fire, and structural damage.\n\n"
         "**Threat Level**\nHigh\n\n"
-        "**Reasoning**\nExplosions indicate explosive hazards, active fire, and severe casualties, requiring fire rescue and police teams."
+        "**Reasoning**\nExplosions present catastrophic threats to life and property, requiring fire rescue and police."
     ),
     "Fighting": (
         "**What is happening?**\nMultiple individuals are engaged in a physical brawl or group fight.\n\n"
         "**Threat Level**\nHigh\n\n"
-        "**Reasoning**\nGroup fighting escalates public disorder and results in injury, requiring security dispatch to restore order."
+        "**Reasoning**\nFighting threatens public order and safety, requiring police patrol dispatch."
     ),
-    "Robbery": (
-        "**What is happening?**\nSuspects are threatening individuals with weapons to steal their belongings.\n\n"
+    "Normal": (
+        "**What is happening?**\nPedestrians and vehicles are moving through the frame normally without incident.\n\n"
+        "**Threat Level**\nLow\n\n"
+        "**Reasoning**\nNo threat indicators, suspicious behaviors, or hostile events are detected."
+    ),
+    "Riot": (
+        "**What is happening?**\nA group of rioters is committing acts of violence and public destruction.\n\n"
         "**Threat Level**\nHigh\n\n"
-        "**Reasoning**\nRobberies involve active weapons and direct coercion, posing an immediate threat to life."
+        "**Reasoning**\nRiots present severe public safety risks and widespread destruction, requiring SWAT or riot police containment."
     ),
     "Shooting": (
         "**What is happening?**\nAn individual is brandishing a firearm and active shooting is underway.\n\n"
         "**Threat Level**\nHigh\n\n"
-        "**Reasoning**\nActive shooting presents a lethal, active threat to all bystanders, requiring immediate tactical SWAT containment."
-    ),
-    "Shoplifting": (
-        "**What is happening?**\nAn individual is concealing store merchandise and attempting to leave without paying.\n\n"
-        "**Threat Level**\nLow\n\n"
-        "**Reasoning**\nNon-violent property crime. Store security should detain the suspect for police handoff."
-    ),
-    "Stealing": (
-        "**What is happening?**\nA theft of a vehicle, bicycle, or property is occurring.\n\n"
-        "**Threat Level**\nMedium\n\n"
-        "**Reasoning**\nNon-violent property theft. Suspect is fleeing, police should be notified to track the stolen item."
-    ),
-    "Vandalism": (
-        "**What is happening?**\nAn individual is spray-painting walls or destroying public property.\n\n"
-        "**Threat Level**\nMedium\n\n"
-        "**Reasoning**\nProperty damage in progress. Police should be dispatched to prevent further destruction."
-    ),
-    "Arrest": (
-        "**What is happening?**\nLaw enforcement officers are detaining and handcuffing a suspect.\n\n"
-        "**Threat Level**\nLow\n\n"
-        "**Reasoning**\nActive police operation. The situation is under control of law enforcement. No threat to the general public."
-    ),
-    "Normal": (
-        "**What is happening?**\nPeople and vehicles are moving through the frame normally without incident.\n\n"
-        "**Threat Level**\nLow\n\n"
-        "**Reasoning**\nNo threat indicators, suspicious activities, or hostile behaviors are detected. The scene is safe."
+        "**Reasoning**\nActive shooting is a lethal threat to public safety, requiring immediate armed SWAT containment."
     )
 }
 
 SUSPICIOUS_INDICATORS = {
-    "Abuse": "Yes. Hostile physical contact, aggressive posture, and abuse of an individual.",
-    "Arson": "Yes. Starting a fire intentionally near a structure.",
-    "Assault": "Yes. Active physical fight, hitting, or kicking.",
-    "Burglary": "Yes. Breaking windows/doors or forced entry.",
-    "Explosion": "Yes. Blast wave, fire, and rising black smoke.",
+    "Abuse": "Yes. Aggressive posture and hostile physical contact.",
+    "CarAccident": "Yes. Vehicle collision, sudden deceleration, and wreckage.",
+    "Explosion": "Yes. Active fire, blast wave, and rising black smoke.",
     "Fighting": "Yes. Altercation with multiple actors throwing punches.",
-    "Robbery": "Yes. Brandishing weapons (knives/guns) and coercing victims.",
-    "Shooting": "Yes. Firearm active discharge and public panic.",
-    "Shoplifting": "Yes. Concealing goods in pockets or bags.",
-    "Stealing": "Yes. Unauthorized moving of someone else's property.",
-    "Vandalism": "Yes. Destroying public property or spray painting.",
-    "Arrest": "No. Handcuffing suspect under police control.",
-    "Normal": "No. Normal everyday activity."
+    "Normal": "No. Normal everyday activity.",
+    "Riot": "Yes. Group violence, vandalism, and throwing projectiles.",
+    "Shooting": "Yes. Firearm active discharge and public panic."
 }
 
 EMERGENCY_DISPATCH = {
     "Abuse": "Police patrol and local security units should be dispatched.",
-    "Arson": "Fire department and police should be dispatched immediately.",
-    "Assault": "Police patrol and medical backup should be dispatched.",
-    "Burglary": "Police dispatch to check the property alarm and secure suspect.",
+    "CarAccident": "Emergency medical services and traffic police should be dispatched.",
     "Explosion": "Fire rescue, SWAT units, and medical dispatch required.",
     "Fighting": "Police patrol units should be dispatched to clear the brawl.",
-    "Robbery": "Armed police dispatch required immediately.",
-    "Shooting": "SWAT units and emergency medical teams required.",
-    "Shoplifting": "Retail security alert. Non-emergency police log.",
-    "Stealing": "Police log for stolen property tracking.",
-    "Vandalism": "Police patrol dispatch to catch vandal in progress.",
-    "Arrest": "None. Suspect already detained by officers.",
-    "Normal": "No dispatch required. Normal operations."
+    "Normal": "No dispatch required. Normal operations.",
+    "Riot": "SWAT units, riot police, and emergency medical teams required.",
+    "Shooting": "SWAT units and emergency medical teams required."
 }
+
+def extract_video_frame(video_path: Path, output_image_path: Path) -> bool:
+    """Extract the midpoint frame from a video clip using OpenCV."""
+    try:
+        import cv2
+        cap = cv2.VideoCapture(str(video_path))
+        if not cap.isOpened():
+            return False
+        total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+        if total_frames <= 0:
+            cap.release()
+            return False
+            
+        midpoint = total_frames // 2
+        cap.set(cv2.CAP_PROP_POS_FRAMES, midpoint)
+        ret, frame = cap.read()
+        if ret:
+            output_image_path.parent.mkdir(parents=True, exist_ok=True)
+            cv2.imwrite(str(output_image_path), frame)
+            cap.release()
+            return True
+        cap.release()
+    except Exception as e:
+        logger.warning(f"Error extracting frame from {video_path}: {e}")
+    return False
 
 def parse_args():
     import argparse
-    parser = argparse.ArgumentParser(description="UCF-Crime SFT Dataset Generator")
-    parser.add_argument("--dataset-dir", default="datasets", help="Path containing Test/ and Train/ UCF folders")
+    parser = argparse.ArgumentParser(description="XD-Violence SFT Dataset Generator")
+    parser.add_argument("--dataset-dir", default="datasets", help="Path containing test/ and train/ XD folders")
     parser.add_argument("--output-dir", default="training/data", help="Output path for JSONL files")
     parser.add_argument("--max-videos", type=int, default=500, help="Maximum unique videos to sample for training")
     return parser.parse_args()
 
 def main():
     args = parse_args()
-    logger.info("Initializing UCF-Crime SFT Dataset Generator...")
+    logger.info("Initializing XD-Violence SFT Dataset Generator...")
     
     dataset_root = Path(args.dataset_dir)
     if not dataset_root.is_absolute():
@@ -147,76 +124,75 @@ def main():
     if not output_dir.is_absolute():
         output_dir = PROJECT_ROOT / output_dir
 
-    # UCF-Crime structure: Train/ and Test/ splits
-    train_root = dataset_root / "Train"
+    # XD-Violence structure: train/ and test/ splits (case-insensitive checks)
+    train_root = dataset_root / "train"
     if not train_root.exists():
-        # Fallback search locally
-        train_root = local_root / "datasets" / "Train"
+        train_root = dataset_root / "Train"
+    if not train_root.exists():
+        train_root = local_root / "datasets" / "train"
         
     if not train_root.exists():
         logger.warning(f"Train directory not found at {train_root}. Generating conceptual/mock list.")
-        # Generate mock entries for local validation checks
         mock_entries = []
         for cat in ACTION_MAPPINGS.keys():
-            mock_entries.append(("Abuse028_x264", cat, [local_root / "datasets" / "Train" / cat / "Abuse028_x264_0.png"]))
-        video_groups = mock_entries
+            mock_entries.append((local_root / "datasets" / "train" / cat / "mock_video.mp4", cat))
+        video_files = mock_entries
     else:
-        # Group PNG files by video ID prefix lazily using os.scandir
+        # Scan category directories lazily
         import os
-        video_groups_dict = {}
-        logger.info("Scanning Train split directories lazily...")
+        video_files = []
+        logger.info("Scanning train split directories lazily...")
         
         for category_dir in train_root.iterdir():
             if not category_dir.is_dir():
                 continue
             category = category_dir.name
-            logger.info(f"Scanning Train category: {category}...")
+            logger.info(f"Scanning train category: {category}...")
             
-            video_prefixes_found = set()
+            count = 0
             with os.scandir(category_dir) as it:
                 for entry in it:
-                    if entry.is_file() and entry.name.endswith(".png"):
-                        f = Path(entry.path)
-                        name_parts = f.stem.split("_")
-                        if len(name_parts) > 1:
-                            video_prefix = "_".join(name_parts[:-1])
-                        else:
-                            video_prefix = f.stem
-                            
-                        # Stop scanning this folder once we have 80 unique video segments
-                        if len(video_prefixes_found) >= 80 and video_prefix not in video_prefixes_found:
+                    if entry.is_file() and entry.name.lower().endswith(('.mp4', '.avi', '.mkv', '.webm')):
+                        # Stop scanning this folder once we have 80 videos (for even category balance)
+                        if count >= 80:
                             break
-                            
-                        video_prefixes_found.add(video_prefix)
-                        group_key = (video_prefix, category)
-                        if group_key not in video_groups_dict:
-                            video_groups_dict[group_key] = []
-                        video_groups_dict[group_key].append(f)
+                        video_files.append((Path(entry.path), category))
+                        count += 1
                         
-        video_groups = []
-        for (prefix, category), frames in video_groups_dict.items():
-            video_groups.append((prefix, category, frames))
-            
     # Sample unique videos up to max_videos
     random.seed(42)
-    random.shuffle(video_groups)
-    selected_groups = video_groups[:args.max_videos]
+    random.shuffle(video_files)
+    selected_videos = video_files[:args.max_videos]
     
-    logger.info(f"Selected {len(selected_groups)} unique video segments for dataset generation.")
+    logger.info(f"Selected {len(selected_videos)} videos for dataset generation. Extracting frames...")
+    
+    frames_dir = output_dir / "frames"
+    frames_dir.mkdir(parents=True, exist_ok=True)
+    
     sft_dataset = []
+    success_count = 0
     
-    for prefix, category, frames in selected_groups:
+    for video_path, category in selected_videos:
+        # For mock fallback check
+        if "mock_video" in video_path.name:
+            # Generate empty mock frame
+            frame_path = frames_dir / f"{video_path.stem}_{category}.jpg"
+            frame_path.touch()
+            frame_path_str = str(frame_path).replace("\\", "/")
+        else:
+            frame_path = frames_dir / f"{video_path.stem}.jpg"
+            # Extract midpoint frame
+            if not extract_video_frame(video_path, frame_path):
+                # Skip video if frame extraction fails
+                continue
+            frame_path_str = str(frame_path).replace("\\", "/")
+            success_count += 1
+            
         action_caption = ACTION_MAPPINGS.get(category, ACTION_MAPPINGS["Normal"])
         reasoning_report = THREAT_REASONING.get(category, THREAT_REASONING["Normal"])
         suspicious_ans = SUSPICIOUS_INDICATORS.get(category, SUSPICIOUS_INDICATORS["Normal"])
         dispatch_ans = EMERGENCY_DISPATCH.get(category, EMERGENCY_DISPATCH["Normal"])
         
-        # Pick the middle frame to represent the video segment
-        frames.sort()
-        midpoint_frame = frames[len(frames) // 2]
-        
-        frame_path_str = str(midpoint_frame).replace("\\", "/")
-            
         # Task A: Action Captioning
         sft_dataset.append({
             "messages": [
@@ -278,7 +254,6 @@ def main():
     train_set = sft_dataset[:split_idx]
     val_set = sft_dataset[split_idx:]
     
-    output_dir.mkdir(parents=True, exist_ok=True)
     train_file = output_dir / "surveillance_train.jsonl"
     val_file = output_dir / "surveillance_val.jsonl"
     
@@ -290,7 +265,8 @@ def main():
             f.write(json.dumps(item) + "\n")
             
     logger.info("=========================================")
-    logger.info("UCF-Crime SFT Dataset Generation Complete!")
+    logger.info("XD-Violence SFT Dataset Generation Complete!")
+    logger.info(f" - Extracted frames successfully: {success_count}/{len(selected_videos)}")
     logger.info(f" - Train samples: {len(train_set)}")
     logger.info(f" - Validation samples: {len(val_set)}")
     logger.info(f" - Total dataset size: {len(sft_dataset)} samples")
