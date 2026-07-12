@@ -175,9 +175,11 @@ def main():
     for video_path, category in selected_videos:
         # For mock fallback check
         if "mock_video" in video_path.name:
-            # Generate empty mock frame
+            # Generate valid white dummy image so Pillow doesn't crash
             frame_path = frames_dir / f"{video_path.stem}_{category}.jpg"
-            frame_path.touch()
+            from PIL import Image
+            img = Image.new("RGB", (100, 100), color="white")
+            img.save(frame_path, "JPEG")
             frame_path_str = str(frame_path).replace("\\", "/")
         else:
             frame_path = frames_dir / f"{video_path.stem}.jpg"

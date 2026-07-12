@@ -166,8 +166,17 @@ def main():
     if not test_root.exists():
         logger.warning(f"Test split folder not found at {test_root}. Generating conceptual mock list for syntax validation.")
         mock_entries = []
-        for cat in ["Abuse", "Fighting", "Normal", "Robbery", "Shooting"]:
-            mock_entries.append((f"{cat}001_x264", cat, [local_root / "datasets" / "Test" / cat / f"{cat}001_x264_0.png"] * 8))
+        for cat in ["Abuse", "Fighting", "Normal", "Riot", "Shooting"]:
+            mock_dir = extracted_frames_dir / f"{cat}001_x264"
+            mock_dir.mkdir(parents=True, exist_ok=True)
+            mock_frames = []
+            for i in range(8):
+                frame_path = mock_dir / f"frame_{i}.jpg"
+                from PIL import Image
+                img = Image.new("RGB", (100, 100), color="white")
+                img.save(frame_path, "JPEG")
+                mock_frames.append(frame_path)
+            mock_entries.append((f"{cat}001_x264", cat, mock_frames))
         selected_groups = mock_entries
     else:
         # Group video files in Test split lazily using os.scandir
