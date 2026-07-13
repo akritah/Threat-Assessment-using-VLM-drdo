@@ -131,6 +131,9 @@ def load_base_model(
         "trust_remote_code": True,
         "device_map": device_map,
     }
+    if torch.cuda.is_available():
+        load_kwargs["torch_dtype"] = torch.float16
+
     if use_4bit:
         load_kwargs["quantization_config"] = _get_bnb_config()
 
