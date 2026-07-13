@@ -290,6 +290,13 @@ def main():
             "frame_paths": selected_frames
         })
 
+    if not extracted_data:
+        raise ValueError(
+            f"No video segments found for evaluation! Please verify that your --dataset-dir '{args.dataset_dir}' "
+            "exists and contains the correct Test/ split folder structure with either raw video files or "
+            "pre-extracted frame subdirectories."
+        )
+
     # Write selected videos CSV index
     selected_csv_path = PROJECT_ROOT / "selected_videos.csv"
     if not selected_csv_path.parent.exists():
@@ -529,8 +536,10 @@ def main():
 
     report_content = report_template.replace("{len_records}", str(len(records)))
     report_content = report_content.replace("{dist_lines}", "\n".join(dist_lines))
-    report_content = report_content.replace("{base_avg_time}", f"{sum(b[1] for b in base_results.values())/len(base_results):.2f}")
-    report_content = report_content.replace("{ft_avg_time}", f"{sum(f[1] for f in ft_results.values())/len(ft_results):.2f}")
+    base_avg_time = sum(b[1] for b in base_results.values()) / len(base_results) if len(base_results) > 0 else 0.0
+    ft_avg_time = sum(f[1] for f in ft_results.values()) / len(ft_results) if len(ft_results) > 0 else 0.0
+    report_content = report_content.replace("{base_avg_time}", f"{base_avg_time:.2f}")
+    report_content = report_content.replace("{ft_avg_time}", f"{ft_avg_time:.2f}")
     
     # Classification metrics replacements
     report_content = report_content.replace("{base_acc}", f"{base_acc:.1f}")
