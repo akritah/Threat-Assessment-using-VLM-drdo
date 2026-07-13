@@ -213,23 +213,35 @@ def main():
                             video_groups.append((entry.name.split(".")[0], category, Path(entry.path)))
                             count += 1
         else:
-            # PNG mode: scan subdirectories containing pre-extracted PNG/JPG files
+            # PNG mode: scan PNG/JPG files directly under the category directory and group by prefix
             for category_dir in test_root.iterdir():
                 if not category_dir.is_dir():
                     continue
                 category = category_dir.name
                 logger.info(f"Scanning Test category: {category}...")
-                count = 0
+                
+                video_prefixes_found = set()
+                video_groups_dict = {}
                 with os.scandir(category_dir) as it:
                     for entry in it:
-                        if entry.is_dir():
-                            if count >= 25:
-                                break
-                            video_dir = Path(entry.path)
-                            png_files = sorted(list(video_dir.glob("*.png")) + list(video_dir.glob("*.jpg")) + list(video_dir.glob("*.jpeg")))
-                            if png_files:
-                                video_groups.append((entry.name, category, png_files))
-                                count += 1
+                        if entry.is_file() and entry.name.lower().endswith(('.png', '.jpg', '.jpeg')):
+                            f = Path(entry.path)
+                            name_parts = f.stem.split("_")
+                            if len(name_parts) > 1:
+                                video_prefix = "_".join(name_parts[:-1])
+                            else:
+                                video_prefix = f.stem
+                                
+                            # Limit unique videos per category for balanced evaluation
+                            if len(video_prefixes_found) >= 25 and video_prefix not in video_prefixes_found:
+                                continue
+                            video_prefixes_found.add(video_prefix)
+                            if video_prefix not in video_groups_dict:
+                                video_groups_dict[video_prefix] = []
+                            video_groups_dict[video_prefix].append(f)
+                            
+                for prefix, frames in video_groups_dict.items():
+                    video_groups.append((prefix, category, sorted(frames)))
                                 
         # Select 100 unique video segments for evaluation
         random.seed(42)
