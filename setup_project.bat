@@ -36,10 +36,16 @@ if %errorlevel% equ 0 (
 )
 
 echo.
+echo 5. Running System Diagnostics...
+.venv\Scripts\python.exe scripts/verify_environment.py
+
+echo.
 echo ===================================================
 echo   Setup Complete!
-echo   To run the Video Q&A CLI Agent, run:
-echo   .venv\Scripts\python.exe video_qa.py
+echo   To run the Gradio Threat Monitoring Dashboard:
+echo   .venv\Scripts\python.exe app.py
+echo   To run the Video Q&A CLI Agent:
+echo   .venv\Scripts\python.exe backend/video_qa.py
 echo ===================================================
 echo.
 pause

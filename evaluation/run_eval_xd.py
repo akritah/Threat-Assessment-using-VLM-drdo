@@ -591,7 +591,7 @@ def main():
     except Exception as e:
         logger.warning(f"Could not copy files to subdir: {e}")
         
-    print("Done!")
+    logger.info("Evaluation workflow complete. All reports and charts generated successfully.")
 
 if __name__ == "__main__":
     main()

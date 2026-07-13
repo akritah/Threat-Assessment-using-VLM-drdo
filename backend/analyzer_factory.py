@@ -10,8 +10,8 @@ import os
 from pathlib import Path
 from typing import Any, Protocol, runtime_checkable
 
-_PROJECT_ROOT = Path(__file__).resolve().parent
-_DEFAULT_CONFIG_PATH = _PROJECT_ROOT / "config" / "adapter_config.yaml"
+_PROJECT_ROOT = Path(__file__).resolve().parent.parent
+_DEFAULT_CONFIG_PATH = _PROJECT_ROOT / "configs" / "adapter_config.yaml"
 
 
 @runtime_checkable
@@ -22,9 +22,16 @@ class AnalyzerProtocol(Protocol):
 
 
 def _load_config() -> dict[str, Any]:
-    config_path = Path(os.getenv("ADAPTER_CONFIG_PATH", str(_DEFAULT_CONFIG_PATH)))
+    raw_path = os.getenv("ADAPTER_CONFIG_PATH", str(_DEFAULT_CONFIG_PATH))
+    config_path = Path(raw_path)
+    if not config_path.is_absolute():
+        config_path = _PROJECT_ROOT / config_path
     if not config_path.exists():
-        return {}
+        alt_path = _PROJECT_ROOT / "configs" / config_path.name
+        if alt_path.exists():
+            config_path = alt_path
+        else:
+            return {}
     try:
         import yaml
     except ImportError:

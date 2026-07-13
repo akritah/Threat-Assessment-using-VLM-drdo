@@ -10,7 +10,7 @@ from typing import Any
 import yaml
 
 _PROJECT_ROOT = Path(__file__).resolve().parent.parent
-_DEFAULT_CONFIG_PATH = _PROJECT_ROOT / "config" / "training_config.yaml"
+_DEFAULT_CONFIG_PATH = _PROJECT_ROOT / "configs" / "training_config.yaml"
 
 
 @dataclass
@@ -61,9 +61,17 @@ class TrainingConfig:
 
     @classmethod
     def from_yaml(cls, path: str | Path | None = None) -> TrainingConfig:
-        config_path = Path(path or os.getenv("TRAINING_CONFIG_PATH", _DEFAULT_CONFIG_PATH))
+        raw_path = path or os.getenv("TRAINING_CONFIG_PATH", _DEFAULT_CONFIG_PATH)
+        config_path = Path(raw_path)
+        if not config_path.is_absolute():
+            config_path = _PROJECT_ROOT / config_path
         if not config_path.exists():
-            return cls()
+            # Support loading configs/ prefixes dynamically
+            alt_path = _PROJECT_ROOT / "configs" / config_path.name
+            if alt_path.exists():
+                config_path = alt_path
+            else:
+                return cls()
 
         with config_path.open(encoding="utf-8") as handle:
             raw: dict[str, Any] = yaml.safe_load(handle) or {}

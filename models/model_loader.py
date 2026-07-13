@@ -16,13 +16,20 @@ import yaml
 logger = logging.getLogger(__name__)
 
 _PROJECT_ROOT = Path(__file__).resolve().parent.parent
-_DEFAULT_CONFIG_PATH = _PROJECT_ROOT / "config" / "adapter_config.yaml"
+_DEFAULT_CONFIG_PATH = _PROJECT_ROOT / "configs" / "adapter_config.yaml"
 
 
 def _load_adapter_config(config_path: Path | None = None) -> dict[str, Any]:
-    path = config_path or Path(os.getenv("ADAPTER_CONFIG_PATH", str(_DEFAULT_CONFIG_PATH)))
+    raw_path = config_path or Path(os.getenv("ADAPTER_CONFIG_PATH", str(_DEFAULT_CONFIG_PATH)))
+    path = Path(raw_path)
+    if not path.is_absolute():
+        path = _PROJECT_ROOT / path
     if not path.exists():
-        return {}
+        alt_path = _PROJECT_ROOT / "configs" / path.name
+        if alt_path.exists():
+            path = alt_path
+        else:
+            return {}
     with path.open(encoding="utf-8") as handle:
         return yaml.safe_load(handle) or {}
 

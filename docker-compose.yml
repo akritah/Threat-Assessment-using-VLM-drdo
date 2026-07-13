@@ -1,0 +1,20 @@
+services:
+  threat-detection:
+    build: .
+    container_name: drdo-threat-detection
+    ports:
+      - "7860:7860"
+    volumes:
+      - .:/app
+    environment:
+      - INFERENCE_BACKEND=hf
+      - ACTIVE_ADAPTER=surveillance_colab
+      - HF_TOKEN=${HF_TOKEN}
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    restart: unless-stopped
