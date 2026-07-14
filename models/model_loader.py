@@ -130,6 +130,7 @@ def load_base_model(
     load_kwargs: dict[str, Any] = {
         "trust_remote_code": True,
         "device_map": device_map,
+        "token": os.getenv("HF_TOKEN"),
     }
     if torch.cuda.is_available():
         load_kwargs["torch_dtype"] = torch.float16
@@ -142,7 +143,6 @@ def load_base_model(
         model = model_cls.from_pretrained(str(local_path), **load_kwargs)
     else:
         logger.info("Loading base model from HuggingFace Hub: %s", resolved_id)
-        load_kwargs["token"] = os.getenv("HF_TOKEN")
         model = model_cls.from_pretrained(resolved_id, **load_kwargs)
 
     return model, processor
