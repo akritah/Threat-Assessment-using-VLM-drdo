@@ -97,9 +97,9 @@ def _get_processor(model_id: str, local_path: Path | None = None):
     from transformers import AutoProcessor
     import os
 
-    if local_path and local_path.exists() and (local_path / "config.json").exists():
-        return AutoProcessor.from_pretrained(str(local_path), trust_remote_code=True)
     token = os.getenv("HF_TOKEN")
+    if local_path and local_path.exists() and (local_path / "config.json").exists():
+        return AutoProcessor.from_pretrained(str(local_path), trust_remote_code=True, token=token)
     return AutoProcessor.from_pretrained(model_id, trust_remote_code=True, token=token)
 
 
