@@ -118,6 +118,9 @@ def train(config: TrainingConfig, resume: bool = False) -> Path:
         "trust_remote_code": True,
         "token": token,
     }
+    if torch.cuda.is_available():
+        load_kwargs["torch_dtype"] = torch.float16
+
     if bnb_config:
         load_kwargs["quantization_config"] = bnb_config
 
