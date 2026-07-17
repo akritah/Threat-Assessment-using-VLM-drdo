@@ -173,6 +173,9 @@ def main():
         if dataset_root.exists() and any(p.is_dir() and p.name.lower() in possible_cats for p in dataset_root.iterdir()):
             test_root = dataset_root
             logger.info(f"Using flat dataset directory as evaluation root: {test_root}")
+        elif dataset_root.exists() and (dataset_root / "videos").exists():
+            test_root = dataset_root / "videos"
+            logger.info(f"Using nested 'videos' folder as evaluation root: {test_root}")
 
     if not test_root.exists():
         logger.warning(f"Test split folder not found at {test_root}. Generating conceptual mock list for syntax validation.")
