@@ -219,6 +219,10 @@ def train(config: TrainingConfig, resume: bool = False) -> Path:
             resume_checkpoint = str(checkpoints[-1])
             logger.info("Resuming from checkpoint: %s", resume_checkpoint)
 
+    for name, param in model.named_parameters():
+        if param.requires_grad:
+            logger.info("Trainable parameter: %s | dtype: %s | device: %s", name, param.dtype, param.device)
+
     trainer.train(resume_from_checkpoint=resume_checkpoint)
 
     # Save adapter weights only — never overwrite the base model.
