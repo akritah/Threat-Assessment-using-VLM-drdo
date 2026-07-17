@@ -53,6 +53,7 @@ class TrainingConfig:
     eval_steps: int = 50
     save_steps: int = 100
     save_total_limit: int = 3
+    max_grad_norm: float = 0.0
 
     gradient_checkpointing: bool = True
     bf16: bool = True

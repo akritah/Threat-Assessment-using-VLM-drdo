@@ -35,6 +35,7 @@ logging_steps: 5
 eval_steps: 1000
 save_steps: 1000
 save_total_limit: 1
+max_grad_norm: 0.0
 
 # Performance
 gradient_checkpointing: true

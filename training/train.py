@@ -214,6 +214,7 @@ def train(config: TrainingConfig, resume: bool = False) -> Path:
         save_strategy=save_strategy,
         save_steps=config.save_steps if not eval_dataset else None,
         save_total_limit=config.save_total_limit,
+        max_grad_norm=config.max_grad_norm,
         gradient_checkpointing=config.gradient_checkpointing,
         bf16=config.bf16 if torch.cuda.is_available() else False,
         fp16=config.fp16 if torch.cuda.is_available() else False,
