@@ -121,6 +121,11 @@ def _save_adapter_artifacts(model: torch.nn.Module, processor, output_path: Path
 def train(config: TrainingConfig, resume: bool = False) -> Path:
     from transformers import AutoModelForImageTextToText, AutoProcessor
 
+    use_fp16 = torch.cuda.is_available() and config.fp16
+    use_bf16 = torch.cuda.is_available() and config.bf16
+    if torch.cuda.is_available() and not use_fp16 and not use_bf16:
+        os.environ["ACCELERATE_MIXED_PRECISION"] = "no"
+
     # CPU Fallback check: Disable quantization if CUDA is not available
     if not torch.cuda.is_available():
         logger.warning(
@@ -140,7 +145,7 @@ def train(config: TrainingConfig, resume: bool = False) -> Path:
         "token": token,
     }
     if torch.cuda.is_available():
-        load_kwargs["torch_dtype"] = torch.float16
+        load_kwargs["torch_dtype"] = torch.float16 if use_fp16 else (torch.bfloat16 if use_bf16 else torch.float32)
 
     if bnb_config:
         load_kwargs["quantization_config"] = bnb_config
@@ -173,15 +178,20 @@ def train(config: TrainingConfig, resume: bool = False) -> Path:
         param.requires_grad = False
 
     # Apply LoRA adapters
-    if torch.cuda.is_available():
+    if use_fp16:
         torch.set_default_dtype(torch.float16)
+    elif use_bf16:
+        torch.set_default_dtype(torch.bfloat16)
+    else:
+        torch.set_default_dtype(torch.float32)
 
     model = get_peft_model(model, _build_lora_config(config))
 
-    if torch.cuda.is_available() and config.fp16 and not config.bf16:
-        _cast_trainable_parameters(model, torch.float16)
-
     if torch.cuda.is_available():
+        target_dtype = torch.float16 if use_fp16 else (torch.bfloat16 if use_bf16 else torch.float32)
+        _cast_trainable_parameters(model, target_dtype)
+
+    if torch.cuda.is_available() and not (use_fp16 or use_bf16):
         torch.set_default_dtype(torch.float32)
 
     model.print_trainable_parameters()
@@ -216,8 +226,8 @@ def train(config: TrainingConfig, resume: bool = False) -> Path:
         save_total_limit=config.save_total_limit,
         max_grad_norm=config.max_grad_norm,
         gradient_checkpointing=config.gradient_checkpointing,
-        bf16=config.bf16 if torch.cuda.is_available() else False,
-        fp16=config.fp16 if torch.cuda.is_available() else False,
+        bf16=use_bf16,
+        fp16=use_fp16,
         logging_dir=str(logging_dir),
         logging_strategy="steps",
         load_best_model_at_end=True if eval_dataset else False,
