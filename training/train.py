@@ -154,9 +154,16 @@ def train(config: TrainingConfig, resume: bool = False) -> Path:
     # Apply LoRA adapters
     model = get_peft_model(model, _build_lora_config(config))
     if torch.cuda.is_available():
-        for name, module in model.named_modules():
-            if any(p.requires_grad for p in module.parameters(recurse=False)):
-                module.to(torch.float16)
+        # Parameter surgery: Re-create and replace trainable parameters in float16
+        for name, param in list(model.named_parameters()):
+            if param.requires_grad:
+                parts = name.split(".")
+                module = model
+                for part in parts[:-1]:
+                    module = getattr(module, part)
+                attr_name = parts[-1]
+                new_param = torch.nn.Parameter(param.data.to(torch.float16), requires_grad=True)
+                setattr(module, attr_name, new_param)
     model.print_trainable_parameters()
 
     train_dataset, eval_dataset = load_training_datasets(
