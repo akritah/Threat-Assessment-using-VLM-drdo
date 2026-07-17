@@ -65,6 +65,7 @@ from typing import Any
 
 import torch
 from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
+from peft.tuners.lora.layer import LoraLayer
 from transformers import BitsAndBytesConfig
 from trl import SFTTrainer, SFTConfig
 
@@ -102,6 +103,13 @@ def _cast_trainable_parameters(model: torch.nn.Module, dtype: torch.dtype) -> No
         for param in model.parameters():
             if param.requires_grad:
                 param.data = param.data.to(dtype)
+
+
+def _cast_lora_layers(model: torch.nn.Module, dtype: torch.dtype) -> None:
+    with torch.no_grad():
+        for module in model.modules():
+            if isinstance(module, LoraLayer):
+                module.to(dtype=dtype)
 
 
 def _save_adapter_artifacts(model: torch.nn.Module, processor, output_path: Path) -> None:
@@ -189,6 +197,7 @@ def train(config: TrainingConfig, resume: bool = False) -> Path:
 
     if torch.cuda.is_available():
         target_dtype = torch.float16 if use_fp16 else (torch.bfloat16 if use_bf16 else torch.float32)
+        _cast_lora_layers(model, target_dtype)
         _cast_trainable_parameters(model, target_dtype)
 
     if torch.cuda.is_available() and not (use_fp16 or use_bf16):
