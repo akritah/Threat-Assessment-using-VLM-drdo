@@ -164,6 +164,17 @@ def main():
         test_root = local_root / "datasets" / "Test"
         
     if not test_root.exists():
+        # Check if the dataset_root itself contains category folders (flat structure)
+        possible_cats = {
+            "abuse", "arrest", "arson", "assault", "burglary", "caraccident",
+            "explosion", "fighting", "normal", "roadaccident", "robbery", "riot",
+            "shooting", "shoplifting", "stealing", "vandalism"
+        }
+        if dataset_root.exists() and any(p.is_dir() and p.name.lower() in possible_cats for p in dataset_root.iterdir()):
+            test_root = dataset_root
+            logger.info(f"Using flat dataset directory as evaluation root: {test_root}")
+
+    if not test_root.exists():
         logger.warning(f"Test split folder not found at {test_root}. Generating conceptual mock list for syntax validation.")
         mock_entries = []
         for cat in ["Abuse", "Fighting", "Normal", "Riot", "Shooting"]:
