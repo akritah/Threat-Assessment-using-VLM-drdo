@@ -97,6 +97,27 @@ def _build_lora_config(config: TrainingConfig) -> LoraConfig:
     )
 
 
+def _cast_trainable_parameters(model: torch.nn.Module, dtype: torch.dtype) -> None:
+    with torch.no_grad():
+        for param in model.parameters():
+            if param.requires_grad:
+                param.data = param.data.to(dtype)
+
+
+def _save_adapter_artifacts(model: torch.nn.Module, processor, output_path: Path) -> None:
+    output_path.mkdir(parents=True, exist_ok=True)
+    model.save_pretrained(str(output_path))
+    processor.save_pretrained(str(output_path))
+
+    adapter_config = output_path / "adapter_config.json"
+    adapter_weights = output_path / "adapter_model.safetensors"
+    adapter_weights_bin = output_path / "adapter_model.bin"
+    if not adapter_config.exists():
+        raise FileNotFoundError(f"Missing adapter config after save: {adapter_config}")
+    if not adapter_weights.exists() and not adapter_weights_bin.exists():
+        raise FileNotFoundError(f"Missing adapter weights after save: {adapter_weights}")
+
+
 def train(config: TrainingConfig, resume: bool = False) -> Path:
     from transformers import AutoModelForImageTextToText, AutoProcessor
 
@@ -156,6 +177,9 @@ def train(config: TrainingConfig, resume: bool = False) -> Path:
         torch.set_default_dtype(torch.float16)
 
     model = get_peft_model(model, _build_lora_config(config))
+
+    if torch.cuda.is_available() and config.fp16 and not config.bf16:
+        _cast_trainable_parameters(model, torch.float16)
 
     if torch.cuda.is_available():
         torch.set_default_dtype(torch.float32)
@@ -230,9 +254,7 @@ def train(config: TrainingConfig, resume: bool = False) -> Path:
 
     # Save adapter weights only — never overwrite the base model.
     output_path = config.output_path
-    output_path.mkdir(parents=True, exist_ok=True)
-    trainer.save_model(str(output_path))
-    processor.save_pretrained(str(output_path))
+    _save_adapter_artifacts(trainer.model, processor, output_path)
     logger.info("Adapter saved to: %s", output_path)
 
     return output_path
