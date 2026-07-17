@@ -155,7 +155,7 @@ def train(config: TrainingConfig, resume: bool = False) -> Path:
     model = get_peft_model(model, _build_lora_config(config))
     if torch.cuda.is_available():
         for name, module in model.named_modules():
-            if "lora_" in name:
+            if any(p.requires_grad for p in module.parameters(recurse=False)):
                 module.to(torch.float16)
     model.print_trainable_parameters()
 
