@@ -75,6 +75,7 @@ def parse_args():
     parser.add_argument("--output-dir", default="evaluation", help="Output path for deliverables")
     parser.add_argument("--device", default="cuda", help="cuda or cpu")
     parser.add_argument("--max-eval-videos", type=int, default=100, help="Number of videos to evaluate")
+    parser.add_argument("--skip-baseline", action="store_true", help="Skip base model baseline run to save execution time")
     return parser.parse_args()
 
 def load_gemma_model(model_id, adapter_path=None, device="cpu"):
@@ -364,7 +365,7 @@ def main():
     # Load Base model once
     model, processor = load_gemma_model(base_model_id, device=args.device)
     
-    # Loop A: Base Model alone (Baseline)
+    # Baseline Prompt
     baseline_prompt = (
         "Analyze this surveillance scene video sequence.\n"
         "Describe:\n"
@@ -375,16 +376,41 @@ def main():
         "* Estimate the threat level as Low, Medium, or High.\n"
         "* Explain your reasoning."
     )
-    
-    for idx, sample in enumerate(extracted_data, 1):
-        vid = sample["video_id"]
-        logger.info(f"[{idx}/{len(extracted_data)}] Base Baseline: {vid}")
-        res, latency = run_inference(model, processor, sample["frame_paths"], baseline_prompt, args.device)
-        base_results[vid] = (res, latency)
 
-    # Loop B: Base Model guided by FT Caption (Two-Stage Hybrid)
+    eval_csv_path = PROJECT_ROOT / "evaluation_results.csv"
+    if not eval_csv_path.parent.exists():
+        eval_csv_path = local_root / "evaluation_results.csv"
+
+    eval_headers = [
+        "Video ID", "Ground Truth Category", "Frames Used", "Base Gemma Output", 
+        "Fine-Tuned Gemma Output", "Video-LLaVA Output", "Predicted Activity", 
+        "Threat Assessment", "Threat Level", "Inference Time", "Notes"
+    ]
+
+    # Pre-write/initialize CSV headers
+    with eval_csv_path.open("w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=eval_headers)
+        writer.writeheader()
+
+    records = []
+
+    # Combined Loop for progressive CSV saves & aggressive GC
     for idx, sample in enumerate(extracted_data, 1):
         vid = sample["video_id"]
+        cat = sample["category"]
+        frames_str = ";".join([str(p) for p in sample["frame_paths"]])
+        
+        # 1. Base Model alone (Baseline)
+        if not args.skip_baseline:
+            logger.info(f"[{idx}/{len(extracted_data)}] Base Baseline: {vid}")
+            base_out, base_time = run_inference(model, processor, sample["frame_paths"], baseline_prompt, args.device)
+        else:
+            logger.info(f"[{idx}/{len(extracted_data)}] Base Baseline (SKIPPED): {vid}")
+            base_out, base_time = "N/A - Skip (Baseline comparison skipped)", 0.0
+            
+        base_results[vid] = (base_out, base_time)
+        
+        # 2. Base Model guided by FT Caption (Two-Stage Hybrid)
         action_caption = ft_action_captions.get(vid, "Unknown activity")
         guided_prompt = (
             "Analyze this surveillance scene video sequence.\n"
@@ -398,34 +424,8 @@ def main():
             "* Explain your reasoning."
         )
         logger.info(f"[{idx}/{len(extracted_data)}] Guided Two-Stage: {vid}")
-        res, latency = run_inference(model, processor, sample["frame_paths"], guided_prompt, args.device)
-        ft_results[vid] = (res, latency)
-
-    del model, processor
-    gc.collect()
-    if args.device == "cuda":
-        torch.cuda.empty_cache()
-
-    # --- Compile Deliverables ---
-    eval_csv_path = PROJECT_ROOT / "evaluation_results.csv"
-    if not eval_csv_path.parent.exists():
-        eval_csv_path = local_root / "evaluation_results.csv"
-
-    eval_headers = [
-        "Video ID", "Ground Truth Category", "Frames Used", "Base Gemma Output", 
-        "Fine-Tuned Gemma Output", "Video-LLaVA Output", "Predicted Activity", 
-        "Threat Assessment", "Threat Level", "Inference Time", "Notes"
-    ]
-    
-    records = []
-    for sample in extracted_data:
-        vid = sample["video_id"]
-        cat = sample["category"]
-        frames_str = ";".join([str(p) for p in sample["frame_paths"]])
-        
-        base_out, base_time = base_results.get(vid, ("N/A", 0.0))
-        ft_guided_out, ft_time = ft_results.get(vid, ("N/A", 0.0))
-        predicted_activity = ft_action_captions.get(vid, "Unknown")
+        ft_guided_out, ft_time = run_inference(model, processor, sample["frame_paths"], guided_prompt, args.device)
+        ft_results[vid] = (ft_guided_out, ft_time)
         
         # Parse Guided Output for metrics
         threat_level = "Low"
@@ -438,25 +438,35 @@ def main():
                     threat_level = "Medium"
                 break
                 
-        records.append({
+        record = {
             "Video ID": vid,
             "Ground Truth Category": cat,
             "Frames Used": frames_str,
             "Base Gemma Output": base_out,
             "Fine-Tuned Gemma Output": ft_guided_out,
             "Video-LLaVA Output": "N/A - Skip (Not installed/configured)",
-            "Predicted Activity": predicted_activity,
+            "Predicted Activity": action_caption,
             "Threat Assessment": ft_guided_out,
             "Threat Level": threat_level,
             "Inference Time": f"Base: {base_time:.2f}s | FT Guided: {ft_time:.2f}s",
             "Notes": f"Two-Stage Hybrid (FT Caption + Base Reasoning)"
-        })
+        }
+        records.append(record)
+        
+        # Append record progressively to the CSV
+        with eval_csv_path.open("a", newline="", encoding="utf-8") as f:
+            writer = csv.DictWriter(f, fieldnames=eval_headers)
+            writer.writerow(record)
+            
+        # Clear VRAM after every video sequence processing
+        gc.collect()
+        if args.device == "cuda":
+            torch.cuda.empty_cache()
 
-    with eval_csv_path.open("w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=eval_headers)
-        writer.writeheader()
-        for r in records:
-            writer.writerow(r)
+    del model, processor
+    gc.collect()
+    if args.device == "cuda":
+        torch.cuda.empty_cache()
 
     # Plot Distribution
     base_levels = {"Low": 0, "Medium": 0, "High": 0}
