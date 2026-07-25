@@ -1,7 +1,7 @@
 # QLoRA fine-tuning configuration for Gemma 3 4B on ActivityNet.
 
 base_model_id: google/gemma-3-4b-it
-output_dir: adapters/activitynet_v1
+output_dir: models/adapters/activitynet_v1
 
 # Target paths for checkpoints and logs
 checkpoint_dir: checkpoints/activitynet

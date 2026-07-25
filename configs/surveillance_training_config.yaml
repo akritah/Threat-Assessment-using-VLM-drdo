@@ -1,7 +1,7 @@
 # QLoRA fine-tuning configuration for Surveillance Domain Adaptation (XD-Violence / UCF-Crime)
 
 base_model_id: google/gemma-3-4b-it
-output_dir: adapters/surveillance_v1
+output_dir: models/adapters/surveillance_v1
 
 # Dataset: JSONL with {"messages": [{"role": "user", "content": [{"type": "image", "image": "path"}, {"type": "text", "text": "prompt"}]}]}
 train_dataset: training/data/surveillance_train.jsonl

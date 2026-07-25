@@ -70,8 +70,8 @@ logger = logging.getLogger(__name__)
 
 def parse_args():
     parser = argparse.ArgumentParser(description="UCF-Crime VLM Evaluation Suite")
-    parser.add_argument("--dataset-dir", default="datasets", help="Path containing Test/ and Train/ splits")
-    parser.add_argument("--adapter-path", default="adapters/activitynet_v1", help="Path to LoRA weights")
+    parser.add_argument("--dataset-dir", default="datasets/raw/XD-Violence", help="Path containing Test/ and Train/ splits")
+    parser.add_argument("--adapter-path", default="models/adapters/activitynet_v1", help="Path to LoRA weights")
     parser.add_argument("--output-dir", default="evaluation", help="Output path for deliverables")
     parser.add_argument("--device", default="cuda", help="cuda or cpu")
     parser.add_argument("--max-eval-videos", type=int, default=100, help="Number of videos to evaluate")
@@ -324,10 +324,8 @@ def main():
             "pre-extracted frame subdirectories."
         )
 
-    # Write selected videos CSV index
-    selected_csv_path = PROJECT_ROOT / "selected_videos.csv"
-    if not selected_csv_path.parent.exists():
-        selected_csv_path = local_root / "selected_videos.csv"
+    # Write selected videos CSV index directly to consolidated folder
+    selected_csv_path = csv_dir / "selected_videos.csv"
 
     with selected_csv_path.open("w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
@@ -377,9 +375,7 @@ def main():
         "* Explain your reasoning."
     )
 
-    eval_csv_path = PROJECT_ROOT / "evaluation_results.csv"
-    if not eval_csv_path.parent.exists():
-        eval_csv_path = local_root / "evaluation_results.csv"
+    eval_csv_path = csv_dir / "evaluation_results.csv"
 
     eval_headers = [
         "Video ID", "Ground Truth Category", "Frames Used", "Base Gemma Output", 
@@ -599,21 +595,10 @@ def main():
     report_content = report_content.replace("{ft_tn}", str(ft_tn))
     report_content = report_content.replace("{ft_fn}", str(ft_fn))
 
-    report_out_path = PROJECT_ROOT / "evaluation_report.md"
-    if not report_out_path.parent.exists():
-        report_out_path = local_root / "evaluation_report.md"
+    report_out_path = reports_dir / "evaluation_report.md"
         
     with report_out_path.open("w", encoding="utf-8") as f:
         f.write(report_content)
-        
-    # Copy files
-    try:
-        import shutil
-        shutil.copy(str(selected_csv_path), csv_dir / "selected_videos.csv")
-        shutil.copy(str(eval_csv_path), csv_dir / "evaluation_results.csv")
-        shutil.copy(str(report_out_path), reports_dir / "evaluation_report.md")
-    except Exception as e:
-        logger.warning(f"Could not copy files to subdir: {e}")
         
     logger.info("Evaluation workflow complete. All reports and charts generated successfully.")
 

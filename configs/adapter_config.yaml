@@ -4,7 +4,7 @@
 
 base_model_id: google/gemma-3-4b-it
 base_model_path: models/gemma_base
-adapters_dir: adapters
+adapters_dir: models/adapters
 
 # Set to one of: threat_assessment, surveillance, activity_understanding
 # Leave null to use the base model only.

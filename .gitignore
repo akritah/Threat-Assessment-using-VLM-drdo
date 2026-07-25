@@ -53,8 +53,8 @@ checkpoints/*/
 !models/gemma_base/.gitkeep
 
 # LoRA Adapters
-adapters/*/
-!adapters/**/.gitkeep
+models/adapters/*/
+!models/adapters/**/.gitkeep
 
 # Local Datasets & Data
 training/data/*

@@ -1,7 +1,7 @@
 # QLoRA fine-tuning configuration for Gemma 3 4B domain adaptation.
 
 base_model_id: google/gemma-3-4b-it
-output_dir: adapters/threat_assessment
+output_dir: models/adapters/threat_assessment
 
 # Dataset: JSONL with {"messages": [...]} or {"image": "path", "prompt": "...", "response": "..."}
 train_dataset: training/data/train.jsonl

@@ -71,9 +71,9 @@ def load_vlm(device="cuda"):
         return MODEL, PROCESSOR
         
     base_model_id = "google/gemma-3-4b-it"
-    adapter_path = PROJECT_ROOT / "adapters" / "surveillance_colab"
+    adapter_path = PROJECT_ROOT / "models" / "adapters" / "surveillance_colab"
     if not adapter_path.exists():
-        adapter_path = PROJECT_ROOT / "adapters" / "surveillance_v1"
+        adapter_path = PROJECT_ROOT / "models" / "adapters" / "surveillance_v1"
         
     use_4bit = (device == "cuda" and torch.cuda.is_available())
     device_map = "auto" if use_4bit else {"": "cpu"}
