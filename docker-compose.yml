@@ -7,9 +7,13 @@ services:
     volumes:
       - .:/app
     environment:
-      - INFERENCE_BACKEND=hf
-      - ACTIVE_ADAPTER=surveillance_colab
-      - HF_TOKEN=${HF_TOKEN}
+      - INFERENCE_BACKEND=${INFERENCE_BACKEND:-ollama}
+      - ACTIVE_ADAPTER=${ACTIVE_ADAPTER:-}
+      - OLLAMA_URL=${OLLAMA_URL:-http://host.docker.internal:11434}
+      - OLLAMA_MODEL=${OLLAMA_MODEL:-gemma3:4b}
+      - HF_TOKEN=${HF_TOKEN:-}
+    extra_hosts:
+      - "host.docker.internal:host-gateway" # Required to allow container-to-host Ollama API calls
     deploy:
       resources:
         reservations:
