@@ -79,6 +79,11 @@ def parse_args():
     return parser.parse_args()
 
 def load_gemma_model(model_id, adapter_path=None, device="cpu"):
+    backend = os.getenv("INFERENCE_BACKEND", "ollama").lower()
+    if backend == "ollama":
+        logger.info("INFERENCE_BACKEND is set to 'ollama'. Bypassing PyTorch loading and using local Ollama API.")
+        return None, None
+
     from models.model_loader import load_base_model
     from peft import PeftModel
     
@@ -110,6 +115,50 @@ def load_gemma_model(model_id, adapter_path=None, device="cpu"):
 
 def run_inference(model, processor, image_paths, prompt, device):
     """Run inference over a list of image keyframes (multi-frame VLM processing)."""
+    if model is None:
+        import base64
+        import requests
+        from io import BytesIO
+        
+        ollama_url = os.getenv("OLLAMA_URL", "http://localhost:11434")
+        ollama_model = os.getenv("OLLAMA_MODEL", "gemma3:4b")
+        
+        base64_images = []
+        # Support up to 8 frames for temporal window processing
+        for path in image_paths[:8]:
+            try:
+                img = Image.open(path).convert("RGB")
+                img_resized = img.resize((448, 448), Image.Resampling.LANCZOS)
+                buffered = BytesIO()
+                img_resized.save(buffered, format="JPEG", quality=85)
+                img_str = base64.b64encode(buffered.getvalue()).decode("utf-8")
+                base64_images.append(img_str)
+            except Exception as e:
+                logger.warning(f"Failed to process frame {path} for Ollama: {e}")
+                
+        payload = {
+            "model": ollama_model,
+            "prompt": prompt,
+            "images": base64_images,
+            "stream": False,
+            "options": {
+                "temperature": 0.0
+            }
+        }
+        
+        start_time = time.perf_counter()
+        try:
+            r = requests.post(f"{ollama_url}/api/generate", json=payload, timeout=60)
+            latency = time.perf_counter() - start_time
+            if r.status_code == 200:
+                response = r.json().get("response", "").strip()
+                return response, latency
+            else:
+                return f"Error: Ollama API returned status {r.status_code}", latency
+        except Exception as e:
+            latency = time.perf_counter() - start_time
+            return f"Error connecting to Ollama: {e}", latency
+
     content_list = []
     # Support up to 8 frames for temporal window processing
     for path in image_paths[:8]:

@@ -70,6 +70,11 @@ def load_vlm(device="cuda"):
     if MODEL is not None:
         return MODEL, PROCESSOR
         
+    backend = os.getenv("INFERENCE_BACKEND", "ollama").lower()
+    if backend == "ollama":
+        logger.info("INFERENCE_BACKEND is set to 'ollama'. Bypassing PyTorch VLM load and using local Ollama REST API.")
+        return None, None
+
     base_model_id = "google/gemma-3-4b-it"
     adapter_path = PROJECT_ROOT / "models" / "adapters" / "surveillance_colab"
     if not adapter_path.exists():
@@ -91,6 +96,43 @@ def load_vlm(device="cuda"):
     return MODEL, PROCESSOR
 
 def run_inference(model, processor, images, prompt, device, max_new_tokens=256):
+    if model is None:
+        import base64
+        import requests
+        from io import BytesIO
+        
+        ollama_url = os.getenv("OLLAMA_URL", "http://localhost:11434")
+        ollama_model = os.getenv("OLLAMA_MODEL", "gemma3:4b")
+        
+        base64_images = []
+        for img in images:
+            # Downsample/compress to ensure fast API payload transmission
+            img_resized = img.resize((448, 448), Image.Resampling.LANCZOS)
+            buffered = BytesIO()
+            img_resized.save(buffered, format="JPEG", quality=85)
+            img_str = base64.b64encode(buffered.getvalue()).decode("utf-8")
+            base64_images.append(img_str)
+            
+        payload = {
+            "model": ollama_model,
+            "prompt": prompt,
+            "images": base64_images,
+            "stream": False,
+            "options": {
+                "num_predict": max_new_tokens,
+                "temperature": 0.0
+            }
+        }
+        
+        try:
+            r = requests.post(f"{ollama_url}/api/generate", json=payload, timeout=60)
+            if r.status_code == 200:
+                return r.json().get("response", "").strip()
+            else:
+                return f"Error: Ollama API returned status code {r.status_code}: {r.text}"
+        except Exception as e:
+            return f"Error connecting to Ollama at {ollama_url}: {str(e)}"
+
     content_list = []
     # Vision-Language prompt: list of images + text prompt
     for img in images:
