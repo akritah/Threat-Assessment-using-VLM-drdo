@@ -126,8 +126,8 @@ def run_inference(model, processor, image_paths, prompt, device):
         ollama_model = os.getenv("OLLAMA_MODEL", "gemma3:4b")
         
         base64_images = []
-        # Support up to 8 frames for temporal window processing
-        for path in image_paths[:8]:
+        # Support up to 4 frames on CPU to optimize generation speed
+        for path in image_paths[:4]:
             try:
                 img = Image.open(path).convert("RGB")
                 img_resized = img.resize((448, 448), Image.Resampling.LANCZOS)
@@ -150,7 +150,7 @@ def run_inference(model, processor, image_paths, prompt, device):
         
         start_time = time.perf_counter()
         try:
-            r = requests.post(f"{ollama_url}/api/generate", json=payload, timeout=60)
+            r = requests.post(f"{ollama_url}/api/generate", json=payload, timeout=180)
             latency = time.perf_counter() - start_time
             if r.status_code == 200:
                 response = r.json().get("response", "").strip()
