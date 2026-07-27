@@ -1,0 +1,16 @@
+{
+  "video_count": 42,
+  "total_bytes": 959823100,
+  "total_gb": 0.894,
+  "categories": {
+    "Abuse": 7,
+    "Arrest": 7,
+    "Assault": 7,
+    "Burglary": 7,
+    "Fighting": 7,
+    "normal": 7
+  },
+  "teacher_rows_raw": 459,
+  "teacher_rows_distilled": 459,
+  "teacher_model": "openai-codex gpt-5.2"
+}
