@@ -550,6 +550,22 @@ def main():
     else:
         logger.info("All videos in Stage 2 already evaluated.")
 
+    # Load all records and base results from CSV for metrics calculation and plotting
+    records = []
+    base_results = {}
+    if eval_csv_path.exists():
+        try:
+            with eval_csv_path.open("r", newline="", encoding="utf-8") as f:
+                reader = csv.DictReader(f)
+                for row in reader:
+                    records.append(row)
+                    vid = row.get("Video ID")
+                    base_out = row.get("Base Gemma Output", "Low")
+                    base_results[vid] = (base_out, 0.0)
+            logger.info(f"Loaded {len(records)} evaluation records from CSV for final metrics and reports.")
+        except Exception as e:
+            logger.error(f"Failed to load records from CSV: {e}")
+
     # Plot Distribution
     base_levels = {"Low": 0, "Medium": 0, "High": 0}
     ft_levels = {"Low": 0, "Medium": 0, "High": 0}
