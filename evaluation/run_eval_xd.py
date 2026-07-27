@@ -4,6 +4,7 @@ import gc
 import json
 import logging
 from pathlib import Path
+import os
 import sys
 import time
 from typing import Any
@@ -59,10 +60,8 @@ except Exception:
     pass
 
 # Automatically find directories
-PROJECT_ROOT = Path("/content/project")
 local_root = Path(__file__).resolve().parent.parent
-if not PROJECT_ROOT.exists():
-    PROJECT_ROOT = local_root
+PROJECT_ROOT = local_root
 
 sys.path.insert(0, str(PROJECT_ROOT))
 sys.path.insert(0, str(local_root))
