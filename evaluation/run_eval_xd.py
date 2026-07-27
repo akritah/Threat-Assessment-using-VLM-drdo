@@ -61,6 +61,8 @@ except Exception:
 # Automatically find directories
 PROJECT_ROOT = Path("/content/project")
 local_root = Path(__file__).resolve().parent.parent
+if not PROJECT_ROOT.exists():
+    PROJECT_ROOT = local_root
 
 sys.path.insert(0, str(PROJECT_ROOT))
 sys.path.insert(0, str(local_root))
@@ -79,6 +81,7 @@ def parse_args():
     return parser.parse_args()
 
 def load_gemma_model(model_id, adapter_path=None, device="cpu"):
+    import os
     backend = os.getenv("INFERENCE_BACKEND", "ollama").lower()
     if backend == "ollama":
         logger.info("INFERENCE_BACKEND is set to 'ollama'. Bypassing PyTorch loading and using local Ollama API.")
