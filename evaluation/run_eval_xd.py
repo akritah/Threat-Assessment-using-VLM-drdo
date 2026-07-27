@@ -126,8 +126,12 @@ def run_inference(model, processor, image_paths, prompt, device):
         ollama_model = os.getenv("OLLAMA_MODEL", "gemma3:4b")
         
         base64_images = []
-        # Support up to 4 frames on CPU to optimize generation speed
-        for path in image_paths[:4]:
+        # Select the single middle frame to optimize CPU visual token encoding by 4x
+        selected_paths = []
+        if image_paths:
+            selected_paths = [image_paths[len(image_paths) // 2]]
+            
+        for path in selected_paths:
             try:
                 img = Image.open(path).convert("RGB")
                 img_resized = img.resize((448, 448), Image.Resampling.LANCZOS)
