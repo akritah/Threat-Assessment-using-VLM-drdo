@@ -388,85 +388,75 @@ def main():
         for row in selected_list:
             writer.writerow(row)
 
-    base_model_id = "google/gemma-3-4b-it"
-
-    # --- STAGE 1: Fine-Tuned Action Captioning (8-Frame Input) ---
-    logger.info("Starting Stage 1 SFT inference (Action caption extraction)...")
-    ft_action_captions = {}
-    
-    # Load FT model to extract captions
-    model, processor = load_gemma_model(base_model_id, adapter_path=str(adapter_path), device=args.device)
-    caption_prompt = "Describe the exact activity happening in this video sequence as a concise caption (e.g., A person is performing...)."
-    
-    for idx, sample in enumerate(extracted_data, 1):
-        vid = sample["video_id"]
-        logger.info(f"[{idx}/{len(extracted_data)}] FT captioning: {vid}")
-        caption, _ = run_inference(model, processor, sample["frame_paths"], caption_prompt, args.device)
-        ft_action_captions[vid] = caption
-        logger.info(f"FT Caption: {caption}")
-        
-    del model, processor
-    gc.collect()
-    if args.device == "cuda":
-        torch.cuda.empty_cache()
-
-    # --- STAGE 2: Base VLM Evaluation & Guided Two-Stage Inference ---
-    logger.info("Starting Stage 2 inference (Baseline vs. Guided Reasoning)...")
-    base_results = {}
-    ft_results = {}
-    
-    # Load Base model once
-    model, processor = load_gemma_model(base_model_id, device=args.device)
-    
-    # Baseline Prompt
-    baseline_prompt = (
-        "Analyze this surveillance scene video sequence.\n"
-        "Describe:\n"
-        "* What is happening?\n"
-        "* Which activities are visible?\n"
-        "* Is there any suspicious behaviour?\n"
-        "* Are there any threat indicators?\n"
-        "* Estimate the threat level as Low, Medium, or High.\n"
-        "* Explain your reasoning."
-    )
-
     eval_csv_path = csv_dir / "evaluation_results.csv"
-
     eval_headers = [
         "Video ID", "Ground Truth Category", "Frames Used", "Base Gemma Output", 
         "Fine-Tuned Gemma Output", "Video-LLaVA Output", "Predicted Activity", 
         "Threat Assessment", "Threat Level", "Inference Time", "Notes"
     ]
 
-    # Pre-write/initialize CSV headers
-    with eval_csv_path.open("w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=eval_headers)
-        writer.writeheader()
+    # Read existing Video IDs and pre-extracted captions to support resuming
+    existing_vids = set()
+    existing_vids_captions = {}
+    if eval_csv_path.exists():
+        try:
+            with eval_csv_path.open("r", newline="", encoding="utf-8") as f:
+                reader = csv.DictReader(f)
+                for row in reader:
+                    vid = row.get("Video ID")
+                    if vid:
+                        existing_vids.add(vid)
+                        existing_vids_captions[vid] = row.get("Predicted Activity", "Unknown activity")
+            logger.info(f"Detected existing evaluation progress. Found {len(existing_vids)} already evaluated videos. Resume mode active.")
+        except Exception as e:
+            logger.warning(f"Could not read existing CSV for resuming: {e}")
 
-    records = []
+    base_model_id = "google/gemma-3-4b-it"
 
-    # Combined Loop for progressive CSV saves & aggressive GC
-    for idx, sample in enumerate(extracted_data, 1):
-        vid = sample["video_id"]
-        cat = sample["category"]
-        frames_str = ";".join([str(p) for p in sample["frame_paths"]])
+    # --- STAGE 1: Fine-Tuned Action Captioning (8-Frame Input) ---
+    logger.info("Starting Stage 1 SFT inference (Action caption extraction)...")
+    ft_action_captions = {}
+    
+    # We only need to load the model if there are videos left to process in Stage 1
+    has_videos_to_process = any(sample["video_id"] not in existing_vids for sample in extracted_data)
+    if has_videos_to_process:
+        model, processor = load_gemma_model(base_model_id, adapter_path=str(adapter_path), device=args.device)
+        caption_prompt = "Describe the exact activity happening in this video sequence as a concise caption (e.g., A person is performing...)."
         
-        # 1. Base Model alone (Baseline)
-        if not args.skip_baseline:
-            logger.info(f"[{idx}/{len(extracted_data)}] Base Baseline: {vid}")
-            base_out, base_time = run_inference(model, processor, sample["frame_paths"], baseline_prompt, args.device)
-        else:
-            logger.info(f"[{idx}/{len(extracted_data)}] Base Baseline (SKIPPED): {vid}")
-            base_out, base_time = "N/A - Skip (Baseline comparison skipped)", 0.0
+        for idx, sample in enumerate(extracted_data, 1):
+            vid = sample["video_id"]
+            if vid in existing_vids:
+                ft_action_captions[vid] = existing_vids_captions.get(vid, "Unknown activity")
+                logger.info(f"[{idx}/{len(extracted_data)}] FT captioning (SKIPPED - loaded from CSV): {vid}")
+                continue
+                
+            logger.info(f"[{idx}/{len(extracted_data)}] FT captioning: {vid}")
+            caption, _ = run_inference(model, processor, sample["frame_paths"], caption_prompt, args.device)
+            ft_action_captions[vid] = caption
+            logger.info(f"FT Caption: {caption}")
             
-        base_results[vid] = (base_out, base_time)
+        del model, processor
+        gc.collect()
+        if args.device == "cuda":
+            torch.cuda.empty_cache()
+    else:
+        logger.info("All Stage 1 captions loaded from existing CSV results.")
+        ft_action_captions = existing_vids_captions
+
+    # --- STAGE 2: Base VLM Evaluation & Guided Two-Stage Inference ---
+    logger.info("Starting Stage 2 inference (Baseline vs. Guided Reasoning)...")
+    base_results = {}
+    ft_results = {}
+    
+    # Check if there are Stage 2 videos remaining to process
+    has_stage2_to_process = any(sample["video_id"] not in existing_vids for sample in extracted_data)
+    if has_stage2_to_process:
+        model, processor = load_gemma_model(base_model_id, device=args.device)
         
-        # 2. Base Model guided by FT Caption (Two-Stage Hybrid)
-        action_caption = ft_action_captions.get(vid, "Unknown activity")
-        guided_prompt = (
+        # Baseline Prompt
+        baseline_prompt = (
             "Analyze this surveillance scene video sequence.\n"
-            f"You are given the following pre-extracted activity class: '{action_caption}'\n\n"
-            "Using this action class and the visual evidence from the frames, describe:\n"
+            "Describe:\n"
             "* What is happening?\n"
             "* Which activities are visible?\n"
             "* Is there any suspicious behaviour?\n"
@@ -474,50 +464,91 @@ def main():
             "* Estimate the threat level as Low, Medium, or High.\n"
             "* Explain your reasoning."
         )
-        logger.info(f"[{idx}/{len(extracted_data)}] Guided Two-Stage: {vid}")
-        ft_guided_out, ft_time = run_inference(model, processor, sample["frame_paths"], guided_prompt, args.device)
-        ft_results[vid] = (ft_guided_out, ft_time)
-        
-        # Parse Guided Output for metrics
-        threat_level = "Low"
-        for line in ft_guided_out.split("\n"):
-            if "threat level" in line.lower():
-                raw_level = line.split(":")[-1].strip().lower()
-                if "high" in raw_level:
-                    threat_level = "High"
-                elif "medium" in raw_level:
-                    threat_level = "Medium"
-                break
+
+        # Pre-write/initialize CSV headers only if starting fresh
+        if not eval_csv_path.exists() or len(existing_vids) == 0:
+            with eval_csv_path.open("w", newline="", encoding="utf-8") as f:
+                writer = csv.DictWriter(f, fieldnames=eval_headers)
+                writer.writeheader()
+
+        # Combined Loop for progressive CSV saves & aggressive GC
+        for idx, sample in enumerate(extracted_data, 1):
+            vid = sample["video_id"]
+            if vid in existing_vids:
+                logger.info(f"[{idx}/{len(extracted_data)}] Skipping Stage 2 evaluation for {vid} (already completed).")
+                continue
                 
-        record = {
-            "Video ID": vid,
-            "Ground Truth Category": cat,
-            "Frames Used": frames_str,
-            "Base Gemma Output": base_out,
-            "Fine-Tuned Gemma Output": ft_guided_out,
-            "Video-LLaVA Output": "N/A - Skip (Not installed/configured)",
-            "Predicted Activity": action_caption,
-            "Threat Assessment": ft_guided_out,
-            "Threat Level": threat_level,
-            "Inference Time": f"Base: {base_time:.2f}s | FT Guided: {ft_time:.2f}s",
-            "Notes": f"Two-Stage Hybrid (FT Caption + Base Reasoning)"
-        }
-        records.append(record)
-        
-        # Append record progressively to the CSV
-        with eval_csv_path.open("a", newline="", encoding="utf-8") as f:
-            writer = csv.DictWriter(f, fieldnames=eval_headers)
-            writer.writerow(record)
+            cat = sample["category"]
+            frames_str = ";".join([str(p) for p in sample["frame_paths"]])
             
-        # Clear VRAM after every video sequence processing
+            # 1. Base Model alone (Baseline)
+            if not args.skip_baseline:
+                logger.info(f"[{idx}/{len(extracted_data)}] Base Baseline: {vid}")
+                base_out, base_time = run_inference(model, processor, sample["frame_paths"], baseline_prompt, args.device)
+            else:
+                logger.info(f"[{idx}/{len(extracted_data)}] Base Baseline (SKIPPED): {vid}")
+                base_out, base_time = "N/A - Skip (Baseline comparison skipped)", 0.0
+                
+            base_results[vid] = (base_out, base_time)
+            
+            # 2. Base Model guided by FT Caption (Two-Stage Hybrid)
+            action_caption = ft_action_captions.get(vid, "Unknown activity")
+            guided_prompt = (
+                "Analyze this surveillance scene video sequence.\n"
+                f"You are given the following pre-extracted activity class: '{action_caption}'\n\n"
+                "Using this action class and the visual evidence from the frames, describe:\n"
+                "* What is happening?\n"
+                "* Which activities are visible?\n"
+                "* Is there any suspicious behaviour?\n"
+                "* Are there any threat indicators?\n"
+                "* Estimate the threat level as Low, Medium, or High.\n"
+                "* Explain your reasoning."
+            )
+            logger.info(f"[{idx}/{len(extracted_data)}] Guided Two-Stage: {vid}")
+            ft_guided_out, ft_time = run_inference(model, processor, sample["frame_paths"], guided_prompt, args.device)
+            ft_results[vid] = (ft_guided_out, ft_time)
+            
+            # Parse Guided Output for metrics
+            threat_level = "Low"
+            for line in ft_guided_out.split("\n"):
+                if "threat level" in line.lower():
+                    raw_level = line.split(":")[-1].strip().lower()
+                    if "high" in raw_level:
+                        threat_level = "High"
+                    elif "medium" in raw_level:
+                        threat_level = "Medium"
+                    break
+                    
+            record = {
+                "Video ID": vid,
+                "Ground Truth Category": cat,
+                "Frames Used": frames_str,
+                "Base Gemma Output": base_out,
+                "Fine-Tuned Gemma Output": ft_guided_out,
+                "Video-LLaVA Output": "N/A - Skip (Not installed/configured)",
+                "Predicted Activity": action_caption,
+                "Threat Assessment": ft_guided_out,
+                "Threat Level": threat_level,
+                "Inference Time": f"Base: {base_time:.2f}s | FT Guided: {ft_time:.2f}s",
+                "Notes": f"Two-Stage Hybrid (FT Caption + Base Reasoning)"
+            }
+            
+            # Append record progressively to the CSV
+            with eval_csv_path.open("a", newline="", encoding="utf-8") as f:
+                writer = csv.DictWriter(f, fieldnames=eval_headers)
+                writer.writerow(record)
+                
+            # Clear VRAM after every video sequence processing
+            gc.collect()
+            if args.device == "cuda":
+                torch.cuda.empty_cache()
+
+        del model, processor
         gc.collect()
         if args.device == "cuda":
             torch.cuda.empty_cache()
-
-    del model, processor
-    gc.collect()
-    if args.device == "cuda":
-        torch.cuda.empty_cache()
+    else:
+        logger.info("All videos in Stage 2 already evaluated.")
 
     # Plot Distribution
     base_levels = {"Low": 0, "Medium": 0, "High": 0}
