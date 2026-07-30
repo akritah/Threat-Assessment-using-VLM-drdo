@@ -1,4 +1,4 @@
-# Qualitative & Quantitative Comparative Evaluation Report: Gemma 3 Base vs. Fine-Tuned (ActivityNet Adapter) on XD-Violence Dataset
+# Quantitative Comparative Evaluation Report: Gemma 3 Base vs. Two-Stage Hybrid on UCF-Crime Dataset
 
 **Prepared by:** Graduate Research Assistant  
 **Target Reviewer:** DRDO Research Project Guide  
@@ -7,15 +7,12 @@
 ---
 
 ## 1. Objective
-This research project evaluates whether domain adaptation of the **Gemma 3 4B Vision-Language Model (VLM)** using **QLoRA** on the **ActivityNet Captions** dataset improves its scene understanding, temporal activity description capabilities, and downstream threat-level analysis in real-world surveillance videos. The evaluation contrasts the base model against the fine-tuned adapter on anomalous and normal categories from the **XD-Violence** surveillance dataset.
+This research project evaluates whether domain adaptation of the **Gemma 3 4B Vision-Language Model (VLM)** using **QLoRA** on the **ActivityNet Captions** dataset improves its scene understanding, temporal activity description capabilities, and downstream threat-level analysis in real-world surveillance videos. The evaluation contrasts the base model against the proposed Two-Stage Hybrid pipeline on anomalous and normal categories from the **UCF-Crime** surveillance dataset.
 
 ---
 
 ## 2. Dataset Description
-The evaluation utilizes a combined cross-dataset benchmark composed of **42 unique videos** from multiple sources to validate the model's domain generalization:
-1.  **UCF-Crime (Anomalies):** Stratified samples representing *Abuse*, *Arrest*, *Assault*, *Burglary*, and *Fighting* categories (35 videos).
-2.  **XD-Violence (Anomalies):** Integrated video clips representing explosion and vehicle accident anomalies.
-3.  **ActivityNet (Normal Contexts):** Video segments representing typical office, hallway, and street scenes with no anomalous behavior (7 videos).
+The evaluation utilizes a stratified sample of the **UCF-Crime dataset**, which comprises CCTV footage containing normal security footage and diverse anomalous threats:
 
 *   **Total Evaluated Videos**: 42 unique videos.
 *   **Class Distribution**:
