@@ -1,7 +1,7 @@
 {
-  "average_base_latency_sec": 127.16764705882355,
-  "average_hybrid_latency_subset_sec": 125.486875,
-  "average_hybrid_latency_all_sec": 107.05146341463416,
-  "base_valid_runs": 17,
-  "hybrid_valid_runs": 41
+  "average_base_latency_sec": 126.86366666666667,
+  "average_hybrid_latency_subset_sec": 116.71482758620691,
+  "average_hybrid_latency_all_sec": 109.1028282828283,
+  "base_valid_runs": 30,
+  "hybrid_valid_runs": 99
 }

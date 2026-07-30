@@ -17,9 +17,9 @@ Core ablation benchmarks.
     \toprule
     Model Configuration & Sample Size (N) & Accuracy (%) & Precision (%) & Recall (%) & F1-Score (%) \\
     \midrule
-    Base Gemma (Common Subset) & 18 & 77.8 & 77.8 & 100.0 & 87.5 \\
-    Two-Stage Hybrid (Common Subset) & 18 & 77.8 & 77.8 & 100.0 & 87.5 \\
-    Two-Stage Hybrid (Full Dataset) & 42 & 81.0 & 82.9 & 97.1 & 89.5 \\
+    Base Gemma (Common Subset) & 31 & 77.4 & 85.2 & 88.5 & 86.8 \\
+    Two-Stage Hybrid (Common Subset) & 31 & 77.4 & 85.2 & 88.5 & 86.8 \\
+    Two-Stage Hybrid (Full Dataset) & 100 & 82.0 & 91.4 & 87.1 & 89.2 \\
     \bottomrule
   \end{tabular}
 \end{table}

@@ -14,14 +14,14 @@ This research project evaluates whether domain adaptation of the **Gemma 3 4B Vi
 ## 2. Dataset Description
 The evaluation utilizes a stratified sample of the **UCF-Crime dataset**, which comprises CCTV footage containing normal security footage and diverse anomalous threats:
 
-*   **Total Evaluated Videos**: 42 unique videos.
+*   **Total Evaluated Videos**: 100 unique videos.
 *   **Class Distribution**:
-    *   **Arrest**: 7 videos
-    *   **Abuse**: 7 videos
-    *   **Burglary**: 7 videos
-    *   **normal**: 7 videos
-    *   **Assault**: 7 videos
-    *   **Fighting**: 7 videos
+    *   **Arrest**: 17 videos
+    *   **Abuse**: 17 videos
+    *   **Burglary**: 17 videos
+    *   **normal**: 15 videos
+    *   **Assault**: 17 videos
+    *   **Fighting**: 17 videos
 *   **Video Format**: Untrimmed `.mp4` video clips at varying aspect ratios.
 
 ---
@@ -49,29 +49,29 @@ To solve the **instruction collapse** of the fine-tuned model (where SFT style-s
 
 To evaluate the models at a production level, we run a binary classification evaluation mapping **Normal** videos to **Non-Threat** (Low Threat) and any **Anomaly** category (Abuse, Burglary, etc.) to **Threat** (Medium or High Threat).
 
-### 5.1 Full Evaluation (Proposed Two-Stage Hybrid, N = 42)
-The proposed Two-Stage Hybrid model was evaluated over the full 42-video cross-dataset benchmark:
-*   **Accuracy:** 81.0% (34 / 42 videos correctly classified)
-*   **Precision:** 82.9% (34 / 41 predicted threats were true anomalies)
-*   **Recall (Threat Detection):** 97.1% (34 / 35 true anomalies detected)
-*   **F1-Score:** 89.5%
+### 5.1 Full Evaluation (Proposed Two-Stage Hybrid, N = 100)
+The proposed Two-Stage Hybrid model was evaluated over the full 100-video UCF-Crime dataset:
+*   **Accuracy:** 82.0% (82 / 100 videos correctly classified)
+*   **Precision:** 91.4% (74 / 81 predicted threats were true anomalies)
+*   **Recall (Threat Detection):** 87.1% (74 / 85 true anomalies detected)
+*   **F1-Score:** 89.2%
 *   **Confusion Matrix Breakdown:**
-    *   True Positives (TP): 34 | False Positives (FP): 7
-    *   True Negatives (TN): 0  | False Negatives (FN): 1
+    *   True Positives (TP): 74 | False Positives (FP): 7
+    *   True Negatives (TN): 8  | False Negatives (FN): 11
 
-### 5.2 Head-to-Head Comparison (Common Executed Subset, N = 18)
-Due to computational time constraints, the baseline Base Gemma model was executed on a subset of 18 videos. To perform a mathematically valid comparison, we evaluate both models strictly over this common 18-video subset (consisting of 14 anomalies and 4 normal clips):
+### 5.2 Head-to-Head Comparison (Common Executed Subset, N = 31)
+Due to computational time constraints, the baseline Base Gemma model was executed on a subset of 31 videos. To perform a mathematically valid comparison, we evaluate both models strictly over this common 31-video subset (consisting of 26 anomalies and 5 normal clips):
 
 | Metric | Base Gemma 3 (Baseline) | Fine-Tuned Guided (Two-Stage) |
 | :--- | :---: | :---: |
-| **Accuracy** | 77.8% | 77.8% |
-| **Precision** | 77.8% | 77.8% |
-| **Recall** | 100.0% | 100.0% |
-| **F1-Score** | 87.5% | 87.5% |
+| **Accuracy** | 77.4% | 77.4% |
+| **Precision** | 85.2% | 85.2% |
+| **Recall** | 88.5% | 88.5% |
+| **F1-Score** | 86.8% | 86.8% |
 
 *   **Confusion Matrix (Identical for Both Models on this Subset):**
-    *   True Positives (TP): 14 | False Positives (FP): 4
-    *   True Negatives (TN): 0  | False Negatives (FN): 0
+    *   True Positives (TP): 23 | False Positives (FP): 4
+    *   True Negatives (TN): 1  | False Negatives (FN): 3
 
 ---
 

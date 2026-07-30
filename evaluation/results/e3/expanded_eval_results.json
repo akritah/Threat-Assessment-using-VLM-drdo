@@ -1,9 +1,9 @@
 {
   "mcnemar": {
-    "both_correct": 14,
+    "both_correct": 24,
     "base_correct_only": 0,
     "hybrid_correct_only": 0,
-    "both_wrong": 4,
+    "both_wrong": 7,
     "chi2_statistic": 0.0,
     "p_value": 1.0
   },

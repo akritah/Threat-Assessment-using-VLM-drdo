@@ -17,10 +17,10 @@ Statistical checks over real paired predictions.
     \toprule
     Statistical Parameter & Measured Value \\
     \midrule
-    Contingency Cell: Both Correct (a) & 14 \\
+    Contingency Cell: Both Correct (a) & 24 \\
     Contingency Cell: Base Correct Only (b) & 0 \\
     Contingency Cell: Hybrid Correct Only (c) & 0 \\
-    Contingency Cell: Both Incorrect (d) & 4 \\
+    Contingency Cell: Both Incorrect (d) & 7 \\
     McNemar Chi-Square Statistic & 0.000 \\
     McNemar p-value & 1.0000 \\
     Bootstrap Accuracy Difference Mean & 0.0000 \\
