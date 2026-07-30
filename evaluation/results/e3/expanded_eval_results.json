@@ -1,18 +1,18 @@
 {
   "mcnemar": {
-    "both_correct": 24,
+    "both_correct": 23,
     "base_correct_only": 0,
-    "hybrid_correct_only": 0,
-    "both_wrong": 7,
+    "hybrid_correct_only": 1,
+    "both_wrong": 6,
     "chi2_statistic": 0.0,
     "p_value": 1.0
   },
   "bootstrap": {
-    "mean_difference": 0.0,
-    "std_difference": 0.0,
+    "mean_difference": 0.03330000000000001,
+    "std_difference": 0.03247219323256953,
     "confidence_interval_95": [
       0.0,
-      0.0
+      0.10000000000000009
     ]
   }
 }

@@ -17,9 +17,9 @@ Pipeline latency metrics excluding hangs.
     \toprule
     Configuration & Active Runs (N) & Average Latency (s) & Outlier Status \\
     \midrule
-    Base Gemma & 30 & 126.86 & Excluded Burglary089 (10527s) \\
-    Two-Stage Hybrid (Common Subset) & 29 & 116.71 & Excluded Fighting013 (2534s) \\
-    Two-Stage Hybrid (Full Dataset) & 99 & 109.10 & Excluded Fighting013 (2534s) \\
+    Base Gemma & 29 & 123.95 & Excluded Burglary089 (10527s) \\
+    Two-Stage Hybrid (Common Subset) & 28 & 117.01 & Excluded Fighting013 (2534s) \\
+    Two-Stage Hybrid (Full Dataset) & 99 & 110.01 & Excluded Fighting013 (2534s) \\
     \bottomrule
   \end{tabular}
 \end{table}
