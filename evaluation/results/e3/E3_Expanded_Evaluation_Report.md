@@ -1,9 +1,9 @@
-# Experiment E3: Expanded Evaluation Report
+# Experiment E3: Statistical Significance Report
 
 *Generated dynamically by the DRDO VLM Research framework*
 
 ## Summary
-Expanded multi-seed statistics.
+Statistical checks over real paired predictions.
 
 
 ## LaTeX Tables code (Copy-Paste to Thesis)
@@ -11,14 +11,20 @@ Expanded multi-seed statistics.
 ```latex
 \begin{table}[htbp]
   \centering
-  \caption{Statistical significance results.}
+  \caption{Statistical tests over the common executed subset.}
   \label{tab:expanded_eval}
-  \begin{tabular}{lccccc}
+  \begin{tabular}{lc}
     \toprule
-    Metric & Base Gemma Mean & Hybrid Mean & Chi-Square & p-value & Significant (p < 0.05) \\
+    Statistical Parameter & Measured Value \\
     \midrule
-    Accuracy (%) & 44.00 & 80.00 & 6.722 & 0.0001 & Yes \\
-    F1-Score (%) & 56.92 & 88.89 & - & - & - \\
+    Contingency Cell: Both Correct (a) & 14 \\
+    Contingency Cell: Base Correct Only (b) & 0 \\
+    Contingency Cell: Hybrid Correct Only (c) & 0 \\
+    Contingency Cell: Both Incorrect (d) & 4 \\
+    McNemar Chi-Square Statistic & 0.000 \\
+    McNemar p-value & 1.0000 \\
+    Bootstrap Accuracy Difference Mean & 0.0000 \\
+    Bootstrap Difference 95% Confidence Interval & [0.0000, 0.0000] \\
     \bottomrule
   \end{tabular}
 \end{table}

@@ -3,7 +3,7 @@
 *Generated dynamically by the DRDO VLM Research framework*
 
 ## Summary
-Pipeline latency bottlenecks.
+Pipeline latency metrics excluding hangs.
 
 
 ## LaTeX Tables code (Copy-Paste to Thesis)
@@ -11,17 +11,15 @@ Pipeline latency bottlenecks.
 ```latex
 \begin{table}[htbp]
   \centering
-  \caption{Pipeline execution bottlenecks.}
+  \caption{Clean latency measurements.}
   \label{tab:pipeline_profiling}
-  \begin{tabular}{lcc}
+  \begin{tabular}{lccc}
     \toprule
-    Pipeline Stage & Avg Duration (s) & Execution Share (%) \\
+    Configuration & Active Runs (N) & Average Latency (s) & Outlier Status \\
     \midrule
-    Frame Extraction & 0.1200 & 2.28% \\
-    Stage 1 (VLM Caption) & 1.2500 & 23.76% \\
-    Stage 2 (VLM Reason) & 3.8400 & 73.00% \\
-    Post-Processing & 0.0500 & 0.95% \\
-    Total Pipeline & 5.2600 & 100.00% \\
+    Base Gemma & 17 & 127.17 & Excluded Burglary089 (10527s) \\
+    Two-Stage Hybrid (Common Subset) & 16 & 125.49 & Excluded Fighting013 (2534s) \\
+    Two-Stage Hybrid (Full Dataset) & 41 & 107.05 & Excluded Fighting013 (2534s) \\
     \bottomrule
   \end{tabular}
 \end{table}

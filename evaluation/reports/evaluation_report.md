@@ -12,15 +12,19 @@ This research project evaluates whether domain adaptation of the **Gemma 3 4B Vi
 ---
 
 ## 2. Dataset Description
-The evaluation utilizes a stratified sample of the **XD-Violence dataset**, which comprises raw, unedited CCTV footage containing normal security footage and diverse anomalous threats. 
-*   **Total Evaluated Videos**: 100 videos.
+The evaluation utilizes a combined cross-dataset benchmark composed of **42 unique videos** from multiple sources to validate the model's domain generalization:
+1.  **UCF-Crime (Anomalies):** Stratified samples representing *Abuse*, *Arrest*, *Assault*, *Burglary*, and *Fighting* categories (35 videos).
+2.  **XD-Violence (Anomalies):** Integrated video clips representing explosion and vehicle accident anomalies.
+3.  **ActivityNet (Normal Contexts):** Video segments representing typical office, hallway, and street scenes with no anomalous behavior (7 videos).
+
+*   **Total Evaluated Videos**: 42 unique videos.
 *   **Class Distribution**:
-*   **Arrest**: 17 videos
-*   **Abuse**: 17 videos
-*   **Burglary**: 16 videos
-*   **normal**: 16 videos
-*   **Assault**: 17 videos
-*   **Fighting**: 17 videos
+    *   **Arrest**: 7 videos
+    *   **Abuse**: 7 videos
+    *   **Burglary**: 7 videos
+    *   **normal**: 7 videos
+    *   **Assault**: 7 videos
+    *   **Fighting**: 7 videos
 *   **Video Format**: Untrimmed `.mp4` video clips at varying aspect ratios.
 
 ---
@@ -46,22 +50,31 @@ To solve the **instruction collapse** of the fine-tuned model (where SFT style-s
 
 ## 5. Quantitative Classification Metrics (Production-Grade)
 
-To evaluate the models at a production level, we run a binary classification evaluation mapping **Normal** videos to **Non-Threat** (Low Threat) and any **Anomaly** category (Abuse, CarAccident, etc.) to **Threat** (Medium or High Threat).
+To evaluate the models at a production level, we run a binary classification evaluation mapping **Normal** videos to **Non-Threat** (Low Threat) and any **Anomaly** category (Abuse, Burglary, etc.) to **Threat** (Medium or High Threat).
+
+### 5.1 Full Evaluation (Proposed Two-Stage Hybrid, N = 42)
+The proposed Two-Stage Hybrid model was evaluated over the full 42-video cross-dataset benchmark:
+*   **Accuracy:** 81.0% (34 / 42 videos correctly classified)
+*   **Precision:** 82.9% (34 / 41 predicted threats were true anomalies)
+*   **Recall (Threat Detection):** 97.1% (34 / 35 true anomalies detected)
+*   **F1-Score:** 89.5%
+*   **Confusion Matrix Breakdown:**
+    *   True Positives (TP): 34 | False Positives (FP): 7
+    *   True Negatives (TN): 0  | False Negatives (FN): 1
+
+### 5.2 Head-to-Head Comparison (Common Executed Subset, N = 18)
+Due to computational time constraints, the baseline Base Gemma model was executed on a subset of 18 videos. To perform a mathematically valid comparison, we evaluate both models strictly over this common 18-video subset (consisting of 14 anomalies and 4 normal clips):
 
 | Metric | Base Gemma 3 (Baseline) | Fine-Tuned Guided (Two-Stage) |
 | :--- | :---: | :---: |
-| **Accuracy** | 43.0% | 98.0% |
-| **Precision** | 100.0% | 98.8% |
-| **Recall** | 43.0% | 98.8% |
-| **F1-Score** | 60.1% | 98.8% |
+| **Accuracy** | 77.8% | 77.8% |
+| **Precision** | 77.8% | 77.8% |
+| **Recall** | 100.0% | 100.0% |
+| **F1-Score** | 87.5% | 87.5% |
 
-### Confusion Matrix Breakdown
-*   **Base Gemma 3**:
-    *   True Positives (TP): 43 | False Positives (FP): 0
-    *   True Negatives (TN): 0 | False Negatives (FN): 57
-*   **Fine-Tuned Guided (Two-Stage)**:
-    *   True Positives (TP): 83 | False Positives (FP): 1
-    *   True Negatives (TN): 15 | False Negatives (FN): 1
+*   **Confusion Matrix (Identical for Both Models on this Subset):**
+    *   True Positives (TP): 14 | False Positives (FP): 4
+    *   True Negatives (TN): 0  | False Negatives (FN): 0
 
 ---
 
