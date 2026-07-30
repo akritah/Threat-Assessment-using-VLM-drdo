@@ -1,0 +1,21 @@
+{
+  "stages": [
+    "Frame Extraction",
+    "Stage 1 (VLM Caption)",
+    "Stage 2 (VLM Reason)",
+    "Post-Processing"
+  ],
+  "durations_sec": [
+    0.12,
+    1.25,
+    3.84,
+    0.05
+  ],
+  "percentages": [
+    2.2813688212927756,
+    23.76425855513308,
+    73.00380228136882,
+    0.9505703422053233
+  ],
+  "total_duration_sec": 5.26
+}

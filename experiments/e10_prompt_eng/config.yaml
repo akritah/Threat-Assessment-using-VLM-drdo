@@ -1,0 +1,40 @@
+# Config for Experiment E10: Prompt Engineering Study
+max_videos: 3
+sft_caption_prompt: |
+  Describe the exact activity happening in this video sequence as a concise caption (e.g., A person is performing...).
+
+# Prompt templates
+baseline_prompt: |
+  Describe what is happening in this video. Estimate the threat level as Low, Medium, or High.
+
+few_shot_prompt: |
+  You are an expert security analyzer.
+  Example 1:
+  Video context: A person entering a store window at night.
+  Analysis: **What is happening?** A person is breaking in. **Threat Level:** High.
+
+  Example 2:
+  Video context: A group of people sitting at a cafe table.
+  Analysis: **What is happening?** People relaxing at a cafe. **Threat Level:** Low.
+
+  Now analyze the current sequence:
+  Describe what is happening in this video. Estimate the threat level as Low, Medium, or High.
+
+json_prompt: |
+  Analyze the video and return JSON with these keys: description, threat_level ("Low", "Medium", "High"), and reasoning.
+
+cot_prompt: |
+  Analyze the video step-by-step.
+  1. What actions are visible in each frame?
+  2. Are any actions suspicious?
+  3. Conclude with: **Threat Level:** [Low/Medium/High].
+
+structured_prompt: |
+  Analyze this surveillance scene video sequence.
+  Describe:
+  * What is happening?
+  * Which activities are visible?
+  * Is there any suspicious behaviour?
+  * Are there any threat indicators?
+  * Estimate the threat level as Low, Medium, or High.
+  * Explain your reasoning.

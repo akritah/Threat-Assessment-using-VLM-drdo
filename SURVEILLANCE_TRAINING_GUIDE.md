@@ -13,7 +13,7 @@ Run this in a Colab cell to configure the Kaggle CLI:
 ```python
 # Create .kaggle directory and write the OAuth Token
 !mkdir -p ~/.kaggle
-!echo "KGAT_b4ba49c3345124301cb7ed0b004b536e" > ~/.kaggle/access_token
+!echo "YOUR_KAGGLE_API_TOKEN" > ~/.kaggle/access_token
 !chmod 600 ~/.kaggle/access_token
 ```
 

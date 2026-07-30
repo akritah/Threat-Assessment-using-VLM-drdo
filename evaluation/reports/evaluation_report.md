@@ -13,14 +13,14 @@ This research project evaluates whether domain adaptation of the **Gemma 3 4B Vi
 
 ## 2. Dataset Description
 The evaluation utilizes a stratified sample of the **XD-Violence dataset**, which comprises raw, unedited CCTV footage containing normal security footage and diverse anomalous threats. 
-*   **Total Evaluated Videos**: 42 videos.
+*   **Total Evaluated Videos**: 100 videos.
 *   **Class Distribution**:
-*   **Arrest**: 7 videos
-*   **Abuse**: 7 videos
-*   **Burglary**: 7 videos
-*   **normal**: 7 videos
-*   **Assault**: 7 videos
-*   **Fighting**: 7 videos
+*   **Arrest**: 17 videos
+*   **Abuse**: 17 videos
+*   **Burglary**: 16 videos
+*   **normal**: 16 videos
+*   **Assault**: 17 videos
+*   **Fighting**: 17 videos
 *   **Video Format**: Untrimmed `.mp4` video clips at varying aspect ratios.
 
 ---
@@ -39,8 +39,8 @@ To solve the **instruction collapse** of the fine-tuned model (where SFT style-s
 *   **Hardware Platform**: Google Colab T4 GPU Execution.
 *   **Precision**: Float16 with **4-bit bitsandbytes quantization** (which reduced GPU VRAM consumption from ~9 GB to ~3 GB, speeding up generation to under 2 seconds per video).
 *   **Inference Latency (Average per Video)**:
-    *   **Base Gemma 3 (Baseline)**: 0.00 seconds.
-    *   **Two-Stage Hybrid (FT Guided)**: 0.00 seconds.
+    *   **Base Gemma 3 (Baseline)**: 35.41 seconds.
+    *   **Two-Stage Hybrid (FT Guided)**: 41.60 seconds.
 
 ---
 
@@ -50,18 +50,18 @@ To evaluate the models at a production level, we run a binary classification eva
 
 | Metric | Base Gemma 3 (Baseline) | Fine-Tuned Guided (Two-Stage) |
 | :--- | :---: | :---: |
-| **Accuracy** | 42.9% | 97.6% |
-| **Precision** | 100.0% | 100.0% |
-| **Recall** | 42.9% | 97.6% |
-| **F1-Score** | 60.0% | 98.8% |
+| **Accuracy** | 43.0% | 98.0% |
+| **Precision** | 100.0% | 98.8% |
+| **Recall** | 43.0% | 98.8% |
+| **F1-Score** | 60.1% | 98.8% |
 
 ### Confusion Matrix Breakdown
 *   **Base Gemma 3**:
-    *   True Positives (TP): 18 | False Positives (FP): 0
-    *   True Negatives (TN): 0 | False Negatives (FN): 24
+    *   True Positives (TP): 43 | False Positives (FP): 0
+    *   True Negatives (TN): 0 | False Negatives (FN): 57
 *   **Fine-Tuned Guided (Two-Stage)**:
-    *   True Positives (TP): 41 | False Positives (FP): 0
-    *   True Negatives (TN): 0 | False Negatives (FN): 1
+    *   True Positives (TP): 83 | False Positives (FP): 1
+    *   True Negatives (TN): 15 | False Negatives (FN): 1
 
 ---
 

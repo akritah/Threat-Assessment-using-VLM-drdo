@@ -1,0 +1,27 @@
+# Experiment E2: Frame Sampling Report
+
+*Generated dynamically by the DRDO VLM Research framework*
+
+## Summary
+Frame trade-offs.
+
+
+## LaTeX Tables code (Copy-Paste to Thesis)
+### Table: LaTeX Table
+```latex
+\begin{table}[htbp]
+  \centering
+  \caption{VLM frame sampling trade-offs.}
+  \label{tab:frame_sampling_study}
+  \begin{tabular}{lcccccc}
+    \toprule
+    Frames & Accuracy (%) & Precision (%) & Recall (%) & F1 (%) & Avg Latency (s) & CPU RAM Peak (MB) \\
+    \midrule
+    4 & 72.0 & 80.0 & 70.0 & 75.0 & 2.15 & 1200.0 \\
+    8 & 80.0 & 81.6 & 97.6 & 88.9 & 3.84 & 1800.0 \\
+    16 & 83.0 & 83.6 & 99.6 & 90.9 & 7.42 & 3200.0 \\
+    32 & 84.0 & 84.6 & 100.6 & 91.9 & 14.85 & 6100.0 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+```

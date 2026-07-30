@@ -1,0 +1,5 @@
+# Config for Experiment E5: Pipeline Profiling
+max_videos: 4
+skip_baseline: true
+sft_caption_prompt: |
+  Describe the exact activity happening in this video sequence as a concise caption (e.g., A person is performing...).

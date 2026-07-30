@@ -1,0 +1,15 @@
+# Config for Experiment E1: Core Ablation Study
+max_videos: 6
+skip_baseline: false
+baseline_prompt: |
+  Analyze this surveillance scene video sequence.
+  Describe:
+  * What is happening?
+  * Which activities are visible?
+  * Is there any suspicious behaviour?
+  * Are there any threat indicators?
+  * Estimate the threat level as Low, Medium, or High.
+  * Explain your reasoning.
+
+sft_caption_prompt: |
+  Describe the exact activity happening in this video sequence as a concise caption (e.g., A person is performing...).

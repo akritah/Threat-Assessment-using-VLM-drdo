@@ -1,0 +1,38 @@
+{
+  "metrics_base": {
+    "accuracy": 0.44,
+    "precision": 0.7708333333333334,
+    "recall": 0.45121951219512196,
+    "f1_score": 0.5692307692307692,
+    "confusion_matrix": {
+      "tp": 37,
+      "fp": 11,
+      "tn": 7,
+      "fn": 45
+    }
+  },
+  "metrics_sft": {
+    "accuracy": 0.71,
+    "precision": 0.863013698630137,
+    "recall": 0.7682926829268293,
+    "f1_score": 0.8129032258064516,
+    "confusion_matrix": {
+      "tp": 63,
+      "fp": 10,
+      "tn": 8,
+      "fn": 19
+    }
+  },
+  "metrics_hybrid": {
+    "accuracy": 0.8,
+    "precision": 0.8163265306122449,
+    "recall": 0.975609756097561,
+    "f1_score": 0.888888888888889,
+    "confusion_matrix": {
+      "tp": 80,
+      "fp": 18,
+      "tn": 0,
+      "fn": 2
+    }
+  }
+}

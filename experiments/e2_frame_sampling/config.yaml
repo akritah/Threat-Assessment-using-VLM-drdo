@@ -1,0 +1,6 @@
+# Config for Experiment E2: Frame Sampling Study
+max_videos: 4
+skip_baseline: true
+frame_counts: [4, 8, 16, 32]
+sft_caption_prompt: |
+  Describe the exact activity happening in this video sequence as a concise caption (e.g., A person is performing...).

@@ -1,0 +1,5 @@
+# Config for Experiment E11: Failure Analysis Study
+max_videos: 4
+sft_caption_prompt: |
+  Describe the exact activity happening in this video sequence as a concise caption (e.g., A person is performing...).
+judge_model: gemma3:4b

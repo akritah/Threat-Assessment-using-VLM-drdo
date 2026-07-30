@@ -1,0 +1,1002 @@
+[
+  {
+    "Video ID": "Arrest029_x264",
+    "Category": "Arrest",
+    "Base Threat": "High",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Abuse022_x264",
+    "Category": "Abuse",
+    "Base Threat": "High",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Arrest030_x264",
+    "Category": "Arrest",
+    "Base Threat": "High",
+    "SFT Threat": "Low",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Burglary089_x264",
+    "Category": "Burglary",
+    "Base Threat": "High",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Normal_Videos_365_x264",
+    "Category": "normal",
+    "Base Threat": "High",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Assault033_x264",
+    "Category": "Assault",
+    "Base Threat": "High",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Normal_Videos_696_x264",
+    "Category": "normal",
+    "Base Threat": "High",
+    "SFT Threat": "Low",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Burglary083_x264",
+    "Category": "Burglary",
+    "Base Threat": "High",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Abuse032_x264",
+    "Category": "Abuse",
+    "Base Threat": "High",
+    "SFT Threat": "Low",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Fighting037_x264",
+    "Category": "Fighting",
+    "Base Threat": "High",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Burglary010_x264",
+    "Category": "Burglary",
+    "Base Threat": "High",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Arrest033_x264",
+    "Category": "Arrest",
+    "Base Threat": "High",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Fighting013_x264",
+    "Category": "Fighting",
+    "Base Threat": "High",
+    "SFT Threat": "Low",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Burglary009_x264",
+    "Category": "Burglary",
+    "Base Threat": "High",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Arrest042_x264",
+    "Category": "Arrest",
+    "Base Threat": "High",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Burglary062_x264",
+    "Category": "Burglary",
+    "Base Threat": "High",
+    "SFT Threat": "Low",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Normal_Videos_010_x264",
+    "Category": "normal",
+    "Base Threat": "High",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Normal_Videos_189_x264",
+    "Category": "normal",
+    "Base Threat": "High",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Fighting036_x264",
+    "Category": "Fighting",
+    "Base Threat": "Low",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Arrest043_x264",
+    "Category": "Arrest",
+    "Base Threat": "Low",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Burglary059_x264",
+    "Category": "Burglary",
+    "Base Threat": "Low",
+    "SFT Threat": "Low",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Assault051_x264",
+    "Category": "Assault",
+    "Base Threat": "Low",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Fighting005_x264",
+    "Category": "Fighting",
+    "Base Threat": "Low",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Normal_Videos_606_x264",
+    "Category": "normal",
+    "Base Threat": "Low",
+    "SFT Threat": "Low",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Fighting022_x264",
+    "Category": "Fighting",
+    "Base Threat": "Low",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Assault045_x264",
+    "Category": "Assault",
+    "Base Threat": "Low",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Assault018_x264",
+    "Category": "Assault",
+    "Base Threat": "Low",
+    "SFT Threat": "Low",
+    "Hybrid Threat": "Low",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Normal_Videos_941_x264",
+    "Category": "normal",
+    "Base Threat": "Low",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Fighting048_x264",
+    "Category": "Fighting",
+    "Base Threat": "Low",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Fighting030_x264",
+    "Category": "Fighting",
+    "Base Threat": "Low",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Abuse016_x264",
+    "Category": "Abuse",
+    "Base Threat": "Low",
+    "SFT Threat": "Low",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Abuse019_x264",
+    "Category": "Abuse",
+    "Base Threat": "Low",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Burglary098_x264",
+    "Category": "Burglary",
+    "Base Threat": "Low",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Abuse041_x264",
+    "Category": "Abuse",
+    "Base Threat": "Low",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Abuse044_x264",
+    "Category": "Abuse",
+    "Base Threat": "Low",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Arrest015_x264",
+    "Category": "Arrest",
+    "Base Threat": "Low",
+    "SFT Threat": "Low",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Assault002_x264",
+    "Category": "Assault",
+    "Base Threat": "Low",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Assault011_x264",
+    "Category": "Assault",
+    "Base Threat": "Low",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Assault029_x264",
+    "Category": "Assault",
+    "Base Threat": "Low",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Abuse018_x264",
+    "Category": "Abuse",
+    "Base Threat": "Low",
+    "SFT Threat": "Low",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Arrest011_x264",
+    "Category": "Arrest",
+    "Base Threat": "Low",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Normal_Videos_781_x264",
+    "Category": "normal",
+    "Base Threat": "Low",
+    "SFT Threat": "Low",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Arrest011_x264_aug_42",
+    "Category": "Arrest",
+    "Base Threat": "Low",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Burglary083_x264_aug_43",
+    "Category": "Burglary",
+    "Base Threat": "High",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Abuse022_x264_aug_44",
+    "Category": "Abuse",
+    "Base Threat": "High",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Normal_Videos_189_x264_aug_45",
+    "Category": "normal",
+    "Base Threat": "High",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Burglary062_x264_aug_46",
+    "Category": "Burglary",
+    "Base Threat": "High",
+    "SFT Threat": "Low",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Arrest042_x264_aug_47",
+    "Category": "Arrest",
+    "Base Threat": "High",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Abuse032_x264_aug_48",
+    "Category": "Abuse",
+    "Base Threat": "High",
+    "SFT Threat": "Low",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Normal_Videos_696_x264_aug_49",
+    "Category": "normal",
+    "Base Threat": "High",
+    "SFT Threat": "Low",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Abuse044_x264_aug_50",
+    "Category": "Abuse",
+    "Base Threat": "Low",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Assault033_x264_aug_51",
+    "Category": "Assault",
+    "Base Threat": "High",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Assault011_x264_aug_52",
+    "Category": "Assault",
+    "Base Threat": "Low",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Normal_Videos_941_x264_aug_53",
+    "Category": "normal",
+    "Base Threat": "Low",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Arrest030_x264_aug_54",
+    "Category": "Arrest",
+    "Base Threat": "High",
+    "SFT Threat": "Low",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Abuse022_x264_aug_55",
+    "Category": "Abuse",
+    "Base Threat": "High",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Assault033_x264_aug_56",
+    "Category": "Assault",
+    "Base Threat": "High",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Burglary009_x264_aug_57",
+    "Category": "Burglary",
+    "Base Threat": "High",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Arrest042_x264_aug_58",
+    "Category": "Arrest",
+    "Base Threat": "High",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Burglary098_x264_aug_59",
+    "Category": "Burglary",
+    "Base Threat": "Low",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Assault029_x264_aug_60",
+    "Category": "Assault",
+    "Base Threat": "Low",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Abuse022_x264_aug_61",
+    "Category": "Abuse",
+    "Base Threat": "High",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Arrest015_x264_aug_62",
+    "Category": "Arrest",
+    "Base Threat": "Low",
+    "SFT Threat": "Low",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Fighting013_x264_aug_63",
+    "Category": "Fighting",
+    "Base Threat": "High",
+    "SFT Threat": "Low",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Normal_Videos_781_x264_aug_64",
+    "Category": "normal",
+    "Base Threat": "Low",
+    "SFT Threat": "Low",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Abuse044_x264_aug_65",
+    "Category": "Abuse",
+    "Base Threat": "Low",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Assault018_x264_aug_66",
+    "Category": "Assault",
+    "Base Threat": "Low",
+    "SFT Threat": "Low",
+    "Hybrid Threat": "Low",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Arrest042_x264_aug_67",
+    "Category": "Arrest",
+    "Base Threat": "High",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Fighting048_x264_aug_68",
+    "Category": "Fighting",
+    "Base Threat": "Low",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Assault011_x264_aug_69",
+    "Category": "Assault",
+    "Base Threat": "Low",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Normal_Videos_189_x264_aug_70",
+    "Category": "normal",
+    "Base Threat": "High",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Arrest029_x264_aug_71",
+    "Category": "Arrest",
+    "Base Threat": "High",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Burglary010_x264_aug_72",
+    "Category": "Burglary",
+    "Base Threat": "High",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Normal_Videos_941_x264_aug_73",
+    "Category": "normal",
+    "Base Threat": "Low",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Assault051_x264_aug_74",
+    "Category": "Assault",
+    "Base Threat": "Low",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Normal_Videos_189_x264_aug_75",
+    "Category": "normal",
+    "Base Threat": "High",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Fighting037_x264_aug_76",
+    "Category": "Fighting",
+    "Base Threat": "High",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Burglary009_x264_aug_77",
+    "Category": "Burglary",
+    "Base Threat": "High",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Assault051_x264_aug_78",
+    "Category": "Assault",
+    "Base Threat": "Low",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Normal_Videos_696_x264_aug_79",
+    "Category": "normal",
+    "Base Threat": "High",
+    "SFT Threat": "Low",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Assault033_x264_aug_80",
+    "Category": "Assault",
+    "Base Threat": "High",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Fighting022_x264_aug_81",
+    "Category": "Fighting",
+    "Base Threat": "Low",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Normal_Videos_696_x264_aug_82",
+    "Category": "normal",
+    "Base Threat": "High",
+    "SFT Threat": "Low",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Fighting005_x264_aug_83",
+    "Category": "Fighting",
+    "Base Threat": "Low",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Fighting005_x264_aug_84",
+    "Category": "Fighting",
+    "Base Threat": "Low",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Assault029_x264_aug_85",
+    "Category": "Assault",
+    "Base Threat": "Low",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Normal_Videos_010_x264_aug_86",
+    "Category": "normal",
+    "Base Threat": "High",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Arrest030_x264_aug_87",
+    "Category": "Arrest",
+    "Base Threat": "High",
+    "SFT Threat": "Low",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Fighting030_x264_aug_88",
+    "Category": "Fighting",
+    "Base Threat": "Low",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Abuse044_x264_aug_89",
+    "Category": "Abuse",
+    "Base Threat": "Low",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Burglary083_x264_aug_90",
+    "Category": "Burglary",
+    "Base Threat": "High",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Fighting022_x264_aug_91",
+    "Category": "Fighting",
+    "Base Threat": "Low",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Assault033_x264_aug_92",
+    "Category": "Assault",
+    "Base Threat": "High",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Arrest015_x264_aug_93",
+    "Category": "Arrest",
+    "Base Threat": "Low",
+    "SFT Threat": "Low",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Fighting036_x264_aug_94",
+    "Category": "Fighting",
+    "Base Threat": "Low",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Arrest011_x264_aug_95",
+    "Category": "Arrest",
+    "Base Threat": "Low",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Abuse018_x264_aug_96",
+    "Category": "Abuse",
+    "Base Threat": "Low",
+    "SFT Threat": "Low",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Normal_Videos_606_x264_aug_97",
+    "Category": "normal",
+    "Base Threat": "Low",
+    "SFT Threat": "Low",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Assault002_x264_aug_98",
+    "Category": "Assault",
+    "Base Threat": "Low",
+    "SFT Threat": "High",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  },
+  {
+    "Video ID": "Fighting013_x264_aug_99",
+    "Category": "Fighting",
+    "Base Threat": "High",
+    "SFT Threat": "Low",
+    "Hybrid Threat": "High",
+    "Base Latency (s)": 3.84,
+    "SFT Latency (s)": 1.25,
+    "Hybrid Latency (s)": 5.09
+  }
+]

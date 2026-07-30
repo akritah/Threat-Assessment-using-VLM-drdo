@@ -1,0 +1,6 @@
+# Config for Experiment E3: Expanded Evaluation
+max_videos: 4
+skip_baseline: false
+seeds: [42, 100, 2026]
+sft_caption_prompt: |
+  Describe the exact activity happening in this video sequence as a concise caption (e.g., A person is performing...).
