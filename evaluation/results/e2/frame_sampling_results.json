@@ -1,0 +1,38 @@
+{
+  "4": {
+    "accuracy": 0.0,
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1_score": 0.0,
+    "avg_latency": 178.88908729993273,
+    "avg_ram_peak": 150.1484375,
+    "avg_vram_peak": 0.0
+  },
+  "8": {
+    "accuracy": 0.0,
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1_score": 0.0,
+    "avg_latency": 283.6953963999986,
+    "avg_ram_peak": 546.09375,
+    "avg_vram_peak": 0.0
+  },
+  "16": {
+    "accuracy": 0.0,
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1_score": 0.0,
+    "avg_latency": 3.429971899953671,
+    "avg_ram_peak": 36.16015625,
+    "avg_vram_peak": 0.0
+  },
+  "32": {
+    "accuracy": 0.0,
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1_score": 0.0,
+    "avg_latency": 4.905640900018625,
+    "avg_ram_peak": 78.171875,
+    "avg_vram_peak": 0.0
+  }
+}
