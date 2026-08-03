@@ -111,7 +111,8 @@ def run_inference(model, processor, images, prompt, device, max_new_tokens=256):
         
         base64_images = []
         for img in images:
-            img_resized = img.resize((448, 448), Image.Resampling.LANCZOS)
+            # Downsample to 224x224 for local CPU execution to reduce prefill load by 4x
+            img_resized = img.resize((224, 224), Image.Resampling.LANCZOS)
             buffered = BytesIO()
             img_resized.save(buffered, format="JPEG", quality=85)
             img_str = base64.b64encode(buffered.getvalue()).decode("utf-8")
@@ -124,13 +125,12 @@ def run_inference(model, processor, images, prompt, device, max_new_tokens=256):
             "stream": False,
             "options": {
                 "num_predict": max_new_tokens,
-                "temperature": 0.0,
-                "num_thread": 8
+                "temperature": 0.0
             }
         }
         
         try:
-            r = requests.post(f"{ollama_url}/api/generate", json=payload, timeout=180)
+            r = requests.post(f"{ollama_url}/api/generate", json=payload, timeout=360)
             if r.status_code == 200:
                 return r.json().get("response", "").strip()
             else:
@@ -284,7 +284,7 @@ class LiveSurveillanceStream:
                     # Stage 1: SFT Caption
                     start_inf = time.time()
                     caption_prompt = "Describe the exact activity happening in this video sequence as a concise caption (e.g., A person is performing...)."
-                    action_caption = run_inference(model, processor, pil_images, caption_prompt, device, max_new_tokens=40)
+                    action_caption = run_inference(model, processor, [pil_images[len(pil_images)//2]], caption_prompt, device, max_new_tokens=40)
                     
                     # Stage 2: Reasoning
                     guided_prompt = (
@@ -416,27 +416,29 @@ def analyze_surveillance(video_path, custom_frames, num_frames=4, progress=gr.Pr
             img = img.resize((448, 448), Image.Resampling.LANCZOS)
             selected_images.append(img)
     elif video_path:
-        progress(0.2, desc=f"Extracting {num_frames} representative keyframes from video...")
+        progress(0.2, desc=f"Extracting {num_frames} representative motion peaks from video...")
         video_name = Path(video_path).name
         try:
+            from backend.frame_extractor import extract_frames
+            temp_dir = PROJECT_ROOT / "outputs" / "temp_frames"
+            frame_paths = extract_frames(Path(video_path), temp_dir, num_frames)
+            
+            # Capture duration for timeline timestamps
             cap = cv2.VideoCapture(video_path)
             fps = cap.get(cv2.CAP_PROP_FPS)
             total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
             if fps > 0:
                 duration_sec = total_frames / fps
-            if total_frames > 0:
-                indices = [int(i * (total_frames - 1) / (num_frames - 1)) for i in range(num_frames)]
-                for idx in indices:
-                    cap.set(cv2.CAP_PROP_POS_FRAMES, idx)
-                    ret, frame = cap.read()
-                    if ret:
-                        rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-                        img = Image.fromarray(rgb_frame).resize((448, 448), Image.Resampling.LANCZOS)
-                        selected_images.append(img)
             cap.release()
+            
+            # Load and downsample extracted keyframes
+            for fp in frame_paths:
+                img = Image.open(fp).convert("RGB")
+                img = img.resize((224, 224), Image.Resampling.LANCZOS)
+                selected_images.append(img)
         except Exception as e:
-            logger.error("Error extracting video frames: %s", e)
-            return f"Error extracting video frames: {str(e)}", "N/A", "🚨 ERROR", "System Error", None, None, None, None
+            logger.error("Error extracting motion frames: %s", e)
+            return f"Error extracting motion frames: {str(e)}", "N/A", "🚨 ERROR", "System Error", None, None, None, None
             
     if not selected_images:
         return "Please upload a video or keyframe images.", "N/A", "⚠️ NO INPUT", "No Action Required", None, None, None, None
@@ -446,7 +448,7 @@ def analyze_surveillance(video_path, custom_frames, num_frames=4, progress=gr.Pr
     caption_prompt = "Describe the exact activity happening in this video sequence as a concise caption (e.g., A person is performing...)."
     try:
         start_inf = time.time()
-        action_caption = run_inference(model, processor, selected_images, caption_prompt, device, max_new_tokens=40)
+        action_caption = run_inference(model, processor, [selected_images[len(selected_images)//2]], caption_prompt, device, max_new_tokens=40)
         logger.info("Stage 1 action caption: %s", action_caption)
     except Exception as e:
         logger.error("Failed SFT Stage 1: %s", e)
