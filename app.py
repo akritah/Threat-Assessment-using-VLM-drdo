@@ -73,4 +73,4 @@ if __name__ == "__main__":
         port = 7860
         
     logger.info(f"Launching Gradio Web Server at http://{host}:{port}...")
-    demo.launch(server_name=host, server_port=port)
+    demo.launch(server_name=host, server_port=port, share=True)

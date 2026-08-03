@@ -18,7 +18,7 @@ if %errorlevel% neq 0 (
 
 :: 2. Initialize Virtual Environment
 if not exist ".venv" (
-    echo Creating Python virtual environment (.venv)...
+    echo Creating Python virtual environment .venv...
     python -m venv .venv
     if %errorlevel% neq 0 (
         echo Error: Failed to create virtual environment.
@@ -26,7 +26,7 @@ if not exist ".venv" (
         exit /b 1
     )
 ) else (
-    echo Virtual environment (.venv) already exists.
+    echo Virtual environment .venv already exists.
 )
 
 :: 3. Upgrade Pip & Install Dependencies
@@ -43,10 +43,10 @@ if %errorlevel% neq 0 (
 
 :: 4. Initialize Configuration (.env)
 if not exist ".env" (
-    echo Initializing configuration file (.env) from template...
+    echo Initializing configuration file .env from template...
     copy .env.example .env >nul
 ) else (
-    echo Configuration file (.env) already exists.
+    echo Configuration file .env already exists.
 )
 
 :: 5. Check Ollama Service & Pull Model

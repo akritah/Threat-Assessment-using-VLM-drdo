@@ -1,4 +1,10 @@
-from __future__ import annotations
+import sys
+from pathlib import Path
+
+# Ensure project root is in sys.path
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
 
 import env_loader
 env_loader.load_env()
@@ -61,19 +67,71 @@ def main() -> int:
 
         video_summary = summarize_video(analyzer, frame_results)
 
+        # Retrieve video duration using OpenCV
+        import cv2
+        cap = cv2.VideoCapture(str(video_path))
+        fps = cap.get(cv2.CAP_PROP_FPS)
+        total_frames = cap.get(cv2.CAP_PROP_FRAME_COUNT)
+        duration_sec = total_frames / fps if fps > 0 else None
+        cap.release()
+
+        # Build timeline and threat metrics
+        from threat_engine import (
+            generate_timestamps,
+            build_event_timeline,
+            export_timeline,
+            calculate_threat_metrics,
+            generate_explainable_report,
+            infer_threat_level
+        )
+        
+        timestamps = generate_timestamps(len(frame_paths), duration_sec)
+        timeline = build_event_timeline(frame_results, timestamps)
+        
+        overall_text = str(video_summary.get("overall_activity_summary", ""))
+        final_text = str(video_summary.get("final_activity_description", ""))
+        combined_summary_text = f"{overall_text} {final_text}"
+        
+        threat_level = infer_threat_level(combined_summary_text)
+        metrics = calculate_threat_metrics(threat_level, frame_results, combined_summary_text)
+        
         output_dir.mkdir(parents=True, exist_ok=True)
+        
+        # Export timelines (timeline.json, timeline.csv, timeline.md)
+        export_timeline(timeline, output_dir, prefix="timeline")
+        
+        # Export explainable reports (report.json, report.md)
+        generate_explainable_report(
+            video_name=video_path.name,
+            action_caption=overall_text,
+            threat_report=final_text,
+            threat_level=threat_level,
+            metrics=metrics,
+            timeline=timeline,
+            frame_results=frame_results,
+            output_dir=output_dir,
+            prefix="report"
+        )
+
+        # Legacy files for compatibility
         report_data = {
             "video": str(video_path),
             "model": args.model,
             "frames": frame_results,
             "summary": video_summary,
+            "threat_assessment": {
+                "threat_level": threat_level,
+                "threat_score": metrics["threat_score"],
+                "evidence_strength": metrics["evidence_strength"],
+                "model_confidence": metrics["model_confidence"]
+            }
         }
 
         report_json_path.write_text(json.dumps(report_data, indent=2, ensure_ascii=False), encoding="utf-8")
         report_txt_path.write_text(build_text_report(frame_results, video_summary), encoding="utf-8")
 
-        logging.info("Report saved: %s", report_txt_path)
-        logging.info("JSON saved: %s", report_json_path)
+        logging.info("Chronological event timeline saved to: %s", output_dir / "timeline.json")
+        logging.info("Explainable reports generated successfully in: %s", output_dir)
         return 0
     except Exception as exc:
         logging.error("%s", exc)
