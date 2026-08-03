@@ -300,16 +300,9 @@ class LiveSurveillanceStream:
                     )
                     threat_report = run_inference(model, processor, pil_images, guided_prompt, device, max_new_tokens=256)
                     
-                    # Parse threat level
-                    threat_level = "Low"
-                    for line in threat_report.split("\n"):
-                        if "threat level" in line.lower():
-                            raw_lvl = line.split(":")[-1].strip().lower()
-                            if "high" in raw_lvl:
-                                threat_level = "High"
-                            elif "medium" in raw_lvl:
-                                threat_level = "Medium"
-                            break
+                    # Parse threat level robustly
+                    from backend.threat_engine import parse_threat_level
+                    threat_level = parse_threat_level(threat_report)
                             
                     # Calculate metrics
                     dummy_frames = []
@@ -474,16 +467,9 @@ def analyze_surveillance(video_path, custom_frames, num_frames=4, progress=gr.Pr
         logger.error("Failed Stage 2: %s", e)
         threat_report = f"Failed to run Stage 2: {str(e)}"
 
-    # Parse threat level
-    threat_level = "Low"
-    for line in threat_report.split("\n"):
-        if "threat level" in line.lower():
-            raw_level = line.split(":")[-1].strip().lower()
-            if "high" in raw_level:
-                threat_level = "High"
-            elif "medium" in raw_level:
-                threat_level = "Medium"
-            break
+    # Parse threat level robustly
+    from backend.threat_engine import parse_threat_level
+    threat_level = parse_threat_level(threat_report)
 
     progress(0.8, desc="Calculating Threat Metrics and Timelines...")
     

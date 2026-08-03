@@ -8,12 +8,16 @@ import re
 HIGH_RISK_KEYWORDS = [
     "fire", "arson", "explosion", "shooting", "gun", "weapon", "knife",
     "assault", "abuse", "fighting", "riot", "burglary", "stealing", 
-    "vandalism", "shoplifting", "theft", "break-in"
+    "vandalism", "shoplifting", "theft", "break-in",
+    # Added robust stems and firearm variants
+    "firing", "fired", "shoot", "rifle", "rifles", "pistol", "pistols",
+    "gunfire", "firearm", "firearms", "clash", "clashes", "violence", "violent",
+    "machete", "hostage", "kidnap", "attacker", "intruder", "armed"
 ]
 
 MEDIUM_RISK_KEYWORDS = [
     "suspicious", "running", "climbing", "arguing", "gathering", "chasing", 
-    "hiding", "scuffling", "confrontation"
+    "hiding", "scuffling", "confrontation", "run", "climb", "chase", "hide"
 ]
 
 CERTAINTY_KEYWORDS = [
@@ -25,6 +29,43 @@ UNCERTAINTY_KEYWORDS = [
     "possible", "perhaps", "maybe", "suggests", "unclear", "ambiguous", 
     "difficult to tell", "low confidence", "likely"
 ]
+
+def parse_threat_level(threat_report: str) -> str:
+    """
+    Robustly parses the threat level from the VLM reasoning text.
+    Uses regex matching and falls back to high-risk keywords for safety.
+    """
+    text_lower = threat_report.lower()
+    
+    # Direct regex patterns for explicit designations
+    high_patterns = [
+        r"threat level\s*[:\-=]?\s*high",
+        r"threat\s*is\s*high",
+        r"high\s*threat",
+        r"danger level\s*[:\-=]?\s*high",
+    ]
+    medium_patterns = [
+        r"threat level\s*[:\-=]?\s*medium",
+        r"threat\s*is\s*medium",
+        r"medium\s*threat",
+        r"danger level\s*[:\-=]?\s*medium",
+    ]
+    
+    if any(re.search(pat, text_lower) for pat in high_patterns):
+        return "High"
+    if any(re.search(pat, text_lower) for pat in medium_patterns):
+        return "Medium"
+        
+    # Safety heuristic check: If there are weapons firing or active violence,
+    # override to High/Medium threat level even if the model format varied.
+    high_override_keywords = [
+        "firing", "gunfire", "rifles", "weapons", "shooting", "assaulting", 
+        "hostage", "armed confrontation", "clashes", "active gunfire"
+    ]
+    if any(kw in text_lower for kw in high_override_keywords):
+        return "High"
+        
+    return "Low"
 
 def calculate_threat_metrics(threat_level: str, frame_results: List[Dict[str, Any]], threat_report: str) -> Dict[str, Any]:
     """
@@ -276,11 +317,6 @@ def generate_explainable_report(
     return paths
 
 def infer_threat_level(text: str) -> str:
-    """Infers the threat level (Low/Medium/High) by scanning text for danger keywords."""
-    text_lower = text.lower()
-    if any(kw in text_lower for kw in HIGH_RISK_KEYWORDS):
-        return "High"
-    elif any(kw in text_lower for kw in MEDIUM_RISK_KEYWORDS):
-        return "Medium"
-    return "Low"
+    """Robustly infers the threat level (Low/Medium/High) by calling parse_threat_level."""
+    return parse_threat_level(text)
 
